@@ -4,7 +4,6 @@
 
 \section{Inverter-Based Resources (IBR): GFL vs GFM}
 
-TEST DESDE HP TRABAJO
 As a result of the increasing demand in power systems for renewable energy technologies, inverter-based resources (IBRs) are becoming a relevant component of AC power systems. Typically, Distributed Energy Resources (DERs) produce electricity as Direct Current (DC); therefore, an inverter is required to transform the waveform into Alternating Current (AC). The inverter thus acts as the interface between DERs and the electric grid.
 
 Due to the natural intermittency of renewable energies such as wind and solar, extracting the maximum available energy at any time has been a major objective in the integration of these assets. However, these assets are not able to provide inertia, unlike the large rotating masses of synchronous generators. Consequently, the reduction in mechanical inertia from synchronous machines has become a topic of concern for grid operators. This reduction results in larger frequency swings when the system experiences disturbances, such as load variations. These events can consequently trip loads or inverter-based units, thereby increasing reliability issues for the power system \cite{8586162}
@@ -20,6 +19,13 @@ As previously discussed, the main function of a Grid-Following (GFL) inverter is
 The main distinction between Grid-Following (GFL) and Grid-Forming (GFM) inverters lies in their underlying control principles and the way they interact with the grid.
 
 Overall, both GFM and GFL inverters share similar grid-support and power-generation objectives during grid-connected operation. These objectives are achieved either through active and reactive power adjustments in the case of GFL control, or through voltage and frequency regulation in the case of GFM control \cite{9751441}
+
+\begin{figure}[htbp!]
+ \centering
+ \includegraphics[width=0.8\textwidth]{Figures/Chapter 2/Grid connected converter classification GFM and GFL.PNG}
+ \caption{fig: Grid Connected Converter Classification: GFL and GFM Control} \cite{10620991}
+ \label{fig:Grid Connected Converter Classification: GFL and GFM Control}
+\end{figure}
 
 \subsection{Grid Following Inverters}
 
@@ -97,6 +103,60 @@ Next, the detailed control blocks for the GFM are presented. In contrast to the 
 
 Distributed Generators (DGs) are usually composed of a DC link and two-stages: input-side converter and grid-side converter. The input side varies depending on the specific type of technolgy used and the enregy source used. On the other hand, the grid-side converter is normally a dc/ac converter. 
 
+Grid-Forming technologies, by autonomously adjusting their output and frequencz, via their control mechanisms, ensure a seamless operation, independently from dynamic load confitions and changes in solar irradiance levels, in case, for example for photovoltaic grid forming plants. This inverters operate based on fundamental principles, power control, frequency regulation and voltage support. \cite{10755449}
+
+\begin{itemize}
+    \item Power control strategy: GFM control algorithms control the active and reactive power outputs, in this way, devices can balance effectively power generation and demand when demand or generation fluctuate.
+    \item Frequency Regulation: GFM adjust autonomously grid frequency, in case of frequency deviatons, GFM modify its output to restore the grid frequency nominal value.
+    \item Voltage control: By controlling reactive power flow, GFMs are able to provide grid support during transient conditions and ensure voltage stability. 
+\end{itemize}
+
+The first objective in the controller design, despite the control method choosed is to comply and meet the requirements imposed by the grid codes, ensuring the continuous and stable operation of the power converter during steady state and transient conditions. \cite{10620991}
+
+\subsection{Droop Control}
+
+The droop control method resembles the speed droop mechanism of a synchronous Generator, it's control method is baded from the primary frequency control of the Synchronous generator. It provides power sharing capability propotional to the nominal power of the converter. In this contrl method it exists an inverse relationship between frequency deviation and power change.\cite{10620991}
+Droop controll is one of the most mature control methods for Grid Forming. It adjusts the frequency and amplitude of the reference voltage through the P-f and Q-V droop loops, respecteviley. The purpose is to emulate the frequency and voltage regulation characteristics of Synchronous Generators. However, the rotor motion of the Synchronous Generator is not part of the loop control or is not emulated (The known as swing equation), which describes the dynamic motion of the rotor in a big rotating synchronous machines, they are not capable of delivering inertia support. 
+The frequency and voltage dynamics under the control loop can be expressed with the next equations. \cite{10949993}
+
+\begin{equation}
+\left\{
+\begin{aligned}
+\omega &= \omega_{\text{ref}} + K_P (P_{\text{ref}} - P) \\
+V &= V_{\text{ref}} + K_Q (Q_{\text{ref}} - Q)
+\end{aligned}
+\right.
+\end{equation}
+
+
+\begin{figure}[htbp!]
+ \centering
+ \includegraphics[width=0.8\textwidth]{Figures/Chapter 2/Block Diagram frequency and voltage droop control.PNG}
+ \caption{fig:Block Diagram frequency and voltage droop control \cite{10620991}}
+ \label{fig:Block Diagram frequency and voltage droop control}
+\end{figure}
+
+In the equations shown, $\omega$ represents the grid frequency and $V$ represent the grid voltage, respectively. P and Q correspond to the active and reactive power and $P_{ref}$ and $Q_{ref}$ denote its nominal values. In the equation, the terms $K_{P}$ and $K_{Q}$ are the frequency and voltage droop coefficients. 
+
+Droop based control uses voltage and frequency droop characteristics to regulate power sharing, this is highlz benefit for the power system as further multi inverter synchronization is not required, eneabling decentralized and robust control. \cite{10755449}
+
+\subsection{Virtual Synchronous Machine}
+In contrast with the froop control, VSM emulates the rotor motion and the electromagnetic transient equation of the synchronous machine, in this way, virtual inertia can be provided, as the control tries to replicate the inherent behaviour of big rotating masses, when subjecteds to a fault, basically natural inertia (describe what inertia is). This method avoid rapid fluctiations in the frequency and the voltage, it also provides inertia, damping and voltage support. The equation that descrobes the VSM control is represented by \cite{10949993}.
+\begin{equation}
+J \omega s = \frac{(P_{\text{ref}} - P)}{\omega_{\text{ref}}} - D (\omega_{\text{ref}} - \omega)
+\end{equation}
+
+AGREGAR IMAGENES DEL VIRTUAL SYNCHRONOUES MACHINE
+
+$J$ is the rotational inertia, $D$ denotes the damping coefficient for the frequency. The emulation of the behaviour of the synchronous machine allows the GFM inverter to provide virtual inertia which support stabilizing the grid during dynamic grid conditions. A clear disadvantage of this control technique is that the inverter tunnnig parameters is complex and the droop control technique is more mature and proved. \cite{10755449}
+
+
+\subsection{Virtual Oscillator Control}
+
+This control technique utilizes virtual oscillator models to synchronize multiple grid forming devices without the need of external signals, this advamntage can be translated into an independant synchronization, which makes the GFM compatible with various grid conditions. However, it is observed a high sensitivity to tunning parameters and a limited synchronization range. \cite{10755449}
+
+\section{Grid Forming Capanilities}
+
 \section{Power System Stability and Resilience}
 \section{Frequency and Voltage Stability Indicators}
 \section{Grid Strength and Short-Circuit Ratio}
@@ -107,4 +167,4 @@ Distributed Generators (DGs) are usually composed of a DC link and two-stages: i
 \section{Grid Stability}
 \section{Ancillary Services}
 
-
+Defined by the standards, the first DG units required their disconnection in the case of grid faults. However, this operation is no longer accepted for modern DG plants, for instance, for modern wind power systems, the low votage ride thorugh (LVRT) \cite{6200347}
