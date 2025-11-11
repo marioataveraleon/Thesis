@@ -205,16 +205,59 @@ Unlike droop control, which requires complex active and reactive power calculati
 
 Furthermore, VOC behavior converges to that of droop control under steady-state conditions. In addition, due to its time-domain nature, VOC provides faster and more stable transient dynamics compared to the traditional droop control approach. \cite{9479398}
 
-\section{Grid Forming Capanilities}
+\section{Grid Forming Capabilities}
 
 \section{Power System Stability and Resilience}
+\subsection{Power System Stability}
+Power System Stability can be defined as "The ability of an electric power system, for a given initial operating condition, to regain a state of operating equilibrium after being subjected to a physical disturbance, with most system variables bounded so that practically the entire system remains intact." \cite{1318675}
+
+In the past, dynamic behavior of power systems was mainly determined by the dynamics of the synchronous grenerators. However, electric power systems have expereinced a significant transformation by the increase of inverter based resources, such as wind and pv generation, flexible ac transmission systems (FACTS) , High Voltage Direct Current (HVDC), and power electronic interfaced loads, such as Electric Vehicles (EVs) and Electric Heat Pumps (HPs). \cite{9286772}
+
+The stability in an electric power system is then, a property of the system motion around an equilibrium operating point, i.e. the initiall operating condition. Power systems are constanlty being subject of a wide range of disturbances, small and large. Small disturbances, like load changes occur continually, the system must be able to adjust to the changing operating conditions succesfully. Moreover, the system must be able to survive to disturbances of a severe nature, such as short circuits on transmission lines or a loss of a large generator. A large disturbance may lead to structural changes due to the isolation of the faulted elements. \cite{1318675}
+
+Different time scales exist to capture different components dynamics phenomena across the power system, Fig depicts the time scales for different types of dynamic phenomena. 
+
+\begin{figure}[htbp!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/Chapter 2/Power System Time Scales.png}
+    \caption{Power System Time Scales \cite{9286772}}
+    \label{fig:Power System Time Scales}
+   \end{figure}
+
+   Is visible, that IBR posess faster dynamic phenomena, therefore faster dynamics analysis will gain importance in future power system dynamic behavior. 
+   Focusing on the electromechanical time scale of transients allows several simplifications in power system modeling, facilitating the characterization and analysis of related phenomena. In this framework, high-frequency dynamics, such as those from power electronic switching, are only approximated through simplified models, meaning fast transients cannot be fully captured becoming necessary to extend the time analysis bandwidth for IBRs. \cite{9286772}
+
+   A typical modern power system is a high order multivariable process whose dynamic response is influened by a wide array of devies with different characteristics and responses rates. Stability is a conditon of equilibrium between opposing forcers. It depends on the network topology, the system operating condition and the type of the disturbance. \cite{1318675}
+
+   \begin{figure}[htbp!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/Chapter 2/Power System Stability.png}
+    \caption{Classification of Power System Stability\cite{9286772}}
+    \label{fig:Classification of Power System Stability}
+   \end{figure}
+
+   Since stability problems are of high dimensionality and different complexities, a classification can help analyzing specific problems with appropiate level of detail of system representation and appropiate analytical techniques.
+   \subsubsection{Categories of Stability}
+   
+   \begin{enumerate}
+    \item Rotor Angle Stability: 
+   \end{enumerate}
+
+   \subsection{Power System Resilience}
+
+   Resilience is an emerging technical concept in power systems and other infrastructures. Some properties of system reliance include
+   \begin{itemize}
+    \item System reliability, which refers to high-probability, low-impact (HPLI) events (for which power systems have been traditionally designed and operated)
+    \item Robustness, which is system intrinsic, scenario-independant 
+   \end{itemize}
+
+
 \section{Frequency and Voltage Stability Indicators}
 \section{Grid Strength and Short-Circuit Ratio}
 \section{Real World Examples}
 \section{Conventional Stability Support}
 \section{Research Gap and Motivation}
-\section{German Energy Market}
-\section{Grid Stability}
+
 \section{Ancillary Services}
 
 Defined by the standards, the first DG units required their disconnection in the case of grid faults. However, this operation is no longer accepted for modern DG plants, for instance, for modern wind power systems, the low votage ride thorugh (LVRT) \cite{6200347}
