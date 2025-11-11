@@ -207,15 +207,14 @@ Furthermore, VOC behavior converges to that of droop control under steady-state 
 
 \section{Grid Forming Capabilities}
 
-\section{Power System Stability and Resilience}
-\subsection{Power System Stability}
+\section{Power System Stability}
 Power System Stability can be defined as "The ability of an electric power system, for a given initial operating condition, to regain a state of operating equilibrium after being subjected to a physical disturbance, with most system variables bounded so that practically the entire system remains intact." \cite{1318675}
 
-In the past, dynamic behavior of power systems was mainly determined by the dynamics of the synchronous grenerators. However, electric power systems have expereinced a significant transformation by the increase of inverter based resources, such as wind and pv generation, flexible ac transmission systems (FACTS) , High Voltage Direct Current (HVDC), and power electronic interfaced loads, such as Electric Vehicles (EVs) and Electric Heat Pumps (HPs). \cite{9286772}
+In the past, the dynamic behavior of power systems was mainly governed by the dynamics of synchronous generators. However, electric power systems have undergone a significant transformation with the increasing integration of inverter-based resources, such as wind and photovoltaic (PV) generation, Flexible AC Transmission Systems (FACTS), High Voltage Direct Current (HVDC) links, and power-electronic-interfaced loads, including Electric Vehicles (EVs) and Electric Heat Pumps (HPs) \cite{9286772}
 
-The stability in an electric power system is then, a property of the system motion around an equilibrium operating point, i.e. the initiall operating condition. Power systems are constanlty being subject of a wide range of disturbances, small and large. Small disturbances, like load changes occur continually, the system must be able to adjust to the changing operating conditions succesfully. Moreover, the system must be able to survive to disturbances of a severe nature, such as short circuits on transmission lines or a loss of a large generator. A large disturbance may lead to structural changes due to the isolation of the faulted elements. \cite{1318675}
+Stability in an electric power system is a property of the system's motion around an equilibrium operating point, i.e., its initial operating condition. Power systems are continuously subjected to a wide range of disturbances, both small and large. Small disturbances, such as load variations, occur constantly, and the system must be able to adapt successfully to these changing operating conditions. In addition, the system must also withstand severe disturbances, such as short circuits on transmission lines or the loss of a major generating unit. Large disturbances may even lead to structural changes in the network due to the isolation of faulted elements.\cite{1318675}
 
-Different time scales exist to capture different components dynamics phenomena across the power system, Fig depicts the time scales for different types of dynamic phenomena. 
+As a result of these diverse types of disturbances, different time scales are required to capture the dynamic phenomena of the various components within the power system. Figure X illustrates the typical time ranges associated with each type of dynamic behavior.
 
 \begin{figure}[htbp!]
     \centering
@@ -224,10 +223,9 @@ Different time scales exist to capture different components dynamics phenomena a
     \label{fig:Power System Time Scales}
    \end{figure}
 
-   Is visible, that IBR posess faster dynamic phenomena, therefore faster dynamics analysis will gain importance in future power system dynamic behavior. 
-   Focusing on the electromechanical time scale of transients allows several simplifications in power system modeling, facilitating the characterization and analysis of related phenomena. In this framework, high-frequency dynamics, such as those from power electronic switching, are only approximated through simplified models, meaning fast transients cannot be fully captured becoming necessary to extend the time analysis bandwidth for IBRs. \cite{9286772}
+   It can be observed that inverter-based resources (IBRs) exhibit much faster dynamic phenomena; therefore, analyzing faster dynamics will become increasingly important in the study of future power system behavior. Focusing on the electromechanical time scale of transients allows several simplifications in power system modeling, which facilitates the characterization and analysis of related phenomena. However, within this framework, high-frequency dynamics,such as those caused by power electronic switching,are only represented through simplified models, meaning that fast transients cannot be fully captured. Consequently, it becomes necessary to extend the analysis bandwidth to include faster time scales when studying IBRs.\cite{9286772}
 
-   A typical modern power system is a high order multivariable process whose dynamic response is influened by a wide array of devies with different characteristics and responses rates. Stability is a conditon of equilibrium between opposing forcers. It depends on the network topology, the system operating condition and the type of the disturbance. \cite{1318675}
+   In this context, a modern power system can be regarded as a high-order, multivariable process whose dynamic response is influenced by a wide range of devices with distinct characteristics and response times. Stability represents a condition of equilibrium between opposing forces and depends strongly on the network topology, the system’s operating conditions, and the nature of the disturbance applied. \cite{1318675}
 
    \begin{figure}[htbp!]
     \centering
@@ -236,11 +234,15 @@ Different time scales exist to capture different components dynamics phenomena a
     \label{fig:Classification of Power System Stability}
    \end{figure}
 
-   Since stability problems are of high dimensionality and different complexities, a classification can help analyzing specific problems with appropiate level of detail of system representation and appropiate analytical techniques.
-   \subsubsection{Categories of Stability}
-   
+   Given the high dimensionality and diverse nature of stability phenomena, classification plays a crucial role in enabling targeted analysis with the appropriate level of system modeling detail and suitable analytical methods. \cite{9286772}
+   \subsection{Categories of Stability}
    \begin{enumerate}
-    \item Rotor Angle Stability: 
+    \item Rotor Angle Stability: Is the ability of the interconnected synchronous machines in a power system to remain in synchronism under normal operating conditions and to regain synchrinism after being subjected to a small or large disturbance.
+    \item Voltage Stability: Voltage Stability refers to the ability of a power system to mantain steady voltages close to nominal values at all buses in the system after being subjected to a disturbance. Depends on the ability of the combined generation and transmission systems to provide the power requested by loads and constrained by the maximum power transfer to a specific set of buses and linked to the voltage drop that occurs when active and/or reactive power flows through imductive reactances of the transmission network
+    \item Frequency Stability:Refers to the ability of a power system to mantain steady frequency following a severe system upset resulting in a significant imbalance between generation and load. Depends strongly on the ability to mantain/restore equilibrium between system generation and load, with minimum unintentional loss of load. Instability that may result occurs in the form of sustained frequency swings leading to tripping generating units and/or loads.
+    \item Resonance Stability: The resonance, in general, occurs
+    when energy exchange takes place periodically in an oscillatory manner. These oscillations grow in case of insufficient dissipation of energy in the flow path and are manifested (in electrical power systems) in magnification of voltage/current/torque magnitudes. When these magnitudes exceed specified thresholds, it is said that a resonance instability has occurred.
+    \item Converter-Driven Stability: Converter-Driven Stability (CDS) refers to the ability of a power system, in which converter-interfaced generation (and/or other power-electronic converters) is significant, to maintain operating equilibrium after a disturbance—accounting for the unique dynamics of converters and their controls. It encompasses the interactions between converter control loops (which may act on millisecond or faster time-scales) and the broader grid dynamics (electromechanical and electromagnetic). Instability within this class typically manifests as oscillatory or divergent behaviour over a wide frequency range (from sub-10 Hz up to hundreds of Hertz or more).
    \end{enumerate}
 
    \subsection{Power System Resilience}
