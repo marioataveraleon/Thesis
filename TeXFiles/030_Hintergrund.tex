@@ -97,6 +97,19 @@ Next, the detailed control structure of a GFM inverter is shown. In contrast to 
  \label{fig:Grid Forming Inverter Detailed Control Blocks}
 \end{figure}
 
+In summary, the capabilities that can be provided by GFM inverters are \cite{9751441}
+\begin{enumerate}
+    \item Fast frequency support
+    \item Synthetic inertia
+    \item Voltage regulation and improved transient voltage stability
+    \item Black start capability
+    \item Operation in grid-connected mode as well as in islanded mode
+    \item Improved damping in low inertia Systems
+    \item Ride-through functions
+\end{enumerate}
+
+
+
 \section{GFM Control Methods}
 
 Distributed Generators (DGs) are typically composed of a DC link and two main stages: an input-side converter and a grid-side converter. The input side varies depending on the specific technology and energy source used. The grid-side converter, on the other hand, usually consists of a DC/AC converter.
@@ -205,16 +218,19 @@ Unlike droop control, which requires complex active and reactive power calculati
 
 Furthermore, VOC behavior converges to that of droop control under steady-state conditions. In addition, due to its time-domain nature, VOC provides faster and more stable transient dynamics compared to the traditional droop control approach. \cite{9479398}
 
-\section{Grid Forming Capabilities}
-
 \section{Power System Stability}
-Power System Stability can be defined as "The ability of an electric power system, for a given initial operating condition, to regain a state of operating equilibrium after being subjected to a physical disturbance, with most system variables bounded so that practically the entire system remains intact." \cite{1318675}
 
-In the past, the dynamic behavior of power systems was mainly governed by the dynamics of synchronous generators. However, electric power systems have undergone a significant transformation with the increasing integration of inverter-based resources, such as wind and photovoltaic (PV) generation, Flexible AC Transmission Systems (FACTS), High Voltage Direct Current (HVDC) links, and power-electronic-interfaced loads, including Electric Vehicles (EVs) and Electric Heat Pumps (HPs) \cite{9286772}
+Electric power systems are undergoing a transformation due to the rapid increase of power-electronic-interfaced technologies. As a result, new considerations regarding stability phenomena must be addressed. Power system stability follows the same mathematical foundations as any dynamic system. \cite{1318675}
 
-Stability in an electric power system is a property of the system's motion around an equilibrium operating point, i.e., its initial operating condition. Power systems are continuously subjected to a wide range of disturbances, both small and large. Small disturbances, such as load variations, occur constantly, and the system must be able to adapt successfully to these changing operating conditions. In addition, the system must also withstand severe disturbances, such as short circuits on transmission lines or the loss of a major generating unit. Large disturbances may even lead to structural changes in the network due to the isolation of faulted elements.\cite{1318675}
+In the past, the dynamic behavior of power systems was mainly governed by synchronous generator dynamics. However, modern grids have changed significantly with the increasing integration of inverter-based resources (IBRs), such as wind and photovoltaic (PV) generation, Flexible AC Transmission Systems (FACTS), High Voltage Direct Current (HVDC) links, and power-electronic-interfaced loads, including Electric Vehicles (EVs) and Heat Pumps (HPs). \cite{9286772}
 
-As a result of these diverse types of disturbances, different time scales are required to capture the dynamic phenomena of the various components within the power system. Figure X illustrates the typical time ranges associated with each type of dynamic behavior.
+Stability in an electric power system is defined with respect to its motion around an equilibrium operating point. Power systems are continuously subjected to disturbances of various magnitudes. Small disturbances, such as load variations, occur constantly and the system must adapt without losing steady operation. In contrast, large disturbances—such as faults or the loss of major generating units—may induce structural changes in the network due to the isolation of affected elements. \cite{1318675}
+
+Since it is neither economically nor practically feasible to ensure stability against every possible disturbance, contingency studies are carried out based on the probability of occurrence. With the increasing penetration of IBRs, additional challenges arise, including interactions between converter control loops, limited short-circuit current contribution, and a reduction in system inertia. \cite{9286772}
+
+Power system stability can be defined as “the ability of an electric power system, for a given initial operating condition, to regain a state of operating equilibrium after being subjected to a physical disturbance, with most system variables remaining within acceptable bounds so that the system remains largely intact.” \cite{1318675}
+
+Different types of disturbances excite different components of the system, each acting over distinct time scales. Figure X illustrates the typical ranges associated with these dynamic phenomena.
 
 \begin{figure}[htbp!]
     \centering
@@ -225,7 +241,7 @@ As a result of these diverse types of disturbances, different time scales are re
 
    It can be observed that inverter-based resources (IBRs) exhibit much faster dynamic phenomena; therefore, analyzing faster dynamics will become increasingly important in the study of future power system behavior. Focusing on the electromechanical time scale of transients allows several simplifications in power system modeling, which facilitates the characterization and analysis of related phenomena. However, within this framework, high-frequency dynamics,such as those caused by power electronic switching,are only represented through simplified models, meaning that fast transients cannot be fully captured. Consequently, it becomes necessary to extend the analysis bandwidth to include faster time scales when studying IBRs.\cite{9286772}
 
-   In this context, a modern power system can be regarded as a high-order, multivariable process whose dynamic response is influenced by a wide range of devices with distinct characteristics and response times. Stability represents a condition of equilibrium between opposing forces and depends strongly on the network topology, the system’s operating conditions, and the nature of the disturbance applied. \cite{1318675}
+   In this context, a modern power system can be regarded as a high-order, multivariable process whose dynamic response is influenced by numerous devices with distinct characteristics and response times. Stability reflects a condition of equilibrium between opposing forces and depends on the network topology, the operating conditions, and the nature of the disturbance. \cite{1318675}
 
    \begin{figure}[htbp!]
     \centering
@@ -235,7 +251,9 @@ As a result of these diverse types of disturbances, different time scales are re
    \end{figure}
 
    Given the high dimensionality and diverse nature of stability phenomena, classification plays a crucial role in enabling targeted analysis with the appropriate level of system modeling detail and suitable analytical methods. \cite{9286772}
+
    \subsection{Categories of Stability}
+
    \begin{enumerate}
     \item Rotor Angle Stability: Is the ability of the interconnected synchronous machines in a power system to remain in synchronism under normal operating conditions and to regain synchrinism after being subjected to a small or large disturbance.
     \item Voltage Stability: Voltage Stability refers to the ability of a power system to mantain steady voltages close to nominal values at all buses in the system after being subjected to a disturbance. Depends on the ability of the combined generation and transmission systems to provide the power requested by loads and constrained by the maximum power transfer to a specific set of buses and linked to the voltage drop that occurs when active and/or reactive power flows through imductive reactances of the transmission network
@@ -245,13 +263,22 @@ As a result of these diverse types of disturbances, different time scales are re
     \item Converter-Driven Stability: Converter-Driven Stability (CDS) refers to the ability of a power system, in which converter-interfaced generation (and/or other power-electronic converters) is significant, to maintain operating equilibrium after a disturbance—accounting for the unique dynamics of converters and their controls. It encompasses the interactions between converter control loops (which may act on millisecond or faster time-scales) and the broader grid dynamics (electromechanical and electromagnetic). Instability within this class typically manifests as oscillatory or divergent behaviour over a wide frequency range (from sub-10 Hz up to hundreds of Hertz or more).
    \end{enumerate}
 
-   \subsection{Power System Resilience}
+   \subsubsection{Converter-driven stability}
 
-   Resilience is an emerging technical concept in power systems and other infrastructures. Some properties of system reliance include
-   \begin{itemize}
-    \item System reliability, which refers to high-probability, low-impact (HPLI) events (for which power systems have been traditionally designed and operated)
-    \item Robustness, which is system intrinsic, scenario-independant 
-   \end{itemize}
+   High penetration of converter-interfaced renewable generation, such as full-converter wind turbines and photovoltaic plants, has introduced new forms of dynamic interactions between power electronic converters and the AC grid. Unlike synchronous machines, converters lack inherent inertia and rely entirely on fast digital control loops, making their stability strongly dependent on controller tuning and grid strength. As renewable penetration increases, these interactions may excite oscillatory behavior across a wide frequency range—including sub-synchronous oscillations, poorly damped electromechanical modes, and high-frequency resonance—collectively known as converter-driven stability. Several real-world incidents have demonstrated that weak grids or high IBR penetration can significantly reduce system damping or even lead to instability. These phenomena highlight the need to analyze converter–grid interactions carefully to ensure stable operation in converter-dominated power systems. \cite{en14144290}
+
+Converter-driven stability encompasses all stability phenomena that are influenced or caused by power converters and their associated control systems, occurring across multiple time scales. Slow interactions typically manifest as oscillations below approximately 10 Hz and are associated with outer control loops or system-level dynamics. In contrast, fast interactions arise from inner controller loops and the rapid response of power electronic converters, spanning frequencies from several tens of hertz up to hundreds or even thousands of hertz. The relevant time scales and associated phenomena are illustrated in Fig. X. \cite{10497578}
+
+\begin{figure}[htbp!]
+\centering
+\includegraphics[width=0.8\textwidth]{Figures/Chapter 2/Converter Driven Stability Classification.png}
+\caption{Frequency range of converter-driven stability \cite{10497578}}
+\label{fig:Frequency Range of Converter Driven Stability}
+\end{figure}
+
+Analyzing fast converter-driven stability requires accurate and detailed models, which significantly increases computational effort. Electromagnetic transient (EMT) models, formulated using differential equations, are commonly employed to represent fast electromagnetic and control dynamics. However, because they require very small time steps to capture such rapid behavior, their major limitation is the extremely high computational burden. As system size increases, EMT simulations can become prohibitively expensive and, in some cases, practically unsolvable. \cite{10497578}
+
+Overall, the literature highlights that the increasing penetration of converter-interfaced generation introduces dynamic interactions that demand advanced and scalable modeling approaches. While detailed EMT simulations provide valuable insight into fast converter behavior, they are impractical for large system studies, reinforcing the need for efficient methods capable of capturing inverter-driven phenomena at scale. Continued research and collaboration between academia, industry, and system operators remain essential to ensure that future converter-dominated power systems can operate reliably while supporting ongoing energy-transition objectives.
 
 
 \section{Frequency and Voltage Stability Indicators}
