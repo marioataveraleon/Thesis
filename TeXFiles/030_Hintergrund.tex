@@ -265,7 +265,7 @@ Different types of disturbances excite different components of the system, each 
 
    \subsubsection{Converter-driven stability}
 
-   High penetration of converter-interfaced renewable generation, such as full-converter wind turbines and photovoltaic plants, has introduced new forms of dynamic interactions between power electronic converters and the AC grid. Unlike synchronous machines, converters lack inherent inertia and rely entirely on fast digital control loops, making their stability strongly dependent on controller tuning and grid strength. As renewable penetration increases, these interactions may excite oscillatory behavior across a wide frequency range—including sub-synchronous oscillations, poorly damped electromechanical modes, and high-frequency resonance—collectively known as converter-driven stability. Several real-world incidents have demonstrated that weak grids or high IBR penetration can significantly reduce system damping or even lead to instability. These phenomena highlight the need to analyze converter–grid interactions carefully to ensure stable operation in converter-dominated power systems. \cite{en14144290}
+High penetration of converter-interfaced renewable generation, such as full-converter wind turbines and photovoltaic plants, has introduced new forms of dynamic interactions between power electronic converters and the AC grid. Unlike synchronous machines, converters lack inherent inertia and rely entirely on fast digital control loops, making their stability strongly dependent on controller tuning and grid strength. As renewable penetration increases, these interactions may excite oscillatory behavior across a wide frequency range—including sub-synchronous oscillations, poorly damped electromechanical modes, and high-frequency resonance—collectively known as converter-driven stability. Several real-world incidents have demonstrated that weak grids or high IBR penetration can significantly reduce system damping or even lead to instability. These phenomena highlight the need to analyze converter–grid interactions carefully to ensure stable operation in converter-dominated power systems. \cite{en14144290}
 
 Converter-driven stability encompasses all stability phenomena that are influenced or caused by power converters and their associated control systems, occurring across multiple time scales. Slow interactions typically manifest as oscillations below approximately 10 Hz and are associated with outer control loops or system-level dynamics. In contrast, fast interactions arise from inner controller loops and the rapid response of power electronic converters, spanning frequencies from several tens of hertz up to hundreds or even thousands of hertz. The relevant time scales and associated phenomena are illustrated in Fig. X. \cite{10497578}
 
@@ -280,13 +280,16 @@ Analyzing fast converter-driven stability requires accurate and detailed models,
 
 Overall, the literature highlights that the increasing penetration of converter-interfaced generation introduces dynamic interactions that demand advanced and scalable modeling approaches. While detailed EMT simulations provide valuable insight into fast converter behavior, they are impractical for large system studies, reinforcing the need for efficient methods capable of capturing inverter-driven phenomena at scale. Continued research and collaboration between academia, industry, and system operators remain essential to ensure that future converter-dominated power systems can operate reliably while supporting ongoing energy-transition objectives.
 
+\section{RMS and EMT Approaches}
+
+Electromagnetic transient programs based on Dommels algorithm, 
+The operation of an electrical power system involves electromechanical and electromagnetic distribution of energy among the system components. During normal operation, under constant load and topology, these energy exchanges are not modelled explicitly and the system behaviour can be represented by voltage and current phasors in the frequency domain. \cite{arrillaga2003}
+
+Intreractions predominantely betweem the magnetic fields of inductances and the electric fields of capacitances in the system are referred as electromagnetic transients. The transients derived by interactions between the mechanical energy stored in the rotating machines and the electrical enerrgy stored in the network are refered as to electromechanical transients. There is a middle are in the kiddle where both effects play a part and may need adequate representation \cite{arrillaga2003}. 
+\subsection{Rlectromagnetic transients}
+
 
 \section{Frequency and Voltage Stability Indicators}
 \section{Grid Strength and Short-Circuit Ratio}
 \section{Real World Examples}
-\section{Conventional Stability Support}
 \section{Research Gap and Motivation}
-
-\section{Ancillary Services}
-
-Defined by the standards, the first DG units required their disconnection in the case of grid faults. However, this operation is no longer accepted for modern DG plants, for instance, for modern wind power systems, the low votage ride thorugh (LVRT) \cite{6200347}
