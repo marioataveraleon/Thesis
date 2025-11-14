@@ -281,12 +281,28 @@ Analyzing fast converter-driven stability requires accurate and detailed models,
 Overall, the literature highlights that the increasing penetration of converter-interfaced generation introduces dynamic interactions that demand advanced and scalable modeling approaches. While detailed EMT simulations provide valuable insight into fast converter behavior, they are impractical for large system studies, reinforcing the need for efficient methods capable of capturing inverter-driven phenomena at scale. Continued research and collaboration between academia, industry, and system operators remain essential to ensure that future converter-dominated power systems can operate reliably while supporting ongoing energy-transition objectives.
 
 \section{RMS and EMT Approaches}
+Analysis of transient stability in power systems involves computing their nonlinear dynamic response to large disturbances, typically transmission network faults, followed by the isolation of the faulted element through protective relaying \cite{kundur1994}.
 
-Electromagnetic transient programs based on Dommels algorithm, 
-The operation of an electrical power system involves electromechanical and electromagnetic distribution of energy among the system components. During normal operation, under constant load and topology, these energy exchanges are not modelled explicitly and the system behaviour can be represented by voltage and current phasors in the frequency domain. \cite{arrillaga2003}
+A Phasor Domain Transient (PDT) simulation is a time-domain model that represents the behaviour of power system elements in a simplified and computationally efficient manner. Since the steady-state AC phasor representation of three-phase quantities can be mathematically related to their instantaneous representation, the instantaneous values of voltages and currents are not explicitly calculated. Instead, voltages and currents are represented by complex numbers—phasors—characterised by a magnitude and a phase angle. PDT tools have historically been the only viable approach for most power system studies, given their computational speed and suitability for real-time decision-making.
 
-Intreractions predominantely betweem the magnetic fields of inductances and the electric fields of capacitances in the system are referred as electromagnetic transients. The transients derived by interactions between the mechanical energy stored in the rotating machines and the electrical enerrgy stored in the network are refered as to electromechanical transients. There is a middle are in the kiddle where both effects play a part and may need adequate representation \cite{arrillaga2003}. 
-\subsection{Rlectromagnetic transients}
+The RMS (root-mean-square) calculation provides a single effective value for a time-varying waveform whose magnitude changes over time. However, PDT is limited by the fact that the network retains a quasi–steady-state phasor representation. As a result, it can only represent the fundamental-frequency behaviour of network quantities and excludes the dynamics associated with network elements, commonly known as “network transients” \cite{badrzadeh2020power}.
+
+“Transient stability is the ability of the power system to maintain synchronism when subjected to a severe transient disturbance” \cite{kundur1994}. It is strongly influenced by the nonlinear characteristics of the power system. Electromagnetic transient programs based on Dommel’s algorithm provide an alternative and more detailed representation of these dynamics.
+
+The behaviour of an electrical power system involves both electromechanical and electromagnetic energy exchanges among its components. During normal operation, under constant load and topology, these exchanges are not explicitly modelled, and the system behaviour can be sufficiently represented using voltage and current phasors in the frequency domain \cite{arrillaga2003}.
+
+Interactions involving the magnetic fields of inductances and electric fields of capacitances are referred to as electromagnetic transients, whereas transients arising from the interplay between mechanical energy stored in rotating machines and the electrical energy stored in the network are referred to as electromechanical transients. There is also an intermediate region in which both phenomena interact and may require an appropriate combined representation \cite{arrillaga2003}.
+
+Transient waveforms typically contain one or more oscillatory components and can thus be characterised by the natural frequencies of these oscillations. From a modelling perspective, it is more appropriate to classify transients by their relevant time range, which is directly related to the phenomena under investigation.
+
+\begin{figure}[htbp!]
+\centering
+\includegraphics[width=0.8\textwidth]{Figures/Chapter 2/Frequency range of coverage EMT and PDT.png}
+\caption{Frequency range of coverage for EMT and PDT studies \cite{badrzadeh2020power}.}
+\label{fig:Frequency range of coverage EMT and PDT studies}
+\end{figure}
+
+
 
 
 \section{Frequency and Voltage Stability Indicators}
