@@ -227,7 +227,6 @@ NUMBER = {14},
 ARTICLE-NUMBER = {4290},
 URL = {https://www.mdpi.com/1996-1073/14/14/4290},
 ISSN = {1996-1073},
-ABSTRACT = {Renewable energy sources such as wind power and photovoltaics (PVs) have been increasingly integrated into the power system through power electronic converters in recent years. However, power electronic converter-driven stability has issues under specific circumstances, for instance, modal resonances might deteriorate the dynamic performance of the power systems or even threaten the overall stability. In this work, the integration impact of a hybrid renewable energy source (HRES) system on modal interaction and converter-driven stability was investigated in an IEEE 16-machine 68-bus power system. In this paper, firstly, an HRES system is introduced, which consists of full converter-based wind power generation (FCWG) and full converter-based photovoltaic generation (FCPV). The equivalent dynamic models of FCWG and FCPV are then established, followed by linearized state-space modeling. On this basis, converter-driven stability analysis was performed to reveal the modal resonance mechanisms between different renewable energy sources (RESs) and weak grids in the interconnected power systems and the multi-modal interaction phenomenon. Additionally, time-domain simulations were conducted to verify the effectiveness of dynamic models and support the converter-driven stability analysis results. To avoid detrimental modal resonances, a multi-modal and multi-parametric optimization strategy is further proposed by retuning the controller parameters of the multi-RESs in the HRES system. The overall results demonstrate the modal interaction effect between the external AC power system and the HRES system and its various impacts on converter-driven stability.},
 DOI = {10.3390/en14144290}
 }
 
@@ -260,32 +259,42 @@ DOI = {10.3390/en14144290}
 }
 
 
+% =======================================================================================================================
+% Chapter 2, section Frequency and Voltage Stability
 
 
-
-
-
-
-
-
-
-
-
-% ==========================================================================================================================================================================
-Chapter 2.9 Gap and Motivation
-
-
-@book{GonzalezLongatt2020,
-  title     = {Modelling and Simulation of Power Electronic Converter Dominated Power Systems in PowerFactory},
-  editor    = {Francisco M. Gonzalez-Longatt and José Luis Rueda Torres},
-  year      = {2020},
-  publisher = {Springer International Publishing},
-  address   = {Cham},
-  doi       = {10.1007/978-3-030-31700-5},
-  url       = {https://ebookcentral.proquest.com/lib/frankfurtmain/detail.action?docID=6383561},
-  note      = {ProQuest Ebook Central}
+@book{anderson2003,
+  title        = {Power System Control and Stability},
+  author       = {Anderson, P. M. and Fouad, A. A.},
+  edition      = {2},
+  year         = {2003},
+  publisher    = {Wiley-IEEE Press}
 }
 
+@techreport{entsoe2016_freq,
+  title        = {Frequency Stability Evaluation Criteria for the Synchronous Zone of Continental Europe: Requirements and Impacting Factors},
+  institution  = {ENTSO-E, RG-CE System Protection \& Dynamics Sub Group},
+  year         = {2016},
+  month        = mar,
+  address      = {Brussels, Belgium},
+  note         = {Prepared by a task force with members from REE, Terna, TransnetBW, 50Hertz Transmission, RTE, Swissgrid, and Energinet.dk}
+}
+
+
+@book{bollen2000,
+  title        = {Understanding Power Quality Problems: Voltage Sags and Interruptions},
+  author       = {Bollen, Math H. J.},
+  year         = {2000},
+  publisher    = {IEEE Press}
+}
+
+
+@book{longatt2020,
+  title        = {Modelling and Simulation of Power Electronic Converter Dominated Power Systems in PowerFactory},
+  editor       = {Gonzalez-Longatt, Francisco M. and Rueda, Jose Luis},
+  year         = {2020},
+  publisher    = {Springer International Publishing}
+}
 
 % ==========================================================================================================================================================================
 CHAPTER 2.10 Ancilarry Services

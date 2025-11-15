@@ -108,8 +108,6 @@ In summary, the capabilities that can be provided by GFM inverters are \cite{975
     \item Ride-through functions
 \end{enumerate}
 
-
-
 \section{GFM Control Methods}
 
 Distributed Generators (DGs) are typically composed of a DC link and two main stages: an input-side converter and a grid-side converter. The input side varies depending on the specific technology and energy source used. The grid-side converter, on the other hand, usually consists of a DC/AC converter.
@@ -302,10 +300,63 @@ Transient waveforms typically contain one or more oscillatory components and can
 \label{fig:Frequency range of coverage EMT and PDT studies}
 \end{figure}
 
-
-
-
 \section{Frequency and Voltage Stability Indicators}
+
+Power system stability analysis requires quantitative measures that capture how the system reacts to disturbances and how fast it returns to an acceptable operating point. Modern converter-dominated grids exhibit faster dynamic behavior and reduced inertia, making stability indicators essential for comparing control strategies, evaluating inverter performance, and assessing system strength. The following indicators are widely adopted in international standards (IEEE, ENTSO-E),system operator guidelines, and the scientific literature 
+
+
+\subsection{Frequency Stability Indicators}
+
+Frequency stability refers to the capability of a power system to maintain a stable frequency following a generation–load imbalance. In classical power systems, frequency dynamics are dominated by the electromechanical response of synchronous machines, which provide inertia and limit the initial frequency deviation \cite{kundur1994}. In converter-dominated systems, however, the reduction of synchronous inertia makes frequency more sensitive to disturbances and increases the Rate of Change of Frequency (RoCoF).
+
+A key set of indicators for frequency stability includes the steady-state frequency deviation, the frequency nadir, and RoCoF. The latter is particularly important in low-inertia systems and can be described as:
+
+\begin{equation}
+\mathrm{RoCoF}{\max} = \frac{df}{dt}\bigg|{\max} =
+\frac{\Delta P_{\mathrm{Imbalance}}}{P_{\mathrm{Load}}}
+\cdot \frac{f_0}{T_N}
+\end{equation}
+
+where $\Delta P_{\mathrm{Imbalance}}$ is the generation–load imbalance, $P_{\mathrm{Load}}$ the load of the considered area, $f_0$ the nominal frequency, and $T_N$ the network inertia constant. According to ENTSO-E, historical RoCoF values in Continental Europe have ranged from 0.5 to 1 Hz/s during major disturbances, and future conditions with higher non-synchronous penetration may require tolerances up to 2 Hz/s \cite{entsoe2016_freq}.
+
+The network inertia constant $T_N$ is computed from the contribution of synchronous generators as:
+
+\begin{equation}
+T_N = \frac{\sum_{n=1}^{N} T_{A,SG,n} \cdot P_{\mathrm{Nom,SG},n}}{P_{\mathrm{Load}}}
+\end{equation}
+
+with each generator’s acceleration constant defined as:
+
+\begin{equation}
+T_{A,SG,n} = \frac{J \cdot \Omega_N^2}{P_{\mathrm{Nom,SG},n}}
+\end{equation}
+
+These expressions show that lower synchronous inertia leads to higher RoCoF, limiting the system's ability to withstand sudden imbalances. ENTSO-E highlights that while the interconnected CE system can tolerate the standard 3 GW contingency even with low inertia, system-split scenarios result in much higher imbalances relative to the island load, significantly increasing RoCoF. The minimum inertia required to keep RoCoF within acceptable limits can be estimated as:
+
+\begin{equation}
+T_{N,\min} =
+\frac{\Delta P_{\mathrm{Imbalance}}}{P_{\mathrm{Load}}}
+\cdot \frac{f_0}{\mathrm{RoCoF}_{\max}}
+\end{equation}
+
+Overall, these indicators are essential for assessing frequency behaviour in grids with high IBR penetration, where reduced inertia and faster dynamics require stricter control responses and stability evaluations.
+
+\begin{itemize}
+    \item Frequency Nadir
+    \item Steady state frequency deviation
+    \item Damping ratio
+    \item Modal analysis reference
+\end{itemize}
+
+
+\subsection{Voltage Stability Indicators}
+\subsubsection{Voltage magnitude deviation}
+\subsubsection{Voltage recovery time}
+\subsubsection{Post-fault voltage dip}
+\subsubsection{V-Q Sensitivity}
+\subsubsection{Critical Clearing Time}
+
+
 \section{Grid Strength and Short-Circuit Ratio}
 \section{Real World Examples}
 \section{Research Gap and Motivation}

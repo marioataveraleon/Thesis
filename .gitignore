@@ -320,6 +320,27 @@ TSWLatexianTemp*
 # xwatermark package
 *.xwm
 
+# Python virtual environments
+venv/
+venv_pf/
+.env
+*.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Jupyter
+.ipynb_checkpoints/
+
+# PowerFactory
+*.bak
+*.pfd
+*.pls
+*.~*
+
+
 # REVTeX puts footnotes in the bibliography by default, unless the nofootinbib
 # option is specified. Footnotes are the stored in a file with suffix Notes.bib.
 # Uncomment the next line to have this generated file ignored.
