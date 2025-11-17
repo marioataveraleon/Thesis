@@ -307,7 +307,7 @@ Power system stability analysis requires quantitative measures that capture how 
 
 \subsection{Frequency Stability Indicators}
 
-Frequency stability refers to the capability of a power system to maintain a stable frequency following a generation–load imbalance. In classical power systems, frequency dynamics are dominated by the electromechanical response of synchronous machines, which provide inertia and limit the initial frequency deviation \cite{kundur1994}. In converter-dominated systems, however, the reduction of synchronous inertia makes frequency more sensitive to disturbances and increases the Rate of Change of Frequency (RoCoF).
+Frequency stability refers to the capability of a power system to maintain a stable frequency following a generation-load imbalance. In classical power systems, frequency dynamics are dominated by the electromechanical response of synchronous machines, which provide inertia and limit the initial frequency deviation \cite{kundur1994}. In converter-dominated systems, however, the reduction of synchronous inertia makes frequency more sensitive to disturbances and increases the Rate of Change of Frequency (RoCoF).
 
 A key set of indicators for frequency stability includes the steady-state frequency deviation, the frequency nadir, and RoCoF. The latter is particularly important in low-inertia systems and can be described as:
 
@@ -317,21 +317,25 @@ A key set of indicators for frequency stability includes the steady-state freque
 \cdot \frac{f_0}{T_N}
 \end{equation}
 
-where $\Delta P_{\mathrm{Imbalance}}$ is the generation–load imbalance, $P_{\mathrm{Load}}$ the load of the considered area, $f_0$ the nominal frequency, and $T_N$ the network inertia constant. According to ENTSO-E, historical RoCoF values in Continental Europe have ranged from 0.5 to 1 Hz/s during major disturbances, and future conditions with higher non-synchronous penetration may require tolerances up to 2 Hz/s \cite{entsoe2016_freq}.
+where $\Delta P_{\mathrm{Imbalance}}$ is the generation-load imbalance, $P_{\mathrm{Load}}$ the load of the considered area, $f_0$ the nominal frequency, and $T_N$ the network inertia constant. According to ENTSO-E, historical RoCoF values in Continental Europe have ranged from 0.5 to 1 Hz/s during major disturbances, and future conditions with higher non-synchronous penetration may require tolerances up to 2 Hz/s. Experience has show a frequency gradient thereshold, or also called "the no-return point", that, if exceeded, no contrameasures can react in time.\cite{entsoe2016_freq}.
 
-The network inertia constant $T_N$ is computed from the contribution of synchronous generators as:
+RoCoF is a critical metric, an increase in transient deviation of frequency is dangerous for system stability (generator trips, load-shedding intervention, etc.). It is also a measure of system weakness, as reliable operation of protection devices becomes difficult. Severe frequency transients can lead to cascading generation trips. High RoCoF means large transient displacements of voltage angles that can induce pole slipping of synchronous machines. 
+
+
+The network inertia constant $T_N$ represents the capability of rotating machines to store and inject kinetic energy to the system, it is computed from the contribution of synchronous generators as:
 
 \begin{equation}
 T_N = \frac{\sum_{n=1}^{N} T_{A,SG,n} \cdot P_{\mathrm{Nom,SG},n}}{P_{\mathrm{Load}}}
 \end{equation}
 
-with each generator’s acceleration constant defined as:
+The acceleration time constant of each power plant is calculated with the moment of inertia $J$ and the nominal angular velocity $W_N$
 
 \begin{equation}
-T_{A,SG,n} = \frac{J \cdot \Omega_N^2}{P_{\mathrm{Nom,SG},n}}
+    T_{A,SG,n} = \frac{J \times W_N ^ 2}{P_{Nom,SG,n}}
 \end{equation}
 
-These expressions show that lower synchronous inertia leads to higher RoCoF, limiting the system's ability to withstand sudden imbalances. ENTSO-E highlights that while the interconnected CE system can tolerate the standard 3 GW contingency even with low inertia, system-split scenarios result in much higher imbalances relative to the island load, significantly increasing RoCoF. The minimum inertia required to keep RoCoF within acceptable limits can be estimated as:
+In Continental Europe, system frequency deviation should remainn within 49.8 Hz and 50.2 Hz. EnTSO state that the sets of parameteers (RoCoF + imbalance) leading to a minimum needed system inertia ($T_N$) higher than 10 or 12 seconds are not feasible, meaning that the penetration of non-synchronous generation, without providing inertia has to be restricted im scemarios with the needed minimum inertia higher than 12 s. 
+ENTSO-E highlights that while the interconnected CE system can tolerate the standard 3 GW contingency even with low inertia, system-split scenarios result in much higher imbalances relative to the island load, significantly increasing RoCoF. The minimum inertia required to keep RoCoF within acceptable limits can be estimated as:
 
 \begin{equation}
 T_{N,\min} =
@@ -340,6 +344,8 @@ T_{N,\min} =
 \end{equation}
 
 Overall, these indicators are essential for assessing frequency behaviour in grids with high IBR penetration, where reduced inertia and faster dynamics require stricter control responses and stability evaluations.
+
+
 
 \begin{itemize}
     \item Frequency Nadir
