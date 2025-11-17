@@ -307,7 +307,6 @@ Power system stability analysis requires quantitative measures that capture how 
 
 \subsection{Frequency Stability Indicators}
 
-\subsection{Frequency Stability Indicators}
 
 Frequency stability refers to the ability of a power system to maintain its nominal frequency following a sudden disturbance such as a generation outage or a load change. In traditional power systems, the electromechanical response of synchronous machines limits the initial frequency deviation through inertia, while primary frequency control determines the steady-state deviation \cite{kundur1994}. Modern converter-dominated systems exhibit reduced inertia and faster dynamics, making frequency indicators essential for evaluating system stability, inverter control strategies, and compliance with operational requirements.
 
@@ -328,6 +327,15 @@ with $R$ the generator droop. This drives the frequency toward a new equilibrium
     \Delta f_{\mathrm{ss}} = -\frac{\Delta P_L}{\frac{1}{R} + D},
 \end{equation}
 where $\Delta P_L$ is the load change and $D$ the load-damping coefficient. This behaviour characterizes the inertial dip, frequency nadir, and primary frequency control response.
+\begin{figure}[htbp!]
+\centering
+\includegraphics[width=0.8\textwidth]{Figures/Chapter 2/frequency response of generating unit.png}
+\caption{Frequency Respone of a generating unit. \cite{kundur1994}}
+\label{fig:Frequency Respone of a generating unit.}
+\end{figure}
+\smallskip
+The figure illustrates the characteristic inertial frequency dip, the nadir, and the subsequent primary control recovery governed by governor droop. It is also  visible, that the frequency reaches a new steady state value. 
+
 
 \subsubsection{Rate of Change of Frequency (RoCoF)}
 
@@ -352,7 +360,8 @@ where $T_N$ is the equivalent system inertia constant.
 
 The frequency nadir is the minimum frequency reached after a disturbance and represents the balance between inertial response and primary frequency control. Kundur identifies the nadir as the point reached after the initial inertial frequency decline, before governor action fully develops \cite{kundur1994}.  
 
-In operational practice, grid codes provide precise definitions. The Irish Grid Code, for instance, defines the nadir as the minimum frequency occurring within the 5--15~s window after an event. If the lowest value falls outside this interval, the nadir is taken as the minimum frequency reached within that window \cite{EirGrid2025_GridCode}.
+In regulatory practice, the rate of change of frequency (RoCoF) and the frequency nadir are defined and bounded by grid codes and system operator requirements. The Irish Grid Code defines the nadir as the minimum frequency occurring within the 5--15~s window following an event; if the absolute minimum lies outside this interval, the nadir is instead taken as the lowest value within that window \cite{EirGrid2025_GridCode}. Other jurisdictions rely on different operational definitions. ENTSO-E focuses on maintaining RoCoF withstand capabilities, typically between 0.5 and 1~Hz/s, with nadir requirements tied to the avoidance of UFLS activation rather than a fixed time window \cite{ENTSOE2020_RoCoF}. In Germany, VDE-FNN requirements specify that generating units must remain connected for RoCoF values up to approximately 2--2.5~Hz/s, with nadir limits coordinated with national UFLS thresholds \cite{VDEFNN2019_TechnicalConnection}. Great Britain mandates that generators withstand RoCoF values up to $\pm 1$~Hz/s for at least one second, while nadir constraints are linked to system security criteria rather than temporal definitions \cite{NGESO2022_GridCode}. In low-inertia systems such as South Australia, AEMO requires generators to tolerate RoCoF levels up to 4~Hz/s, with nadir performance evaluated against the Frequency Operating Standards \cite{AEMO2020_FOS}. These differing definitions illustrate the diversity of frequency stability criteria globally and highlight the operational importance of nadir and RoCoF in modern low-inertia grids.
+
 
 \subsubsection{Steady-State Frequency Deviation}
 
@@ -385,8 +394,7 @@ The corresponding COI frequency is:
 \end{equation}
 The COI representation greatly simplifies the study of the aggregate frequency behaviour of synchronous generators, especially under large disturbances.
 
-Overall, these indicators---RoCoF, nadir, steady-state deviation, and COI frequency---form the core quantitative measures used to evaluate frequency stability in modern power systems and are crucial for analysing the impact of reduced inertia and high renewable penetration.
-
+Overall, RoCoF, nadir, steady-state deviation, and COI frequency are quantitative measures used to evaluate frequency stability in modern power systems and are crucial for analysing the impact of reduced inertia and high renewable penetration.
 
 
 \subsection{Voltage Stability Indicators}
