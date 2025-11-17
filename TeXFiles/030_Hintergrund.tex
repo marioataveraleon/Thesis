@@ -302,57 +302,91 @@ Transient waveforms typically contain one or more oscillatory components and can
 
 \section{Frequency and Voltage Stability Indicators}
 
-Power system stability analysis requires quantitative measures that capture how the system reacts to disturbances and how fast it returns to an acceptable operating point. Modern converter-dominated grids exhibit faster dynamic behavior and reduced inertia, making stability indicators essential for comparing control strategies, evaluating inverter performance, and assessing system strength. The following indicators are widely adopted in international standards (IEEE, ENTSO-E),system operator guidelines, and the scientific literature 
+Power system stability analysis requires quantitative measures that capture how the system reacts to disturbances and how fast it returns to an acceptable operating point. Modern converter-dominated grids exhibit faster dynamic behavior and reduced inertia, making stability indicators essential for comparing control strategies, evaluating inverter performance, and assessing system strength. The following indicators are widely adopted in international standards (IEEE, ENTSO-E),system operator guidelines, and the scientific literature.
 
 
 \subsection{Frequency Stability Indicators}
 
-Frequency stability refers to the capability of a power system to maintain a stable frequency following a generation-load imbalance. In classical power systems, frequency dynamics are dominated by the electromechanical response of synchronous machines, which provide inertia and limit the initial frequency deviation \cite{kundur1994}. In converter-dominated systems, however, the reduction of synchronous inertia makes frequency more sensitive to disturbances and increases the Rate of Change of Frequency (RoCoF).
+\subsection{Frequency Stability Indicators}
 
-A key set of indicators for frequency stability includes the steady-state frequency deviation, the frequency nadir, and RoCoF. The latter is particularly important in low-inertia systems and can be described as:
+Frequency stability refers to the ability of a power system to maintain its nominal frequency following a sudden disturbance such as a generation outage or a load change. In traditional power systems, the electromechanical response of synchronous machines limits the initial frequency deviation through inertia, while primary frequency control determines the steady-state deviation \cite{kundur1994}. Modern converter-dominated systems exhibit reduced inertia and faster dynamics, making frequency indicators essential for evaluating system stability, inverter control strategies, and compliance with operational requirements.
 
+\subsubsection{Theoretical Background}
+
+System frequency is determined by the balance between mechanical input power and electrical output power. A sudden load increase causes electrical power to exceed mechanical input, leading to a frequency drop governed by the swing equation:
 \begin{equation}
-\mathrm{RoCoF}{\max} = \frac{df}{dt}\bigg|{\max} =
-\frac{\Delta P_{\mathrm{Imbalance}}}{P_{\mathrm{Load}}}
-\cdot \frac{f_0}{T_N}
+    2H \frac{df}{dt} = P_m - P_e,
 \end{equation}
+where $H$ is the inertia constant, $P_m$ the mechanical power, and $P_e$ the electrical power. 
 
-where $\Delta P_{\mathrm{Imbalance}}$ is the generation-load imbalance, $P_{\mathrm{Load}}$ the load of the considered area, $f_0$ the nominal frequency, and $T_N$ the network inertia constant. According to ENTSO-E, historical RoCoF values in Continental Europe have ranged from 0.5 to 1 Hz/s during major disturbances, and future conditions with higher non-synchronous penetration may require tolerances up to 2 Hz/s. Experience has show a frequency gradient thereshold, or also called "the no-return point", that, if exceeded, no contrameasures can react in time.\cite{entsoe2016_freq}.
-
-RoCoF is a critical metric, an increase in transient deviation of frequency is dangerous for system stability (generator trips, load-shedding intervention, etc.). It is also a measure of system weakness, as reliable operation of protection devices becomes difficult. Severe frequency transients can lead to cascading generation trips. High RoCoF means large transient displacements of voltage angles that can induce pole slipping of synchronous machines. 
-
-
-The network inertia constant $T_N$ represents the capability of rotating machines to store and inject kinetic energy to the system, it is computed from the contribution of synchronous generators as:
-
+As frequency declines, the governor responds according to its droop characteristic:
 \begin{equation}
-T_N = \frac{\sum_{n=1}^{N} T_{A,SG,n} \cdot P_{\mathrm{Nom,SG},n}}{P_{\mathrm{Load}}}
+    \Delta P_m = -\frac{1}{R} \Delta f,
 \end{equation}
-
-The acceleration time constant of each power plant is calculated with the moment of inertia $J$ and the nominal angular velocity $W_N$
-
+with $R$ the generator droop. This drives the frequency toward a new equilibrium that generally differs from nominal. The resulting steady-state frequency deviation is
 \begin{equation}
-    T_{A,SG,n} = \frac{J \times W_N ^ 2}{P_{Nom,SG,n}}
+    \Delta f_{\mathrm{ss}} = -\frac{\Delta P_L}{\frac{1}{R} + D},
 \end{equation}
+where $\Delta P_L$ is the load change and $D$ the load-damping coefficient. This behaviour characterizes the inertial dip, frequency nadir, and primary frequency control response.
 
-In Continental Europe, system frequency deviation should remainn within 49.8 Hz and 50.2 Hz. EnTSO state that the sets of parameteers (RoCoF + imbalance) leading to a minimum needed system inertia ($T_N$) higher than 10 or 12 seconds are not feasible, meaning that the penetration of non-synchronous generation, without providing inertia has to be restricted im scemarios with the needed minimum inertia higher than 12 s. 
-ENTSO-E highlights that while the interconnected CE system can tolerate the standard 3 GW contingency even with low inertia, system-split scenarios result in much higher imbalances relative to the island load, significantly increasing RoCoF. The minimum inertia required to keep RoCoF within acceptable limits can be estimated as:
+\subsubsection{Rate of Change of Frequency (RoCoF)}
 
+RoCoF quantifies the initial frequency rate of change following a disturbance and is a key indicator of system robustness. Immediately after the event, it is approximated by \cite{ENTSOE2020_RoCoF}:
 \begin{equation}
-T_{N,\min} =
-\frac{\Delta P_{\mathrm{Imbalance}}}{P_{\mathrm{Load}}}
-\cdot \frac{f_0}{\mathrm{RoCoF}_{\max}}
+    \text{RoCoF}\big|_{t=0^+} = 
+    \frac{\Delta P_{\mathrm{Imbalance}}}{P_{\mathrm{LOAD}}} \cdot \frac{f_0}{2H},
 \end{equation}
+where $\Delta P_{\mathrm{Imbalance}}$ is the generation-load imbalance, $P_{\mathrm{LOAD}}$ the system load, and $f_0$ the nominal frequency.  
 
-Overall, these indicators are essential for assessing frequency behaviour in grids with high IBR penetration, where reduced inertia and faster dynamics require stricter control responses and stability evaluations.
+ENTSO-E considers maximum RoCoF withstand capability a fundamental operational requirement and notes that high RoCoF values may lead to generator tripping, loss-of-synchronism, or malfunction of protection devices \cite{ENTSOE2020_RoCoF}. RoCoF limits in Continental Europe typically range from 0.5 to 2~Hz/s depending on system conditions \cite{entsoe2016_freq}.
 
+The minimum system inertia needed to contain RoCoF within an allowable limit is given by:
+\begin{equation}
+    T_{N,\min} = 
+    \frac{\Delta P_{\mathrm{Imbalance}}}{P_{\mathrm{Load}}}
+    \cdot \frac{f_0}{\text{RoCoF}_{\max}},
+\end{equation}
+where $T_N$ is the equivalent system inertia constant.
 
+\subsubsection{Frequency Nadir}
 
-\begin{itemize}
-    \item Frequency Nadir
-    \item Steady state frequency deviation
-    \item Damping ratio
-    \item Modal analysis reference
-\end{itemize}
+The frequency nadir is the minimum frequency reached after a disturbance and represents the balance between inertial response and primary frequency control. Kundur identifies the nadir as the point reached after the initial inertial frequency decline, before governor action fully develops \cite{kundur1994}.  
+
+In operational practice, grid codes provide precise definitions. The Irish Grid Code, for instance, defines the nadir as the minimum frequency occurring within the 5--15~s window after an event. If the lowest value falls outside this interval, the nadir is taken as the minimum frequency reached within that window \cite{EirGrid2025_GridCode}.
+
+\subsubsection{Steady-State Frequency Deviation}
+
+Following primary frequency control, the system settles at a new equilibrium frequency that depends on generator droop and load damping. This steady-state deviation is:
+\begin{equation}
+    \Delta f_{\mathrm{ss}} = 
+    -\frac{\Delta P_L}{\frac{1}{R} + D}.
+\end{equation}
+This indicator is essential for assessing compliance with allowable frequency ranges (e.g., 49.8--50.2~Hz in Continental Europe).
+
+\subsubsection{Aggregate Frequency: Centre of Inertia (COI)}
+
+The aggregate frequency of a multi-machine system is often represented using the Centre of Inertia (COI) model, which provides an inertia-weighted average frequency. The COI rotor angle is defined as:
+\begin{equation}
+    \delta_{\mathrm{COI}} = 
+    \frac{1}{H_T} \sum_{i=1}^{N} H_i \delta_i,
+\end{equation}
+where $H_i$ and $\delta_i$ are the inertia constant and rotor angle of generator $i$, and $H_T = \sum_{i=1}^{N} H_i$.  
+When nominal generator powers $S_{n,i}$ are included, the COI angle becomes:
+\begin{equation}
+    \delta_{\mathrm{COI},S_n} = 
+    \frac{\sum_{i=1}^{N} H_i \delta_i S_{n,i}}
+         {\sum_{i=1}^{N} H_i S_{n,i}}.
+\end{equation}
+The corresponding COI frequency is:
+\begin{equation}
+    f_{\mathrm{COI},S_n} = 
+    \frac{\sum_{i=1}^{N} H_i f_i S_{n,i}}
+         {\sum_{i=1}^{N} H_i S_{n,i}}.
+\end{equation}
+The COI representation greatly simplifies the study of the aggregate frequency behaviour of synchronous generators, especially under large disturbances.
+
+Overall, these indicators---RoCoF, nadir, steady-state deviation, and COI frequency---form the core quantitative measures used to evaluate frequency stability in modern power systems and are crucial for analysing the impact of reduced inertia and high renewable penetration.
+
 
 
 \subsection{Voltage Stability Indicators}
