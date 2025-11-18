@@ -398,9 +398,43 @@ Overall, RoCoF, nadir, steady-state deviation, and COI frequency are quantitativ
 
 
 \subsection{Voltage Stability Indicators}
-\subsubsection{Voltage magnitude deviation}
-\subsubsection{Voltage recovery time}
+
+Voltage stability, is concerned with the ability of a power system to maintain acceptable voltages at all buses in the system under normal conditions and after being subjected to a disturbance. The main factor to voltage instability is the inability of the power system to meet the demand for reactive power.  \cite{kundur1994} 
+
+For conventional power systems, long transmission lines are a major root for voltage instability, which limits the power flow between generation and loads. \cite{8750828}
+
+Also one of the principal factors contributing to voltage collapse are the generator reactive power/voltgae coontrol limits, load characteristics, characteristics of reactive power compensation devices, and the actiom of voltage control devices, i.e. transformer under-load tap changers. \cite{kundur1994}
+
+\subsubsection{Transmission System Characteristic}
+The characteristics of interest are the relationship between the transmitted power $P_R$, receiving end voltage $V_R$ and the reactive power injection $Q_i$. Transmission syystem characteristics play a fundamental role in voltage stability. Those characteristics are briefly discussed for a simple radial system.
+
+\begin{figure}[htbp!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/Chapter 2/Voltage Stability Transmission schematic diagram.png}
+    \caption{Schematic Diagram \cite{kundur1994}}
+    \label{fig:Schematic Diagram}
+\end{figure}
+
+The transmission network plays a fundamental role in voltage stability, as its impedance determines the voltage drop between the source and the load and fundamentally limits the maximum amount of power that can be transferred. As load increases, the power at the receiving end initially increases rapidly, then increases more slowly before reaching a maximum point, and finally begins to decrease. There is thus a maximum amount of power that can be transferred through an impedance from a constant-voltage source. The maximum power is transmitted when $Z_{LN}$ and $Z_{LD}$ are equal, that is, when $\frac{Z_{LD}}{Z_{LN}} = 1$. In other words, the condition for maximum power transfer occurs when the voltage drop across the line is equal in magnitude to the receiving-end voltage $V_R$. The operating point corresponding to maximum power represents the limit of satisfactory operation \cite{kundur1994}. Beyond this point the voltage cannot be sustained and instability develops. This behaviour underlies the classical $V\!-\!P$ and $V\!-\!Q$ characteristics and explains why weak grids—characterised by high network impedance or low short-circuit ratio (SCR)—exhibit large voltage deviations and poor recovery following disturbances. In systems dominated by grid-forming inverters, these transmission characteristics directly influence the inverter's reactive power response and the resulting voltage dynamics, making them a key factor in short-term voltage stability. The short-circuit current is given by $I_{SC} = \frac{E_S}{Z_{LN}}$.
+
+\begin{figure}[htbp!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/Chapter 2/Receiving end voltage current and power as function of load demand.png}
+    \caption{Receiving end voltage, current and power as function of load demand \cite{kundur1994}}
+    \label{fig: Receiving end voltage current and power as function of load demand}
+\end{figure}
+
+ 
+
+
+
+
+
+\subsubsection{Voltage Magnitude Deviation}
 \subsubsection{Post-fault voltage dip}
+\subsubsection{Voltage recovery time}
+\subsubsection{Voltage oscillation damping ratio}
+\subsubsection{Voltage overshoot}
 \subsubsection{V-Q Sensitivity}
 \subsubsection{Critical Clearing Time}
 
