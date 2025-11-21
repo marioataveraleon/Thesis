@@ -421,10 +421,49 @@ Voltage stability can be interpreted through the classical $P$--$V$ and $Q$--$V$
 
 
 \subsubsection{Voltage Magnitude Deviation}
-Indicators
+The voltage magnitude deviation quantifies how far the bus voltage varies from ith nominal or pre-disturbance value. Is commonly studied for short term voltage stability. \cite{kundur1994,anderson2003}
+Many grid codes impose allowable ranges within $0.9 - 1.1 p.u.$, for instance, ENTSO-E Operational handbook and national gridcodes.
+\begin{equation}
+\Delta V_i(t) = V_i(t) - V_{i,0}
+\end{equation}
+where $V_{i,0}$ is the pre-fault voltage (typically close to $1\,\mathrm{pu}$). The maximum absolute deviation over the simulation window is
+
+\begin{equation}
+\Delta V_{i,\max} = \max_t \left| \Delta V_i(t) \right|
+\end{equation}
+Typical grid codes restrict steady-state deviations to a given band around nominal voltage \cite{rfg2016}.
+
 \subsubsection{Post-fault voltage dip}
-\subsubsection{Voltage recovery time}
+
+The post-fault voltage dip (or sag) is the minimum RMS voltage reached during and immediately after a disturbance. It is directly related to low-voltage ride-through (LVRT) requirements for inverter-based resources in modern grid codes and IEEE standards \cite{ieee1547,ieee2800}.
+
+From the simulated RMS voltage trace $V(t)$ at the bus of interest, the minimum value in a given time interval $[t_{\mathrm{fault}}, t_{\mathrm{end}}]$ is
+\begin{equation}
+V_{\min} = \min_{t \in [t_{\mathrm{fault}},\, t_{\mathrm{end}}]} V(t).
+\end{equation}
+The relative depth of the dip with respect to the pre-fault voltage $V_0$ can be expressed as
+\begin{equation}
+\text{Dip} = \frac{V_0 - V_{\min}}{V_0} \cdot 100\% .
+\end{equation}
+These quantities are compared against the admissible voltage profiles prescribed in \cite{rfg2016,ieee2800}.
+
+
+\subsubsection{Voltage Recovery Time}
+Voltage recovery time characterises how fast the bus voltage returns close to its pre-disturbance level after fault clearing, or to a pre-defined band around this pre-disturbance point. It is commonly used in short-term voltage stability assessment \cite{kundur1994,cigre_vsa2024}. This indicator reflects reactive power support capability 
+
+Given a tolerance band $\epsilon$ around the pre-fault voltage $V_0$ (e.g.\ $\epsilon = 0.05$\,pu), the recovery time is defined as
+\begin{equation}
+t_{\mathrm{rec}} = 
+\min \left\{ t > t_{\mathrm{clear}} \;\big|\; \left| V(t) - V_0 \right| \leq \epsilon \ \text{and}\ \left| V(\tau) - V_0 \right| \leq \epsilon\ \forall \tau \geq t \right\}.
+\end{equation}
+The indicator reported in this thesis is the elapsed time $t_{\mathrm{rec}} - t_{\mathrm{clear}}$ for each scenario.
+
 \subsubsection{Voltage oscillation damping ratio}
+
+The damping ratio characterizes how fast post-disturbance voltage oscillations decay.
+It is critical in weak grids where low electromechanical damping can lead to sustained oscillations even without synchronous machines \cite{kundur1994, }.
+
+
 \subsubsection{Voltage overshoot}
 \subsubsection{V-Q Sensitivity}
 \subsubsection{Critical Clearing Time}
