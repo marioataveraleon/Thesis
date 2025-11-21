@@ -96,8 +96,8 @@ ax2.annotate(
 ax2.annotate("Reactive\n Margin \n Power",xy=(0.72,-100),xytext=(0.72,-100),color = "black", fontsize = 8 )
 ax2.annotate(
     "",
-    xy=(0.9,150),
-    xytext=(1.1, 150),
+    xy=(0.95,150),
+    xytext=(1.05, 150),
     arrowprops=dict(arrowstyle="<->", color="black", lw=1.5)
 )
 ax2.annotate("Normal Voltage Range",xy=(1,175),xytext=(0.9,175),color = "black", fontsize = 8 )
@@ -112,7 +112,7 @@ ax2.set_xlim(0.55,1.15)
 ax2.set_ylim(-250,250)
 
 
-op_regionQ = patches.Rectangle((0.9, -250), 0.2, 510, alpha=0.15)
+op_regionQ = patches.Rectangle((0.95, -250), 0.1, 510, alpha=0.15)
 ax2.add_patch(op_regionQ)
 
 # (Opcional) marcar visualmente lado estable / inestable
