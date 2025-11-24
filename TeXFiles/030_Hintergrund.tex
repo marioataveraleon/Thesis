@@ -461,12 +461,69 @@ The indicator reported in this thesis is the elapsed time $t_{\mathrm{rec}} - t_
 \subsubsection{Voltage oscillation damping ratio}
 
 The damping ratio characterizes how fast post-disturbance voltage oscillations decay.
-It is critical in weak grids where low electromechanical damping can lead to sustained oscillations even without synchronous machines \cite{kundur1994, }.
+It is critical in weak grids where low electromechanical damping can lead to sustained oscillations even without synchronous machines \cite{kundur1994,cigre_ibr_inertia851}.
+After a disturbance, the bus voltage may exhibit decaying oscillations whose damping is influenced by system strength and control design \cite{kundur1994}. A convenient scalar indicator is the damping ratio of the dominant mode, estimated from successive peaks of the voltage waveform.
+
+Let $x_1$ and $x_2$ denote two consecutive peaks (e.g.\ first and second maxima of the oscillatory component). The logarithmic decrement is
+\begin{equation}
+\delta = \ln\left( \frac{x_1}{x_2} \right).
+\end{equation}
+Assuming underdamped oscillations, the corresponding damping ratio is approximated by
+\begin{equation}
+\zeta = \frac{\delta}{\sqrt{4\pi^2 + \delta^2}}.
+\end{equation}
+This procedure is applied to the voltage at the PCC to compare the effect of different GFM settings and short-circuit ratios.
 
 
 \subsubsection{Voltage overshoot}
-\subsubsection{V-Q Sensitivity}
+Voltage overshoot measures how much the bus voltage exceeds its nominal or pre-disturbance value during the post-fault recovery. Excessive overshoot may indicate aggressive reactive power control or poorly tuned grid-forming parameters and must remain within admissible overvoltage limits \cite{anderson2003,ieee2800}.
+
+The maximum RMS voltage in a selected post-fault interval $[t_{\mathrm{clear}}, t_{\mathrm{end}}]$ is
+\begin{equation}
+V_{\max} = \max_{t \in [t_{\mathrm{clear}},\, t_{\mathrm{end}}]} V(t).
+\end{equation}
+The relative overshoot with respect to $V_0$ is then
+\begin{equation}
+\text{OS} = \frac{V_{\max} - V_0}{V_0} \cdot 100\% .
+\end{equation}
+Both $V_{\max}$ and $\text{OS}$ are evaluated at the PCC for the different GFM parameter sets.
+
+\subsubsection{V--Q Sensitivity}
+The V--Q sensitivity quantifies the change of steady-state voltage at a bus with respect to small variations of reactive power injection. It is a classical indicator of proximity to voltage collapse and is closely related to the slope of the Q--V curve \cite{kundur1994,cigre_vsa2024}.
+
+Formally, the local sensitivity at the operating point is
+\begin{equation}
+Slope_{VQ} = \frac{\partial V}{\partial Q}.
+\end{equation}
+In practice it is estimated numerically by perturbing the reactive power injection by a small $\Delta Q$ and resolving the power flow,
+\begin{equation}
+Slope_{VQ} \approx \frac{V(Q + \Delta Q) - V(Q)}{\Delta Q}.
+\end{equation}
+The voltage stability limit is reached when the slope of the Q--V curve becomes zero,
+\begin{equation}
+\frac{\partial V}{\partial Q} = 0,
+\end{equation}
+beyond which no stable operating point exists for increasing reactive demand \cite{kundur1994}.
+
+
 \subsubsection{Critical Clearing Time}
+
+The critical clearing time (CCT) is a classical transient stability indicator that represents the maximum allowable fault duration after which the system can still return to a stable post-fault operating point. If the fault is cleared later than the CCT, the system loses synchronism and voltage or angle instability occurs \cite{kundur1994,anderson2003}.
+
+Let $t_{\mathrm{fault}}$ denote the instant when the disturbance is applied, and let $t_{\mathrm{clear}}$ denote the clearing time. The critical clearing time is defined as
+\begin{equation}
+\mathrm{CCT} = \max \left\{ t_{\mathrm{clear}} - t_{\mathrm{fault}} \; \big|\; \text{system remains stable after clearing} \right\}.
+\end{equation}
+
+For a simple generator, stability can be assessed via the post-fault evolution of the power angle $\delta(t)$ or relevant state variables. If $\delta(t)$ remains bounded and converges to a new equilibrium, the clearing time is stable; otherwise, instability is detected. Mathematically,
+\begin{equation}
+\text{Stable} \;\Longleftrightarrow\; \lim_{t \to \infty} \delta(t) = \delta_{\mathrm{eq}},
+\end{equation}
+whereas divergence,
+\begin{equation}
+\text{Unstable} \;\Longleftrightarrow\; \delta(t) \to \infty \ \text{or oscillations grow unbounded},
+\end{equation}
+indicates loss of synchronism \cite{kundur1994}. 
 
 
 \section{Grid Strength and Short-Circuit Ratio}
