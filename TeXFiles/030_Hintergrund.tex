@@ -527,5 +527,33 @@ indicates loss of synchronism \cite{kundur1994}.
 
 
 \section{Grid Strength and Short-Circuit Ratio}
+
+Grid strength is a fundamental concept in power system stability analysis, describing the ability of a network to maintain acceptable voltage and frequency conditions under disturbances. According to IEEE, grid strength is typically quantified through the short-circuit power or the short-circuit ratio (SCR), defined as the ratio between the short-circuit power at the point of interconnection and the rated power of the connected inverter-based resource \cite{ieee2800}. CIGRE further refines this classification by distinguishing strong grids (SCR > 10), weak grids (SCR < 5), and very weak grids (SCR < 3), and introduces the concept of effective SCR (ESCR) to account for reactive compensation devices \cite{cigreTB871}. While classical references such as Kundur and Anderson & Fouad do not explicitly define SCR for converters, they provide the theoretical foundation for electrical stiffness, voltage sensitivity, and short-circuit strength as determinants of system stability \cite{kundur1994,anderson2003}. Modern system operators have also adopted SCR as a stability metric: AEMO considers SCR < 3 critical for grid-following inverters, ERCOT requires minimum ESCR levels for HVDC and wind integration, and ENTSO-E links low SCR conditions with increased risk of oscillations, FRT failures, PLL instability, and poor voltage regulation \cite{aemo2018, ercotHVDC, entsoe2016}. In the context of converter-dominated systems, SCR becomes especially relevant because weak grids amplify sensitivity to control parameters such as virtual inertia, damping, and droop gains, ultimately shaping the dynamic behavior of grid-forming inverters under both RMS and EMT simulations. 
+\begin{equation}
+    SCR = \frac{S_{SC}}{P_{\mathrm{rated}}}
+\end{equation}
+    
+\begin{equation}
+S_{SC} = \sqrt{3} \, V_{\mathrm{nom}} \, I_{SC}
+\end{equation}
+
+\begin{equation}
+Z_{\mathrm{th}} = \frac{V_{\mathrm{nom}}^{2}}{S_{SC}}
+\end{equation}
+
+\begin{equation}
+ESCR = \frac{S_{SC} - Q_{\mathrm{comp}}}{P_{\mathrm{rated}}}
+\end{equation}
+
+
+The quations above summarize the basic relationships used to quantify grid strength. The short-circuit ratio in compares the short-circuit power of the grid to the rated power of the inverter. The short-circuit power, is derived from the nominal voltage and the fault current obtained from a short-circuit study, while $Z_{\mathrm{th}}$ expresses the equivalent Thevenin impedance seen at the point of interconnection. In systems with shunt reactive compensation, the effective SCR (ESCR) provides a corrected measure by subtracting the contribution of capacitive reactive power. These expressions form the basis for classifying the grid as strong or weak in subsequent analyses.
+
+
 \section{Real World Examples}
+
+Weak-grid conditions have already produced several documented operational challenges in large power systems worldwide. In the Australian National Electricity Market (NEM), multiple solar and wind plants experienced instability, poor voltage control, and FRT failures in regions with SCR values below 3, prompting AEMO to formalize weak-grid connection requirements and encourage the deployment of grid-forming capabilities \cite{aemo_2019_weakgrid}. ERCOT has reported similar issues, where HVDC links and large wind plants exhibited control interactions and voltage oscillations under low ESCR conditions, leading to minimum SCR guidelines for new IBR connections \cite{ercot_weakgrid}. Ireland has faced high RoCoF events and reduced inertia margins due to high IBR penetration, requiring EirGrid to impose operational limits and explore GFM-based solutions to maintain frequency stability \cite{eirgrid_rocof}. In the United Kingdom, National Grid observed that low-inertia and low-SCR areas exhibit reduced damping and poor dynamic performance, which motivated the procurement of large-scale grid-forming inverters through the Stability Pathfinder program \cite{ngeso_pathfinder}. Collectively, these cases demonstrate that low-SCR operation is not a theoretical scenario but a current constraint in real systems, reinforcing the need to study how GFM control parameters behave across different grid strength levels.
+ varying SCR levels.
+
 \section{Research Gap and Motivation}
+The objective of this thesis is to evaluate frequency and voltage stability in a converter-dominated power system and to analyse how key GFM control parameters—virtual inertia, damping, and droop—behave under different grid strength scenarios. By assessing parameter sensitivity across strong, weak, and very weak grids, this work aims to provide a clear understanding of how GFM tuning affects system-level stability indicators. A brief overview of market-related considerations is also included to contextualize the practical relevance of GFM operation. Ultimately, the goal is to provide RWE with a consistent and transparent assessment framework to quantify the impact of GFM parameters on system stability and to offer insights into how these findings may influence future grid market designs and RWE's potential participation in them.
+
