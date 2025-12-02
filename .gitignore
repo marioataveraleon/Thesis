@@ -323,6 +323,7 @@ TSWLatexianTemp*
 # Python virtual environments
 venv/
 venv_pf/
+.pfenv/
 .env
 *.env
 
@@ -339,6 +340,7 @@ __pycache__/
 *.pfd
 *.pls
 *.~*
+
 
 # Avoid macOS metadata files
 .DS_Store
