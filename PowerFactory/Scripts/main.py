@@ -1,18 +1,14 @@
 import powerfactory as pf
 import pf_utils
-def main():
-    app = pf.GetApplication()
-    if  not app:
-        raise RuntimeError("No se pudo conectar con powerfactory")
-    app.ClearOutputWindow()
-    app.PrintPlain("=== Test PowerFactory-Python OK ===")
-    project = pf_utils.get_project(app)
-    app.PrintPlain(project)
-    all_study_cases = pf_utils.get_all_study_cases(project)
-    
-    for sc in all_study_cases:
-        app.PrintPlain(sc.loc_name)
+import runner
 
+def main():
+   app = pf_utils.connect_to_powerfactory()
+   project = pf_utils.get_project(app)
+   all_study_cases = pf_utils.get_all_study_cases(project)
+
+   desired_studycase = pf_utils.select_study_case(all_study_cases,"SMIB","SG","E1")
+   runner.run_simulation(app,desired_studycase)
 
 
 
