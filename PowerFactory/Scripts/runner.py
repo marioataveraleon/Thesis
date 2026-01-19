@@ -1,9 +1,11 @@
-import powerfactory
-import pf_utils
 
+import pf_utils
+import export_utils
+import importlib
+importlib.reload(export_utils)
 DEFAULT_SIM_CONFIG = {
-    "tstop": 200.0 #time in seconds
-    #"dtgrd": 0.01,    # example: integration step
+    "tstop": 30.0, #time in seconds
+    "dtgrd": 1    # example: integration step
     #"iopt_sim": 0,    # example: RMS, not EMT
 }
 
@@ -49,7 +51,9 @@ def run_simulation(app, study_case,sim_config = None):
 
     return rc
 
-def run_simulations(app,studycases,sim_config: dict | None = None):
+def run_simulations(app,studycases,sim_config: dict | None = None,tesis_root:str = ""):
+
+
     """
     Docstring for run_multiple_simulations
     
@@ -58,5 +62,12 @@ def run_simulations(app,studycases,sim_config: dict | None = None):
     :param sim_config: Dictionary containing the simulation attribute
     :Dictionary sim_config: dict | None
     """
+    app.PrintPlain(f"Running simulations for: {len(studycases)} studycases")
     for studycase in studycases:
-        run_simulation(app,studycase,sim_config)
+        folder = export_utils._build_case_folder(tesis_root,studycase)
+        export_utils.clear_pngs(app,folder)
+        rc = run_simulation(app,studycase,sim_config)
+        if rc == 0:
+            export_utils.export_graphic_tab_as_png(app,folder)
+        
+
