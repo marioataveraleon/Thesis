@@ -4,9 +4,34 @@
 
 \section{Method}
 \sectionmark{Method A} % short form for headlines on pages
+\section{IEEE 39 bus system replacement}
+
+The replacement of synchronous generators in DIgSILENT PowerFactory is carried out according to their dispatched active power, such that the generator with the lowest output is replaced first by a grid-following (GFL) inverter. Table~\ref{tab:generator_replacement_order} summarizes the sequential replacement of synchronous machines until unstable system behavior is observed. This methodology enables a systematic investigation of the effects of increasing renewable energy penetration while progressively reducing the share of synchronous generation, and consequently the available conventional inertia in the system.
+
+A one-to-one replacement strategy is maintained throughout the analysis, whereby each synchronous generator is substituted by a GFL inverter of identical rated power. This ensures consistency of the steady-state operating point and preserves load-flow conditions at all times, allowing the observed system dynamics to be attributed solely to the change in generation technology
+\begin{table}[htbp]
+\centering
+\caption{Generator Replacement Sequence}
+\label{tab:generator_replacement_order}
+\begin{tabular}{c l r}
+\hline
+\textbf{Replacement order} & \textbf{Replaced generator} & \textbf{Renewable penetration level in (\%)} \\
+\hline
+1  & G10              & 4.05  \\
+2  & G05              & 12.34 \\
+3  & G08              & 21.46 \\
+4  & G07              & 30.25 \\
+5  & G04              & 40.54 \\
+6  & G03              & 51.10 \\
+7  & G06              & 61.71 \\
+8  & G09              & 75.23 \\
+9  & G02 (Slack)      & 83.71 \\
+10 & G01              & 100.00 \\
+\hline
+\end{tabular}
+\end{table}
 
 
-As we see ...
 
 
 

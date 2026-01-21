@@ -4,9 +4,8 @@ import export_utils
 import importlib
 importlib.reload(export_utils)
 DEFAULT_SIM_CONFIG = {
-    "tstop": 30.0, #time in seconds
-    "dtgrd": 1    # example: integration step
-    #"iopt_sim": 0,    # example: RMS, not EMT
+    "tstop": 20.0, #time in seconds
+    "dtgrd": 10    # example: integration step
 }
 
 def run_simulation(app, study_case,sim_config = None):
@@ -64,10 +63,10 @@ def run_simulations(app,studycases,sim_config: dict | None = None,tesis_root:str
     """
     app.PrintPlain(f"Running simulations for: {len(studycases)} studycases")
     for studycase in studycases:
-        folder = export_utils._build_case_folder(tesis_root,studycase)
-        export_utils.clear_pngs(app,folder)
+        folderpath = export_utils._build_case_folder(tesis_root,studycase)
+        export_utils.clear_pngs(app,folderpath)
         rc = run_simulation(app,studycase,sim_config)
         if rc == 0:
-            export_utils.export_graphic_tab_as_png(app,folder)
-        
+            export_utils.export_graphic_tab_as_png(app,folderpath)
+            export_utils.export_studycase_results_to_csv(app,studycase,folderpath)
 

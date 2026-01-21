@@ -26,11 +26,11 @@ def _build_case_folder(tesis_root:str, study_case)->str:
     results_root = os.path.join(tesis_root,"Results")
     sc_path = pf_utils._get_sc_path(study_case)
     technology = _get_tech_from_scpath(sc_path)
-    folder = os.path.join(results_root,
+    folder_path = os.path.join(results_root,
                           _safe_filename(technology),
                           _safe_filename(study_case.loc_name))
-    os.makedirs(folder,exist_ok=True)
-    return folder
+    os.makedirs(folder_path,exist_ok=True)
+    return folder_path
 
 
 def _get_tech_from_scpath(sc_path:str)-> str:
@@ -103,5 +103,19 @@ def export_graphic_tab_as_png(app,folder:str)->list[str]:
             else: 
                 app.PrintPlain("Export failed")
 
+def export_studycase_results_to_csv(app,studycase,folderpath):
+    
+    comRes = app.GetFromStudyCase('ComRes')
+    comRes.iopt_exp = 6
+    comRes.iopt_sep = 1
+    comRes.csep = ';'
+    comRes.cdec = '.'
+    comRes.iopt_csel = 1
+    comRes.iopt_head = 1
+    comRes.numberPrecisionFixed = 4
+    sc_name =_safe_filename(studycase.loc_name) + ".csv"
+    comRes.f_name =os.path.join(folderpath,sc_name)
+
+    comRes.Execute()
 
 
