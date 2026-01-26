@@ -12,7 +12,7 @@ if not os.path.isdir(os.path.join(TESIS_ROOT, "Results")):
     TESIS_ROOT = r"C:\Users\PF-WS-008\Desktop\Tesis"
 
 
-sim_config = None
+sim_config = {"tstop":20,"stepsize":10}
 system = ["REE"]
 technology = ["SG","GFL","GFM Droop","GFM VSM"] 
 event = ["E0","E1","E2"]

@@ -5,7 +5,7 @@ import importlib
 importlib.reload(export_utils)
 DEFAULT_SIM_CONFIG = {
     "tstop": 20.0, #time in seconds
-    "dtgrd": 10    # example: integration step
+    "stepsize": 10    # example: integration step
 }
 
 def run_simulation(app, study_case,sim_config = None):
@@ -34,14 +34,12 @@ def run_simulation(app, study_case,sim_config = None):
     
     sim = sim_objects[0]
     #Assigning the attributes to the simulation
-    cfg = {**DEFAULT_SIM_CONFIG, **(sim_config or {})}
-    
-    for attr,value in cfg.items():
-        if hasattr(sim,attr):
-            setattr(sim,attr,value)
-        else:
-            app.PrintPlain(f"Warning: ComSim in '{study_case.loc_name}' has no attribute'{attr}'")
-
+    if sim_config == None:
+        iniConditions.dtgrd = DEFAULT_SIM_CONFIG["stepsize"]
+        iniConditions.tstop = DEFAULT_SIM_CONFIG["tstop"]
+    else: 
+        iniConditions.dtgrd = sim_config["stepsize"]
+        iniConditions.tstop = sim_config["tstop"]
     # 3) Execute the simulation
     app.PrintPlain(f"[runner] Running Initial Conditions")
     iniConditions.Execute()
