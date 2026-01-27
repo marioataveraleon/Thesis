@@ -5,7 +5,7 @@ import importlib
 importlib.reload(export_utils)
 DEFAULT_SIM_CONFIG = {
     "tstop": 20.0, #time in seconds
-    "stepsize": 10    # example: integration step
+    "stepsize": 5    # example: integration step
 }
 
 def run_simulation(app, study_case,sim_config = None):

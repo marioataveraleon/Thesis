@@ -107,12 +107,9 @@ def export_studycase_results_to_csv(app,studycase,folderpath):
     
     comRes = app.GetFromStudyCase('ComRes')
     comRes.iopt_exp = 6
-    comRes.iopt_sep = 1
-    comRes.csep = ';'
-    comRes.cdec = '.'
     comRes.iopt_csel = 1
-    comRes.iopt_head = 1
-    comRes.numberPrecisionFixed = 4
+    #comRes.iopt_head = 1
+    #comRes.numberPrecisionFixed = 4
     sc_name =_safe_filename(studycase.loc_name) + ".csv"
     comRes.f_name =os.path.join(folderpath,sc_name)
 
