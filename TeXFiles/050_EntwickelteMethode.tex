@@ -2,8 +2,66 @@
 \chaptermark{Developed Method}  % short form for headlines on pages
 \label{ch:Developed Method}
 
-\section{Method}
-\sectionmark{Method A} % short form for headlines on pages
+\section{Phase 1}
+The objective of Phase 1 is to perform a comparative analysis of the inverter models available in DIgSILENT PowerFactory, with a particular focus on the differences in dynamic behaviour between grid-following (GFL) and grid-forming (GFM) inverters. This phase is intended to highlight the fundamental response characteristics of both inverter types when the power system is subjected to grid disturbances.
+
+The analysis is conducted by exposing the system to predefined disturbances and observing the resulting frequency and voltage dynamics. By applying identical operating conditions and disturbance scenarios, the comparison isolates the influence of the inverter control philosophy, allowing a clear distinction between GFL and GFM behaviour during transient events.
+
+The power system model used in this phase is the Spanish equivalent grid (Red Eléctrica Española equivalent system), which is widely applied in the context of European grid-code compliance studies. This equivalent grid is defined within the framework of the European Network Codes and their Spanish implementation, and it represents a standardized reference system for the assessment of power generating modules, the grid model is based on the documentation developed by the Working Group for Compliance Monitoring of technical requirements under Regulation (EU) 2016/631 for Power Generating Modules (PGMs). The Technical Standards for the Compliance of Generators (NTS-Generators), version 2.1, published on 9 July 2021, define in Section 7.2 the structure and parameters of the equivalent grid model applicable to the Spanish peninsular electrical system.
+
+\subsection{Phase 1: Equivalent Grid Model and Test System Definition}
+
+The dynamic system consists of an equivalent node of the electrical system (\textit{EQ\_SISTEMA}), to which an equivalent power generating module (PGM), \textit{GEN\_EQ}, is connected via an equivalent machine transformer, \textit{TFR\_EQ}, installed between the generation node (\textit{GEN\_EQ}) and the \textit{EQ\_SISTEMA} node.
+
+From the \textit{EQ\_SISTEMA} node, a transmission line is modelled up to the network connection point of the PGM under assessment (\textit{Nudo PCR}); this line represents the transmission grid.
+
+The \textit{Nudo PCR} (network connection point, NCP) is used to model the PGM to be assessed, including its corresponding private network, i.e., evacuation lines and transformers where applicable. The short-circuit power at the \textit{Nudo PCR}, denoted as $S_{\mathrm{cc,PCR}}$, shall be set such that the resulting short-circuit ratio (SCR) equals 5.
+
+Based on the selected value of $S_{\mathrm{cc,PCR}}$, the maximum PGM capacity to be assessed ($p_{\max}$) and the nominal voltage at the \textit{Nudo PCR} ($v_{\mathrm{Base,PCR}}$) are determined for the remaining parameters of the equivalent network model. In particular, the
+maximum apparent power of the equivalent PGM ($m_{\mathrm{Base,Eq}}$) and the impedance of the transmission line ($R + jX$) are calculated such that the short-circuit power at the \textit{Nudo PCR} matches the specified value. This ensures that all connected PGMs are
+simulated under disturbances with equivalent network characteristics.
+
+\begin{figure}[htbp!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/Chapter 5/Equivalent electric network model.png}
+    \caption{Equivalent electric network model \cite{REE_NTS_2016_631_v21}}
+    \label{fig:Equivalent Electric Network model}
+\end{figure}
+
+\subsection{Simulation Environment}
+All simulations are performed in DIgSILENT PowerFactory using the time-domain RMS simulation environment. The system is initialised from a steady-state load-flow solution.
+Since RMS simulations are employed, only the positive-sequence representation of the network is considered. The RMS approach is selected as it is sufficient to capture the
+electromechanical dynamics relevant for the assessment of system-level stability. To ensure consistency in the power-flow conditions and reactive power control, all
+evaluated generating units are configured with the same rated apparent power of 100 MVA, identical step-up transformer parameters, and the same rated power factor of 0.8. Under steady-state conditions, this corresponds to an active power export of 80 MW prior to the application of any disturbance.
+
+The nominal rated power of the built-in PowerFactory models is preserved and scaled to the target capacity using the parallel machines option. This approach ensures that all technologies are assessed under equivalent operating conditions while maintaining
+consistent model parameterisation.
+
+\subsection{Disturbances Scenarios}
+
+To evaluate the dynamic behavior of the considered generation technology, two standardized disturbances are simulated under identical operating conditions. These disturbances are selected to represent typical events relevant for power system stability, namely an imbalance between power generation and power consumption, as well
+as a severe disturbance affecting the transmission grid.
+
+\subsubsection{Load Step}
+A sudden change in active power demand is applied at the network conneection point (PCR Node) to create an positive active power imbalance in the system. The system disturbance occurs at 15s, the load connected in PCR is of 20 MW, at 15 s the load step occurs of an increase in 25\% rising the active power from 20 to 25 MW. The disturbance is used to asses the frequency response of the system, including frequency deviation and dynamic recovery characteristics. 
+
+\subsubsection{Three-Phase Short Circuit}
+A symmetrical three-phase short-circuit is applied at the network connection point (\textit{Nudo PCR}) at $t = 15\,\mathrm{s}$ and cleared after $0.1\,\mathrm{s}$. The selected fault duration is consistent with the recommendations provided in \cite{REE_NTS_2016_631_v21}, which specify a clearing time between 80~ms and 120~ms.
+This scenario represents a severe grid disturbance and is used to evaluate the transient voltage stability and frequency response of the system following fault clearance. Furthermore, this disturbance allows the assessment of the low-voltage ride-through
+(LVRT) behaviour, as transmission system operators typically require generating units to remain connected to the grid and support voltage recovery during fault conditions \cite{entsoe2016}.
+
+
+\subsection{Technologies}
+The technologies used to achieve a comparative assessment of the dynamic behavior was implemented by first having the behavior of a synchronous machine
+\subsubsection{Synchronous Generator}
+\subsubsection{Grid Following Inverters}
+\subsubsection{Grid Forming Inverters}
+
+\subsection{Stability indicators}
+\sectionmark{Phase 1} % short form for headlines on pages
+
+
+
 \section{IEEE 39 bus system replacement}
 
 The replacement of synchronous generators in DIgSILENT PowerFactory is carried out according to their dispatched active power, such that the generator with the lowest output is replaced first by a grid-following (GFL) inverter. Table~\ref{tab:generator_replacement_order} summarizes the sequential replacement of synchronous machines until unstable system behavior is observed. This methodology enables a systematic investigation of the effects of increasing renewable energy penetration while progressively reducing the share of synchronous generation, and consequently the available conventional inertia in the system.
