@@ -52,12 +52,26 @@ This scenario represents a severe grid disturbance and is used to evaluate the t
 
 
 \subsection{Technologies}
-The technologies used to achieve a comparative assessment of the dynamic behavior was implemented by first having the behavior of a synchronous machine
-\subsubsection{Synchronous Generator}
-\subsubsection{Grid Following Inverters}
-\subsubsection{Grid Forming Inverters}
+The technologies used to achieve a comparative assessment of the dynamic behavior was implemented by first having the behavior of a synchronous machine, the synchronous machine represent the base case and the dynamic behavior of traditional power systems. GFL technology and GFM technology is then introduced and the synchronous machine is substituted either for a GFL or for a GFM inverter to compare the dynamic behaviour. The GFL technology considereed are the GFL Wind Turbine Models for IEC and WECC within PowerFactory, these built in models present the dynamic models of a GFL wind turbine and can be adapted in parameters accordingly to achieve an specific OEM behavior. Moreover, SMA is one of the top invreter providers of RWE, therefore assessing their models to observe the dynamic behavior under disturbances is also relevant and the inverter models for battery and PV are also connected to the system allowing to observe the dynamic behavior. For GFM technology, the built in models of PowerFactory were sibject of study, the Droop Control and the VSM are considered for this study.
+
+
+
+The technologies considered for the comparative assessment of dynamic behaviour are introduced sequentially. First, a synchronous generator is used to represent the base case, reflecting the dynamic behaviour of conventional power systems dominated by rotating machines. This reference configuration provides a benchmark against which inverter-based technologies are evaluated.
+
+Subsequently, the synchronous generator is replaced either by a grid-following (GFL) inverter or a grid-forming (GFM) inverter, while all other system conditions are kept unchanged. This approach enables a direct comparison of the dynamic response resulting solely from the different control philosophies.
+
+For the grid-following technology, built-in wind turbine models compliant with IEC and WECC standards available in DIgSILENT PowerFactory are employed. These models represent the dynamic behaviour of GFL wind turbines and allow parameter adaptation to approximate specific original equipment manufacturer (OEM) characteristics. In addition, OEM-specific inverter models provided by SMA for photovoltaic and battery energy storage systems are considered, allowing the assessment of dynamic behaviour based on realistic manufacturer control implementations.
+
+For the grid-forming technology, the built-in PowerFactory models are used. In particular, droop-controlled and virtual synchronous machine (VSM) based grid-forming inverters are considered in this study to evaluate their dynamic behaviour under grid disturbances.
+
 
 \subsection{Stability indicators}
+
+
+To evaluate and compare the dynamic performance of the considered technologies, a set of commonly used stability indicators is defined. Frequency-related indicators include the rate of change of frequency (RoCoF), the frequency nadir, and the settling time following a disturbance. These metrics are used to assess the system's ability to withstand active power imbalances and to recover frequency stability.
+
+In addition, voltage-related indicators are evaluated, including the maximum voltage dip during a disturbance and the subsequent voltage recovery behaviour. These indicators are particularly relevant for the assessment of transient voltage stability and compliance with low-voltage ride-through requirements.
+
 \sectionmark{Phase 1} % short form for headlines on pages
 
 
