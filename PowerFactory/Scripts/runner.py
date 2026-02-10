@@ -5,7 +5,8 @@ import importlib
 importlib.reload(export_utils)
 DEFAULT_SIM_CONFIG = {
     "tstop": 20.0, #time in seconds
-    "stepsize": 5    # example: integration step
+    "stepsize": 1,    # example: integration step
+    "tsart":-15000
 }
 
 def run_simulation(app, study_case,sim_config = None):
@@ -34,12 +35,10 @@ def run_simulation(app, study_case,sim_config = None):
     
     sim = sim_objects[0]
     #Assigning the attributes to the simulation
-    if sim_config == None:
-        iniConditions.dtgrd = DEFAULT_SIM_CONFIG["stepsize"]
-        iniConditions.tstop = DEFAULT_SIM_CONFIG["tstop"]
-    else: 
-        iniConditions.dtgrd = sim_config["stepsize"]
-        iniConditions.tstop = sim_config["tstop"]
+   
+    iniConditions.dtgrd = sim_config["stepsize"]
+    iniConditions.tstop = sim_config["tstop"]
+    iniConditions.tstart = sim_config["tstart"]
     # 3) Execute the simulation
     app.PrintPlain(f"[runner] Running Initial Conditions")
     iniConditions.Execute()

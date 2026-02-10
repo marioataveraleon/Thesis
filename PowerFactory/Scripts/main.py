@@ -12,9 +12,9 @@ if not os.path.isdir(os.path.join(TESIS_ROOT, "Results")):
     TESIS_ROOT = r"C:\Users\PF-WS-008\Desktop\Tesis"
 
 
-sim_config = {"tstop":10,"stepsize":0.5}
+sim_config = {"tstart":-13000,"tstop":20,"stepsize":1}
 system = ["REE"]
-technology = ["SG","GFL","GFM Droop","GFM VSM"] 
+technology = ["SG"] 
 event = ["E0","E1","E2"]
 
 
@@ -26,7 +26,7 @@ def main():
                                                    technology,
                                                    event)
    
-   runner.run_simulations(app, all_study_cases,sim_config,TESIS_ROOT)
+   runner.run_simulations(app, desired_studycases,sim_config,TESIS_ROOT)
 
 
 
