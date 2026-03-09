@@ -76,32 +76,120 @@ In addition, voltage-related indicators are evaluated, including the maximum vol
 
 
 
-\section{IEEE 39 bus system replacement}
+\section{Impact of GFL PV Penetration}
 
-The replacement of synchronous generators in DIgSILENT PowerFactory is carried out according to their dispatched active power, such that the generator with the lowest output is replaced first by a grid-following (GFL) inverter. Table~\ref{tab:generator_replacement_order} summarizes the sequential replacement of synchronous machines until unstable system behavior is observed. This methodology enables a systematic investigation of the effects of increasing renewable energy penetration while progressively reducing the share of synchronous generation, and consequently the available conventional inertia in the system.
 
-A one-to-one replacement strategy is maintained throughout the analysis, whereby each synchronous generator is substituted by a GFL inverter of identical rated power. This ensures consistency of the steady-state operating point and preserves load-flow conditions at all times, allowing the observed system dynamics to be attributed solely to the change in generation technology
-\begin{table}[htbp]
-\centering
-\caption{Generator Replacement Sequence}
-\label{tab:generator_replacement_order}
-\begin{tabular}{c l r}
-\hline
-\textbf{Replacement order} & \textbf{Replaced generator} & \textbf{Renewable penetration level in (\%)} \\
-\hline
-1  & G10              & 4.05  \\
-2  & G05              & 12.34 \\
-3  & G08              & 21.46 \\
-4  & G07              & 30.25 \\
-5  & G04              & 40.54 \\
-6  & G03              & 51.10 \\
-7  & G06              & 61.71 \\
-8  & G09              & 75.23 \\
-9  & G02 (Slack)      & 83.71 \\
-10 & G01              & 100.00 \\
-\hline
+\subsection{System description}
+
+The investigations in this phase are conducted using the classical IEEE 39-bus New England test system as implemented in DIgSILENT PowerFactory \cite{DIgSILENT_IEEE39}. The model corresponds to the official DIgSILENT reference implementation of the benchmark system.
+
+The network consists of 39 buses, 10 synchronous generators, 19 loads, 34 transmission lines, and 12 transformers and a total installed generation of 6140 MW. The nominal system frequency is 60 Hz. The transmission network operates predominantly at 345 kV. However, the following buses are modeled at different nominal voltage levels in the PowerFactory implementation:
+
+\begin{itemize}
+    \item Bus 12: 138 kV
+    \item Bus 20: 230 kV
+    \item Buses 30--38: 16.5 kV (generator terminal voltage level)
+\end{itemize}
+
+
+The system contains ten synchronous generators. Generator G02 (Bus 31) operates as the slack element of the network, while the remaining generators operate as PV buses with fixed active power dispatch and controlled terminal voltage magnitude. Automatic Voltage Regulators (AVRs) and turbine governors are active according to the default dynamic models provided in the PowerFactory implementation.
+
+The inertia constants of the synchronous generators range between approximately 3.45 s and 5.0 s, defining the initial aggregate system inertia prior to any generator replacement. These inertia values form the reference against which reductions in rotational inertia due to synchronous generator replacement are assessed. Inertia constants can be seen in the following table.
+\begin{table}[h]
+    \centering
+    \caption{Inertia constants of synchronous generators}
+    \label{tab:inertia_constants of sg in the IEEE39}
+    \begin{tabular}{lc}
+    \toprule
+    \textbf{Generator} & \textbf{Inertia constant $H$ (s)} \\
+    \midrule
+    G01 & 5.00 \\
+    G03 & 4.47 \\
+    G06 & 4.35 \\
+    G05 & 4.33 \\
+    G02 & 4.32 \\
+    G10 & 4.20 \\
+    G07 & 3.77 \\
+    G04 & 3.57 \\
+    G08 & 3.47 \\
+    G09 & 3.45 \\
+    \bottomrule
+    \end{tabular}
+    \end{table}
+
+Loads are modeled as constant power (PQ) elements and are not voltage-dependent in the base configuration \cite{DIgSILENT_IEEE39}. This assumption ensures that changes in dynamic behavior observed in this study are primarily attributable to variations in generation structure rather than load model effects.
+
+The base case considered in this study corresponds exactly to the DIgSILENT reference implementation. All modifications introduced in the subsequent analysis are limited exclusively to the progressive replacement of synchronous generators by grid-following photovoltaic (PV) units.
+
+\subsection{Disturbance and Stability Criteria}
+
+A three-phase short-circuit fault is applied at Bus 16 at $t_0 = 1.0$ s and cleared after $100$ ms ($t_c = 1.1$ s). The fault is modeled as a purely reactive impedance with $R_f = 0$ and $X_f = 0.001$~p.u., which corresponds to $X_f = 1.19025~\Omega$ on the system base., consistent across all cases. Bus 16 is selected as a representative disturbance location and corresponds to a load bus within the system
+
+All simulations are performed in RMS with a simulation time of 10 s and an integration step size of $\Delta t = 0.5$~ms. The same numerical settings are maintained for all penetration levels.
+
+Post-fault stability is assessed using:
+\begin{itemize}
+    \item (i) Voltage recovery at Bus~16,
+    \item (ii) Rotor-speed response of the remaining synchronous generators.
+\end{itemize}
+
+A case is considered post-fault stable if the bus voltage recovers and remains bounded (e.g., $V_{16} > 0.9$~p.u. after clearing) and if synchronous generator speeds remain synchronized and converge toward a steady value (no growing oscillations or loss of synchronism).
+
+Cases exhibiting sustained solver non-convergence during the post-fault period are classified as numerically not feasible in RMS under the selected disturbance.
+
+
+
+
+
+\subsection{Generator Replacement Method}
+
+
+To investigate the impact of increasing converter-based generation, synchronous generators are progressively replaced by grid-following PV plants while preserving the steady-state operating point of the original IEEE~39 benchmark case. The replacement sequence follows the initial active power dispatch of the synchronous generators, starting with the unit supplying the lowest active power and proceeding in ascending order (Table~\ref{tab:replacement_path}). This dispatch-based criterion ensures a systematic and reproducible replacement path.
+
+Each removed synchronous generator is replaced by a PV plant connected to the same generator bus as the decommissioned unit. The PV plant is rated to match the apparent power of the replaced synchronous generator and is connected through a step-up transformer representing the plant interfacing transformer to the 16.5~kV generator bus.
+
+To preserve the operating point, the PV plant operates under constant reactive power control (local controller: Const.~Q). The active and reactive power setpoints are assigned to reproduce the pre-replacement dispatch of the corresponding synchronous generator. Where generators are represented by multiple parallel units, the PV setpoints are scaled such that the aggregated PV output matches the original dispatched P and Q. All remaining synchronous generators retain their original control settings, and Generator G02 remains the slack unit throughout the replacement process.
+
+No modifications are introduced to the network topology, line parameters, transformer data, or load models; only the generation technology at selected buses is altered according to the defined replacement sequence.
+
+The converter penetration level is quantified based on dispatched active power, expressed as a percentage of the total system generation and is calculated as follows.
+\begin{equation}
+\mathrm{PV\ penetration}~[\%] = \frac{\sum P_{\mathrm{PV}}}{\sum P_{\mathrm{gen}}}\times 100 .
+\end{equation}
+
+\begin{table}[h]
+    \centering
+    \caption{Generator replacement path and corresponding PV penetration levels}
+    \label{tab:replacement_path}
+    \begin{tabular}{cccccc}
+    \toprule
+    \textbf{Order} & \textbf{Replaced} & \textbf{P} & \textbf{Q} & \textbf{Rated S} & \textbf{PV Pen.} \\
+     & \textbf{Generator} & \textbf{(MW)} & \textbf{(MVAr)} & \textbf{(MVA)} & \textbf{(\%)} \\
+    \midrule
+    1  & G10           & 250  & 146.2  & 1000 & 4.05\\
+    2  & G05           & 508  & 165.8  & 600  & 12.34 \\
+    3  & G08           & 540  & 0.440  & 700 & 21.46 \\
+    4  & G07           & 560  & 101.2  & 700  & 30.25 \\
+    5  & G04           & 632  & 109.9  & 800  & 40.54  \\
+    6  & G03           & 650  & 205.1  & 800  & 51.10\\
+    7  & G06           & 650  & 212.4  & 800 & 61.71\\
+    8  & G09           & 830  & 22.84  & 1000  & 75.23  \\
+    9  & G02 (slack)   & 520.8 & 198.3 & 700 & 83.71 \\
+    10 & G01           & 1000 & 88.28  & 10000 & 100   \\
+    \bottomrule
 \end{tabular}
 \end{table}
+
+
+\subsection{Small signal stability}
+\subsection{Small-Signal Stability Analysis Methodology}
+
+Small-signal stability was assessed through eigenvalue analysis of the linearized system model. For each replacement scenario (R00–R06), the system was first solved under steady-state conditions using a power flow calculation. The dynamic model was then linearized around the corresponding operating point and the eigenvalues of the resulting state matrix were computed using the modal analysis tool available in DIgSILENT PowerFactory.
+
+The analysis focuses on the dominant oscillatory modes, i.e., those with the lowest damping ratios or located closest to the imaginary axis. These modes govern the dynamic response of the system and are therefore the most relevant for assessing small-signal stability.
+
+For each scenario, the eigenvalue spectrum was evaluated and the dominant modes were characterized in terms of their damped frequency and damping ratio. These indicators allow the evolution of system oscillatory behavior to be assessed as synchronous generators are progressively replaced by converter-based generation.
+
 
 
 
