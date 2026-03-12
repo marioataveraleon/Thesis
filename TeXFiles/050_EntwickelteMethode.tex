@@ -181,16 +181,17 @@ The converter penetration level is quantified based on dispatched active power, 
 \end{table}
 
 
-\subsection{Small signal stability}
+
+\section{Small signal stability}
 \subsection{Small-Signal Stability Analysis Methodology}
 
-Small-signal stability was assessed through eigenvalue analysis of the linearized system model. For each replacement scenario (R00–R06), the system was first solved under steady-state conditions using a power flow calculation. The dynamic model was then linearized around the corresponding operating point and the eigenvalues of the resulting state matrix were computed using the modal analysis tool available in DIgSILENT PowerFactory.
+Small-signal stability was assessed through eigenvalue analysis of the linearized system model. For each replacement scenario, the system was first solved under steady-state conditions using a power flow calculation. The dynamic model was then linearized around the corresponding operating point and the eigenvalues of the resulting state matrix were computed using the modal analysis tool available in DIgSILENT PowerFactory.
 
 The analysis focuses on the dominant oscillatory modes, i.e., those with the lowest damping ratios or located closest to the imaginary axis. These modes govern the dynamic response of the system and are therefore the most relevant for assessing small-signal stability.
 
 For each scenario, the eigenvalue spectrum was evaluated and the dominant modes were characterized in terms of their damped frequency and damping ratio. These indicators allow the evolution of system oscillatory behavior to be assessed as synchronous generators are progressively replaced by converter-based generation.
 
-
+Small-signal stability analysis is performed to evaluate how the dynamic characteristics of the system evolve as the penetration of converter-based generation increases. The replacement of synchronous machines by converter-interfaced resources can alter the dynamic behavior of the power system by modifying the location and damping of the eigenvalues of the linearized system. In particular, converter control dynamics may introduce new modes or shift existing electromechanical modes, potentially affecting system stability. Therefore, eigenvalue analysis provides a useful tool to assess how increasing converter penetration influences the dominant system modes and the overall stability of the operating point.
 
 
 

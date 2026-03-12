@@ -4,93 +4,285 @@
 \section{Phase 1: REE}
 
 \section{Phase 2: IEEE 39 Bus System}
-\subsection{Small-Signal Stability Result}
-
+\subsecction{RMS Dynamic Stability}
+\subsection{Small Signal Stability Results}
 
 \subsection{Evolution of the Dominant System Modes}
 
-The evolution of the dominant system modes was evaluated for increasing photovoltaic (PV) penetration levels in the modified IEEE 39-bus system. The penetration level was gradually increased by replacing synchronous generators with converter-based generation, resulting in the scenarios R00–R07.
 
-Table \ref{tab:dominant_modes} summarizes the dominant eigenvalue identified for each operating condition. The table includes the eigenvalue location, the corresponding oscillation frequency, and the damping ratio of the dominant mode.
+
+The analyzed operating scenarios are defined in Table~\ref{tab:scenario_definition}. The scenarios represent increasing levels of converter-based generation in the IEEE 39-bus system, obtained by progressively replacing synchronous generators with grid-following converters. Additional scenarios introduce grid-forming converters at selected buses in order to evaluate their impact on system stability.
+
+For each operating condition, a small-signal stability analysis was performed to identify the dominant oscillatory eigenvalue governing the system dynamics. The results of this analysis are summarized in Table~\ref{tab:dominant_modes}, which reports the dominant mode for each scenario together with the corresponding eigenvalue location, oscillation frequency, and damping ratio.
 
 \begin{table}[h]
 \centering
-\caption{Dominant system modes for increasing PV penetration}
-\label{tab:dominant_modes}
-\begin{tabular}{ccccc}
-\hline
-Case & Dominant Mode & Eigenvalue $\sigma + j\omega$ [1/s] & Frequency [Hz] & Damping [\%] \\
-\hline
-R00 & Mode 00005 & $-0.197 + j6.975$ & 1.110 & 2.82 \\
-R01 & Mode 00017 & $-0.384 + j6.613$ & 1.052 & 5.80 \\
-R02 & Mode 00021 & $-0.384 + j6.739$ & 1.072 & 5.69 \\
-R03 & Mode 00019 & $-0.382 + j6.735$ & 1.072 & 5.67 \\
-R04 & Mode 00033 & $-0.461 + j7.550$ & 1.202 & 6.10 \\
-R05 & Mode 00027 & $-0.381 + j6.244$ & 0.994 & 6.10 \\
-R06 & Mode 00031 & $-0.407 + j6.535$ & 1.040 & 6.22 \\
-R07 & Mode 00001 & $+59.464$ & -- & Unstable \\
-\hline
+\caption{Definition of operating scenarios and generation mix}
+\label{tab:scenario_definition}
+\begin{tabular}{lcccc}
+\toprule
+Case & PV Penetration [\%] & Generation Mix & GFM Location & \makecell{Technology Share \\ (SG/GFL/GFM)}\\
+\midrule
+R00 & 0.0 & SG & -- & 100 / 0 / 0 \\
+R01 & 4.05 & SG + GFL & -- & 95.95 / 4.05 / 0 \\
+R02 & 12.34 & SG + GFL & -- & 87.66 / 12.34 / 0 \\
+R03 & 21.46 & SG + GFL & -- & 78.54 / 21.46 / 0 \\
+R04 & 30.25 & SG + GFL & -- & 69.75 / 30.25 / 0 \\
+R05 & 40.54 & SG + GFL & -- & 59.46 / 40.54 / 0 \\
+R06 & 51.10 & SG + GFL & -- & 48.90 / 51.10 / 0 \\
+R06A & 51.10 & SG + GFL + 1 GFM & Bus 32 & 48.90 / 40.54 / 10.56 \\
+R06B & 51.10 & SG + GFL + 2 GFM & Buses 32,33 & 48.90 / 30.25 / 20.85 \\
+R06BA & 51.10 & SG + GFL + 2 GFM & Buses 32,36 & 48.90 / 30.25 / 20.85 \\
+R07 & 61.71 & SG + GFL & -- & 38.29 / 61.71 / 0 \\
+R07A & 61.71 & SG + GFL + 1 GFM & Bus 35 & 38.29 / 51.10 / 10.61 \\
+R07B & 61.71 & SG + GFL + 2 GFM & Buses 35,32 & 38.29 / 51.10 / 10.61 \\
+R08 & 75.23 & SG + GFL + 1 GFM & Bus 38 & 24.77 / 61.71 / 13.52 \\
+R08A & 75.23 & SG + GFL + 2 GFM & Buses 38,35 & 24.77 / 51.10 / 24.13 \\
+R09--Slack & 83.71 & SG + GFL + 3 GFM & Buses 38,35,31 & 16.29 / 51.10 / 32.61 \\
+R09A--Slack & 83.71 & SG + GFL + 4 GFM & Buses 31,38,35,32 & 16.29 / 40.54 / 43.17 \\
+\bottomrule
 \end{tabular}
 \end{table}
 
-The results show that the dominant modes remain located in the left half of the complex plane for scenarios R00–R06, indicating that the system remains locally stable around the operating point. The oscillatory modes are located around approximately 1 Hz, which is consistent with typical electromechanical oscillations observed in large interconnected power systems.
+\begin{table}[h]
+\centering
+\caption{Dominant eigenvalues for the analyzed operating scenarios}
+\label{tab:dominant_modes}
+\begin{tabular}{lccccc}
+\toprule
+Case & Dominant Mode & Eigenvalue $\sigma + j\omega$ [1/s] & Frequency [Hz] & Damping [\%] & Small signal stable \\
+\midrule
+R00 & Mode 00005 & $-0.197 + j6.975$ & 1.110 & 2.82 & Stable \\
+R01 & Mode 00019 & $-0.388 + j6.620$ & 1.053 & 5.85 & Stable \\
+R02 & Mode 00021 & $-0.388 + j6.752$ & 1.074 & 5.73 & Stable \\
+R03 & Mode 00023 & $-0.387 + j6.754$ & 1.074 & 5.73 & Stable \\
+R04 & Mode 00031 & $-0.467 + j7.541$ & 1.200 & 6.18 & Stable \\
+R05 & Mode 00029 & $-0.391 + j6.257$ & 0.996 & 6.24 & Stable \\
+R06 & Mode 00031 & $-0.413 + j6.545$ & 1.041 & 6.31 & Stable \\
+R06A & Mode 00032 & $-0.532 + j7.237$ & 1.151 & 7.33 & Stable \\
+R06B & Mode 00035 & $-0.590 + j6.046$ & 0.960 & 9.72 & Stable \\
+R06BA & Mode 00035 & $-0.570 + j6.013$ & 0.957 & 9.44 & Stable \\
+R07 & Mode 00001 & $+81.87$ & -- & -- & Unstable \\
+R07A & Mode 00034 & $-0.551 + j6.775$ & 1.078 & 8.11 & Stable \\
+R07B & Mode 00037 & $-0.613 + j6.043$ & 0.962 & 10.09 & Stable \\
+R08 & Mode 00001 & $+152.62$ & -- & -- & Unstable \\
+R08A & Mode 00042 & $-0.569 + j6.811$ & 1.080 & 8.34 & Stable \\
+R09--Slack & Mode 00043 & $-0.477 + j3.981$ & 0.617 & 12.09 & Stable \\
+R09A--Slack & Mode 00044 & $-0.422 + j3.815$ & 0.607 & 10.99 & Stable \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-Across the different scenarios, the damping ratio of the dominant mode remains relatively stable, ranging approximately between 5\% and 6\%. Overall, the eigenvalue analysis indicates that increasing PV penetration up to scenario R06 does not significantly degrade the small-signal stability of the system, as the dominant oscillatory modes remain well damped and located in the left half of the complex plane.
+The results show that the dominant damped frequency remains close to 1~Hz for the majority of the analyzed operating scenarios. This frequency range is characteristic of electromechanical oscillations typically observed in large interconnected power systems and is mainly associated with the rotor dynamics of synchronous machines.
+
+Figure~\ref{fig:eigenvalue_evolution} illustrates the evolution of the dominant eigenvalues in the complex plane. For scenarios R00--R06 and the stabilized cases including grid-forming converters, the dominant oscillatory modes remain located in the left half-plane of the complex plane. This indicates that the corresponding operating points are locally stable when subjected to small disturbances. 
+
+For the scenarios that exhibit unstable behavior, the dominant eigenvalue crosses into the right half-plane, indicating a loss of small-signal stability. In these cases, participation factor analysis was performed in order to identify the states contributing most strongly to the unstable mode and to better understand the underlying mechanism driving the instability.
 
 \begin{figure}[htbp!]
     \centering
-    \includegraphics[width=0.8\textwidth]{Figures/Chapter 7/Dominant Modes vs PV Penetration.png}
-    \caption{Dominant modes with respect to PV penetration level}
-    \label{fig:dominant modes vs pv penetration}
+    \includegraphics[width=0.8\textwidth]{Figures/Chapter 7/Small Signal/eigenvalue_plot.png}
+    \caption{Eigenvalue evolution}
+    \label{fig:eigenvalue_evolution}
 \end{figure}
+Across the analyzed scenarios, the damping ratio of the dominant oscillatory mode ranges approximately between 3\% and 12\%. This indicates that increasing converter penetration up to these levels does not significantly degrade the small-signal stability of the system. This behavior can be attributed to the fact that the dominant oscillatory modes are primarily associated with the electromechanical dynamics of synchronous machines, while converter-based resources typically respond faster due to their control-based dynamics.
 
-\subsubsection{Dynamic Feasibility of the Operating Point}
+\subsection{Dynamic Feasibility of Operating Points}
 
-Although the small-signal stability analysis indicates stable operating points up to scenario R06, time-domain RMS simulations reveal a different behavior when disturbances are applied.
+Although the eigenvalue analysis indicates stable operating points for scenarios up to R06, time-domain RMS simulations reveal additional limitations when large disturbances are applied.
 
-Table \ref{tab:rms_feasibility} summarizes the feasibility of RMS dynamic simulations for the analyzed scenarios.
+Table~\ref{tab:rms_feasibility} summarizes the dynamic feasibility of the operating points obtained from RMS simulations, both under steady-state conditions and when a large disturbance is applied.
 
 \begin{table}[h]
 \centering
-\caption{RMS simulation feasibility for increasing PV penetration}
+\caption{RMS simulation feasibility for increasing converter penetration}
 \label{tab:rms_feasibility}
-\begin{tabular}{cccc}
+\begin{tabular}{lccc}
 \hline
-Case & PV Penetration & RMS (No Event) & RMS (With Fault) \\
+Case & PV Penetration & RMS (No Event) & RMS (3$\phi$ Fault at Bus 16) \\
 \hline
 R05 & $\sim$40\% & $\checkmark$ & $\checkmark$ \\
-R06 & $\sim$51\% & $\checkmark$ & $\times$ \\
+R06 & $\sim$51\% & $\checkmark$ & $\checkmark^{*}$ \\
 R07 & $\sim$62\% & $\times$ & $\times$ \\
 \hline
 \end{tabular}
+
+\vspace{2mm}
+\small
+$\checkmark$ feasible \qquad
+$\checkmark^{*}$ feasible with numerical convergence warnings \qquad
+$\times$ not feasible
 \end{table}
 
-The results show that scenario R06 can still maintain the operating point when no disturbance is applied. However, when a severe disturbance such as a three-phase fault is introduced, the RMS simulation fails to converge. This behavior indicates that the system has already lost robustness against large disturbances, even though the operating point remains locally stable according to the small-signal analysis.
+The results indicate that scenario R06 can maintain the operating point when no disturbance is applied. When a severe disturbance such as a three-phase fault at bus~16 is introduced, the RMS simulation still converges but exhibits numerical convergence warnings during the dynamic solution process. Although the system trajectory remains bounded, these warnings indicate that the system is approaching the limit of dynamic robustness.
 
-\subsubsection{Emergence of an Unstable Mode}
+This behavior suggests that the system becomes increasingly sensitive to large disturbances as the penetration of converter-based generation increases. While the operating point remains locally stable according to the small-signal analysis, the dynamic response under large disturbances reveals reduced stability margins.
 
-In scenario R07, the system becomes unstable even in the absence of disturbances. The eigenvalue analysis reveals the appearance of a positive real eigenvalue, indicating loss of small-signal stability.
+These results highlight the fundamental difference between small-signal stability and large-disturbance dynamic performance. Small-signal analysis evaluates the stability of the system in the vicinity of the operating point, whereas RMS time-domain simulations capture the nonlinear dynamic response of the system under large disturbances.
 
-The participation factor analysis of this unstable mode shows that it is dominated by internal states associated with the phase-locked loop (PLL) of the converter-based generation models. In particular, the highest participation factors correspond to the PLL internal states responsible for phase estimation and synchronization.
+\subsection{Emergence of an Unstable Mode}
+
+At scenario R07, the system becomes unstable even in the absence of disturbances. The eigenvalue analysis reveals the appearance of a positive real eigenvalue ($\sigma > 0$), indicating loss of small-signal stability.
+
+Unlike the previously observed oscillatory modes, the unstable mode is non-oscillatory and corresponds to a purely real eigenvalue. Participation factor analysis indicates that this mode is dominated by internal states associated with the phase-locked loop (PLL) of the grid-following converters.
+
+This behavior suggests that at very high penetration levels, grid-following converters struggle to maintain synchronization due to the reduced presence of synchronous machines providing a strong voltage and frequency reference. 
+\begin{figure}[htbp!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/Chapter 7/Small Signal/Mode Dominant Unstable R07.png}
+    \caption{Participation factors of the unstable mode for scenario R07.}
+    \label{fig: participation_factor_r07}
+\end{figure}
 
 \begin{figure}[htbp!]
     \centering
-    \includegraphics[width=0.8\textwidth]{Figures/Chapter 7/Mode Dominant Unstable R07.png}
-    \caption{ticipation factors of the unstable mode identified in scenario R07.}
-    \label{fig:participation_unstable_mode}
+    \includegraphics[width=0.8\textwidth]{Figures/Chapter 7/Small Signal/Mode Dominant Unstable R08.png}
+    \caption{Participation factors of the unstable mode for scenario R08.}
+    \label{fig: participation_factor_r08}
 \end{figure}
-Several network states also contribute to the mode, indicating that the instability results from an interaction between converter control dynamics and the surrounding power system.
 
-This behavior suggests that at very high penetration levels, grid-following converters struggle to maintain a stable synchronization reference due to the reduced presence of synchronous machines in the system.
+\subsection{Stabilization Through Grid-Forming Converters}
 
-\subsubsection{Summary of Observed Stability Limits}
+Additional scenarios were evaluated by introducing grid-forming converters into the system. The results for scenarios R06A, R06B, R06BA, R07A, R07B, R08A demonstrate that the introduction of grid-forming units shifts the dominant eigenvalues further into the left half-plane.
 
-Based on the performed analysis, two stability limits can be identified:
+As shown in Table~\ref{tab:dominant_modes}, the damping ratios increase significantly in these scenarios, reaching values between approximately 7\% and 12\%.
+
+This improvement in damping indicates that grid-forming converters provide additional stabilizing effects through their voltage and frequency control mechanisms, partially replacing the stabilizing role traditionally provided by synchronous machines.
+
+Furthermore, in the final scenarios (R09 and R09A), where the synchronous slack generator is replaced by grid-forming converters, the dominant oscillation frequency decreases to approximately 0.6~Hz. This represents a noticeable reduction compared to the $\sim$1~Hz electromechanical mode observed in the preceding scenarios. The shift toward a lower oscillation frequency indicates a change in the dominant system dynamics as the share of converter-based generation increases.
+
+\subsection{Summary of Observed Stability Limits}
+
+Based on the performed analysis, three key observations regarding system stability can be identified.
 
 \begin{itemize}
-\item \textbf{Dynamic robustness limit}: between scenarios R05 and R06, where the system begins to lose the ability to withstand large disturbances in time-domain RMS simulations.
 
-\item \textbf{Small-signal stability limit}: between scenarios R06 and R07, where an unstable eigenvalue appears and the operating point itself becomes unstable.
+\item \textbf{Dynamic robustness limit:} Between scenarios R05 and R06, where the system begins to lose the ability to withstand large disturbances despite remaining locally stable according to small-signal analysis.
+
+\item \textbf{Small-signal stability limit:} Between scenarios R06 and R07, where a positive real eigenvalue appears and the operating point becomes unstable.
+
+\item \textbf{Stabilization through grid-forming converters:} In scenarios where grid-forming converters are introduced (e.g., R06A, R07A, and R08A), the dominant eigenvalues move back to the left half-plane and the damping of the dominant oscillatory mode improves, restoring system stability.
+
 \end{itemize}
 
-These results highlight the increasing influence of converter control dynamics in systems with high shares of converter-based generation.
+Overall, the results highlight the increasing influence of converter control dynamics in power systems with high shares of converter-based generation. High penetrations of grid-following converters can lead to reduced stability margins and can ultimately result in instability. The participation factor analysis of the unstable scenarios indicates that the dominant states were associated with the phase-locked loop (PLL), which confirms that grid-following converters rely on a sufficiently stiff grid for stable operation.
+
+Furthermore, increasing penetration of converter-based generation leads to a progressive shift of the eigenvalues in the complex plane. From a system-theoretic perspective, this reflects a modification of the system state matrix, implying that the overall dynamic representation of the power system changes as synchronous machines are replaced by converter-interfaced resources. As a result, the characteristics of the dominant oscillatory modes may also change.
+
+Finally the results also show that the integration of grid-forming converters can significantly improve system stability. In scenarios such as R06B and R06BA, the introduction of grid-forming capability increases modal damping and restores dynamic robustness. However, the results further indicate that the location of grid-forming units within the network influences the system dynamics, suggesting that the allocation of these assets plays an important role in the stability of converter-dominated power systems.
+\section{RMS Analysis}
+
+\subsection{Effect of Increasing GFL Penetration}
+
+The dynamic response of the IEEE-39 bus system was evaluated for increasing levels of grid-following (GFL) photovoltaic penetration. In all cases, the applied disturbance was a three-phase short-circuit fault at Bus 16 cleared after 100 ms. The resulting voltage response at the faulted bus was used to assess system stability and dynamic performance. The main results are summarized in Table~\ref{tab:rms_results}
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Summary of RMS simulation results for Phase 2 (IEEE 39-bus system).}
+\label{tab:rms_results}
+\begin{tabular}{l c c c c c c}
+\toprule
+Case & GFM Location & RMS No Event & RMS 3ph Fault & $V_{\min,16}$ & $V_{ov}$ & $t_{rec}$ \\
+ &  & Feasible & Feasible & [p.u.] & [p.u.] & [s] \\
+\midrule
+
+R00 & -- & yes & yes & 0.059 & 1.10 & 3.829 \\
+R01 & -- & yes & yes & 0.058 & 1.095 & 3.695 \\
+R02 & -- & yes & yes & 0.057 & 1.08 & 3.042 \\
+R03 & -- & yes & yes & 0.056 & 1.072 & 4.011 \\
+R04 & -- & yes & yes & 0.054 & 1.141 & 7.462 \\
+R05 & -- & yes & yes & 0.033 & 1.148 & 1.722 \\
+R06 & -- & yes & yes & 0.032 & 1.198 & 1.713 \\
+R07 & -- & no & no & -- & -- & -- \\
+R06A & Bus 32 & yes & yes & 0.033 & 1.209 & 0.698 \\
+R06B & Bus 32,33 & yes & no & 0.053 & 1.449 & 0.650 \\
+R06BA & Bus 32,36 & yes & yes & 0.038 & 1.263 & 0.575 \\
+R07A & Bus 35 & yes & yes & 0.035 & 1.39 & 0.60 \\
+R07B & Bus 35,32 & yes & yes & 0.036 & 1.383 & 0.567 \\
+R08 & Bus 38 & no & no & -- & -- & -- \\
+R08A & Bus 38,35 & yes & yes & 0.036 & 1.38 & 0.566 \\
+R09 & Bus 38,35,31 & yes & no & -- & -- & -- \\
+R09A & Bus 31,38,35,32 & yes & no & -- & -- & -- \\
+
+\bottomrule
+\end{tabular}
+\end{table}
+
+The base case (R00), consisting entirely of synchronous generators, provides the reference for the analysis. In this scenario, the voltage dip reaches 0.059 p.u., followed by a voltage overshoot of approximately 1.1 p.u. The recovery time is defined as the time required for the voltage signal to return and remain within a predefined operating band between 1.012 p.u. and 1.052 p.u., around the nominal pre-fault voltage of 1.032 p.u.
+
+For penetration levels up to 30\% (cases R00--R04), the system remains dynamically stable. The minimum voltage during the fault is only slightly affected, varying between approximately 0.054 p.u. and 0.059 p.u. However, the post-fault oscillations become progressively less damped as the share of synchronous generation decreases. As a result, the voltage takes longer to re-enter and remain within the recovery band. This is reflected in the increasing recovery time observed up to case R04.
+
+Interestingly, for cases R01--R03 (up to 21.46\% GFL penetration), the voltage overshoot is slightly lower than in the pure synchronous generator case. This behavior can be attributed to changes in reactive power support and modified post-fault power flow distribution due to the presence of converter-interfaced generation.
+
+% FIGURE PLACEHOLDER
+% Voltage response comparison for cases R00–R04
+%Bus 16 voltage for different GFL penetration levels
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{Figures/Chapter 7/RMS/R00toR04Bus16voltage.png}
+\caption{Voltage response at Bus 16 for increasing GFL penetration levels (R00--R04).}
+\end{figure}
+
+A more pronounced change in system behavior appears in case R05, corresponding to a PV penetration of 40.54\%, where only grid-following converters are added to the system. In this case, the voltage dip becomes significantly deeper, reaching 0.033 p.u., which corresponds to a reduction of approximately 44\% relative to the synchronous generator base case. A stronger voltage overshoot is also observed. In addition, noticeable ripple appears in the voltage signal, indicating that converter control dynamics begin to dominate the system response.
+
+In case R06, where the GFL penetration reaches 51.1\%, the voltage dip remains similar to that observed in R05. However, during the RMS simulation convergence warnings appear in the software when the fault is applied. Although the simulation completes successfully, these warnings indicate that the system is approaching the limits of dynamic robustness.
+
+This behavior becomes more evident in case R07, corresponding to a penetration level of 61.71\%. In this scenario the RMS simulation fails to converge even in the absence of a disturbance. Small-signal analysis reveals the presence of an eigenvalue located in the right half of the complex plane, indicating that the operating point itself is unstable. Participation factor analysis shows that this unstable mode is mainly associated with the phase-locked loop (PLL) dynamics of the grid-following converters, as shown in fig \ref{fig: participation_factor_r07}
+
+% FIGURE PLACEHOLDER
+% Eigenvalue plot showing unstable mode appearing in R07
+
+These results highlight the limitations of GFL converters in systems with high penetration of inverter-based resources. Since GFL converters rely on a phase-locked loop to synchronize with the grid voltage, they require a sufficiently strong grid to operate correctly. As synchronous machines are progressively displaced, the overall system strength decreases due to the reduction in short-circuit current and inertia. Consequently, the converters struggle to maintain stable synchronization with the grid.
+
+Cases R06 and R07 therefore indicate the approximate stability limit of the IEEE-39 bus system when only grid-following converters are introduced.
+
+\subsection{Stabilizing Effect of Grid Forming Converters}
+
+From this point onward, the analysis investigates whether grid-forming (GFM) converters are capable of restoring system stability.
+
+In case R06A, one GFM unit based on a virtual synchronous machine (VSM) control was introduced. Instead of adding a GFL unit, the corresponding converter was replaced by a GFM unit while maintaining the same rated apparent power, dispatched active power, and voltage control strategy. In this way, the GFM unit delivers the same power as the replaced GFL unit.
+
+The introduction of this GFM unit produced only a small improvement in the voltage dip; however, the recovery time of the voltage signal improved significantly. The recovery time decreased from 1.713 s in case R06 (with only GFL units) to 0.698 s in case R06A. This indicates a substantial improvement in the damping of post-fault oscillations. The RMS solver in PowerFactory also did not report convergence problems, suggesting that the system regained dynamic robustness with the addition of the GFM unit.
+
+% FIGURE PLACEHOLDER
+% Voltage comparison between R06 and R06A
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{Figures/Chapter 7/RMS/R06BvsR06BA.png}
+\caption{Voltage response at Bus 16 comparing the GFL-only case (R06) with the introduction of one GFM unit (R06A).}
+\end{figure}
+
+A similar effect is observed in case R07A. In the original R07 scenario the system could not reach a stable operating point. After replacing the GFL unit with a GFM unit, the system response becomes stable and the RMS simulation converges successfully. This demonstrates that GFM converters can restore dynamic robustness in converter-dominated systems.
+
+In case R08, corresponding to a PV penetration of 75.23\%, the system again becomes unstable when only one GFM unit is present. Small-signal analysis reveals an unstable eigenvalue and the RMS simulation fails to converge. However, when a second VSM-based GFM unit is introduced in case R08A, the system regains dynamic robustness and stable operation is recovered.
+
+These results indicate that GFM converters can extend the feasible penetration range of inverter-based resources in the system.
+
+\subsection{Influence of GFM Placement}
+
+Further simulations were performed to investigate the influence of the spatial placement of GFM units within the network.
+
+When two GFM units were placed at buses close to each other (case R06B), the simulation produced convergence warnings after the fault was cleared. Although the voltage dip during the fault improved compared to the single-GFM case, the post-fault dynamics showed numerical instability. This behavior suggests that unfavorable interactions between the control loops of nearby GFM units may occur.
+
+To evaluate this effect, a second configuration was tested in case R06BA, where the second GFM unit was relocated to Bus 36. In this scenario, the simulation converged successfully and the voltage recovery improved. The recovery time was reduced by approximately 17\% compared to the single-GFM case, indicating improved damping of post-fault oscillations.
+
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{Figures/Chapter 7/RMS/R06BvsR06BA.png}
+\caption{Influence of GFM placement on voltage recovery at Bus 16.}
+\end{figure}
+
+These results highlight that the stabilizing contribution of GFM converters depends not only on their number but also on their placement within the network.
+
+\subsection{Limits of Stability Restoration}
+
+Finally, case R09 represents an extreme scenario in which the slack generator is replaced, resulting in approximately 83\% inverter-based generation in the system.
+
+Although small-signal analysis shows that all eigenvalues remain in the left half of the complex plane, the system is still unable to withstand the three-phase fault. During the disturbance, pole slip of the remaining synchronous generator is observed. This indicates that restoring small-signal stability does not necessarily guarantee transient robustness under severe disturbances.
+
+Increasing the share of GFM units therefore extends the feasible penetration range of inverter-based resources. However, beyond a certain point, restoring operating-point feasibility and small-signal stability is no longer sufficient to guarantee transient fault stability. In other words, at very high converter penetration levels, simply adding more GFM units does not necessarily ensure adequate fault ride-through capability.
