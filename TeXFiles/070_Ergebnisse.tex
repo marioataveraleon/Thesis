@@ -1,7 +1,151 @@
 \chapter{Ergebnisse}
 \label{ch:Ergebnisse}
 
-\section{Phase 1: REE}
+\section{Phase 1}
+\subsection{Three Phase Short Circuit Response}
+
+A three-phase short-circuit was applied at the point of connection (PCR) at $t = 1\,\text{s}$ and cleared at $t = 1.1\,\text{s}$. The fault was modeled as a solid fault ($R = 0$, $X = 0$), resulting in a voltage drop at the PCR close to $0\,\text{pu}$. All technologies were evaluated under identical equivalent Spanish network conditions with a short-circuit ratio (SCR) of 5.
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{3PHSC results: voltage and current response.}
+\begin{tabular}{lccccc}
+\toprule
+Technology & Voltage min [pu] & Voltage Settling Time [s] & $V_{max}$ [pu] & Steady-State Voltage [pu] & $I_{pos,max}$ [pu] \\
+\midrule
+GFL\_IEC        & 0.000 & 0.437 & 1.107 & 1.001 & 1.048 \\
+GFL\_WECC       & 0.000 & 0.534 & 1& 1.000 & 1.086 \\
+GFM\_Droop      & 0.000 & 0.148 &1& 1.000 & 1.985 \\
+GFM\_VSM        & 0.000 & 0.046 &1.126& 1.000 & 1.893 \\
+SG              & 0.000 & 0.426 &1.027& 1.000 & 5.064 \\
+SMA\_BESS\_GFL  & 0.000 & 0.057 & 1.082 & 1.000 & 1.078 \\
+SMA\_PV\_GFL    & 0.000 & 0.041 & 1.093 & 1.000 & 1.078 \\
+\bottomrule
+\end{tabular}
+\label{tab:3phsc_voltage_current}
+\end{table}
+
+
+
+
+\subsubsection{Current Contribution During the Fault}
+
+The short-circuit current contribution differs significantly among the analyzed technologies. The synchronous generator (SG) exhibits the highest current injection, reaching values of approximately $5\,\text{pu}$. This behavior is consistent with the physical characteristics of synchronous machines, where the internal voltage source and low subtransient impedance lead to large fault current contributions.
+
+The grid-forming converter (GFM) shows an intermediate response. An initial current peak of approximately $1.8$--$1.9\,\text{pu}$ is observed, followed by a rapid limitation to around $1.2\,\text{pu}$ for the duration of the fault. This behavior is associated with the implemented current limiting mechanisms and virtual impedance control, which restrict the converter current to protect the hardware, as can be seen in \ref{fig:PositiveSeqCurrent}
+
+In contrast, the grid-following converter (GFL) maintains a nearly constant current close to its nominal value (approximately $1\,\text{pu}$) throughout the fault. 
+
+These results highlight the fundamental differences between synchronous and converter-based technologies in terms of short-circuit current contribution.
+
+On the other hand, the observed current behavior reflects the inherent limitations of converter-based technologies. Both GFM and GFL units are subject to current constraints, although implemented differently. In the GFM case, the limitation is actively enforced through control mechanisms such as virtual impedance and voltage control loops. In the GFL case, the limitation is intrinsic to its current-controlled structure.
+
+As a result, converter-based units do not provide fault current support comparable to synchronous machines, which has important implications for protection systems and grid strength.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\linewidth]{PosSeqCurrent.png}
+    \caption{Positive Sequence Current during three phase short circuit}
+    \label{fig:PositiveSeqCurrent}
+\end{figure}
+
+\subsubsection{Post-Fault Dynamic Response}
+
+After the fault clearance at $t=1.1$ s, distinct dynamic behaviors are observed. The synchronous generator exhibits pronounced oscillations in the current response, reflecting its electromechanical nature and the interaction between rotor dynamics and the network. \ref{fig:PositiveSeqCurrent}
+
+The grid-forming converter demonstrates a smoother and more damped recovery. The current gradually returns to steady-state values without significant oscillations, indicating effective damping introduced by the control strategy.
+
+The grid-following converter shows a delayed recovery characterized by a temporary drop in current after fault clearing, followed by a gradual return to steady-state conditions. This behavior is associated with the re-synchronization process of the phase-locked loop (PLL).
+
+
+
+\subsubsection{Voltage Response}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Figures/Chapter 7/Phase1/threephsc/VatPCR.png}
+    \caption{Voltage response at PCR during a three phase short circuit}
+    \label{fig:Vpcr}
+\end{figure}
+
+The voltage at the PCR drops to approximately $0\,\text{pu}$ during the fault for all technologies, which is consistent with the modeled solid fault. After fault clearance, differences in voltage recovery are observed. The highest overshoots are observed in the grid-forming VSM and GFL IEC models, reaching values of up to $1.126\,\text{pu}$ and $1.107\,\text{pu}$, respectively. The synchronous generator exhibits a more moderate overshoot of approximately $1.027\,\text{pu}$, while the grid-forming droop-controlled converter shows no significant overshoot, remaining close to $1.0\,\text{pu}$.
+
+In terms of voltage settling time, the fastest responses are observed for the converter-based technologies with fast control dynamics, particularly the GFM VSM and SMA-based models, which settle within approximately $0.04$--$0.06\,\text{s}$. The grid-forming droop control also shows a relatively fast response with a settling time of $0.148\,\text{s}$. In contrast, the synchronous generator and GFL IEC model exhibit slower voltage recovery, with settling times of $0.426\,\text{s}$ and $0.437\,\text{s}$, respectively, while the GFL WECC model shows the slowest response, reaching $0.534\,\text{s}$.
+
+These results indicate that converter-based technologies are capable of achieving significantly faster voltage recovery due to their control-based response, whereas synchronous machines exhibit slower dynamics associated with their electromechanical nature. Additionally, the magnitude of the voltage overshoot is influenced by the control strategy, where faster control action may lead to larger transient excursions if not sufficiently damped. \ref{fig:Vpcr}
+
+\subsubsubsection{Conclusion}
+
+The comparison demonstrates that synchronous generators, grid-forming converters, and grid-following converters exhibit fundamentally different behaviors under fault conditions. Grid-forming converters provide a compromise between fault current contribution and stable dynamic performance, while grid-following converters offer limited support to the grid during disturbances.
+
+\newpage
+\subsection{Loadstep}
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Load step results: frequency response.}
+\begin{tabular}{lcccccc}
+\toprule
+Technology & $f_{nadir}$ [Hz] & RoCoF [Hz/s] & $f_{ss}$ [Hz] & $t_{settling}$ [s] & $f_{max}$ [Hz] & $\Delta f$ [Hz] \\
+\midrule
+GFL\_IEC        & 49.928 & 0.077 & 49.974 & 5.798  & 50.000 & -0.026 \\
+GFL\_WECC       & 49.862 & 0.070 & 49.974 & 11.095 & 50.039 & -0.026 \\
+GFM\_Droop      & 49.918 & 0.088 & 49.972 & 5.898  & 50.000 & -0.028 \\
+GFM\_VSM        & 49.912 & 0.057 & 49.971 & 6.598  & 50.000 & -0.029 \\
+SG              & 49.922 & 0.064 & 49.972 & 6.298  & 50.000 & -0.028 \\
+SMA\_BESS\_GFL  & 49.925 & 0.082 & 49.974 & 5.686  & 50.000 & -0.026 \\
+SMA\_PV\_GFL    & 49.925 & 0.082 & 49.974 & 5.781  & 50.000 & -0.026 \\
+\bottomrule
+\end{tabular}
+\label{tab:loadstep_frequency}
+\end{table}
+
+
+The load step disturbance is used to evaluate the frequency stability of the system and the ability of each technology to contribute to active power balancing. The results are summarized in Table~\ref{tab:loadstep_frequency} and illustrated in Fig.~\ref{fig:fatpcr}.
+
+\subsubsection{Initial Frequency Dynamics}
+
+The initial frequency dynamics following the disturbance are characterized by the rate of change of frequency (RoCoF). The results show that VSM-based control achieves the lowest RoCoF, closely resembling the behaviour of synchronous machines due to inertia emulation. The synchronous generator exhibits a similarly low RoCoF, confirming its inherent inertial response.
+
+In contrast, grid-following converters exhibit higher RoCoF values, as they do not inherently provide inertia and instead follow the grid conditions through synchronization mechanisms. This leads to faster frequency deviations immediately after the disturbance.
+
+These results highlight the importance of inertia, whether physical or emulated, in limiting the initial frequency deviation.
+
+\subsubsection{Frequency Nadir and Active Power Response}
+
+The frequency nadir is influenced not only by inertia but also by the speed and magnitude of the active power response. Although the VSM exhibits the lowest RoCoF, it does not achieve the best frequency nadir. This is due to its relatively slower active power response compared to droop-controlled systems.
+
+The GFM droop control achieves a slightly better nadir, as it provides a faster active power injection following the disturbance. In contrast, the GFL-WECC model exhibits the worst nadir, which can be attributed to its limited capability to provide primary frequency support.
+
+These observations demonstrate that a lower RoCoF does not necessarily imply improved frequency stability, as the nadir depends on both inertial response and primary frequency control.
+
+\subsubsection{Frequency Recovery and Settling Time}
+
+The settling time reflects the ability of the system to restore frequency to steady-state conditions. The results show that synchronous generators and VSM-based converters exhibit longer settling times, which are associated with their inertial and electromechanical dynamics.
+
+Grid-following converters, on the other hand, tend to settle faster, as they do not actively participate in frequency regulation and therefore do not introduce additional dynamic interactions.
+
+The GFL-WECC model exhibits the longest settling time, which is associated with an overshoot in the frequency response that delays convergence. This behaviour indicates a less damped response compared to the other technologies.
+
+\subsubsection{Steady-State Frequency}
+
+At steady state, all grid-following units converge to the same final frequency value. This reflects their passive role in frequency control, as they do not contribute to balancing the power mismatch in steady-state conditions.
+
+In contrast, small deviations in steady-state frequency are observed for grid-forming converters and the synchronous generator. This is a consequence of their active participation in frequency regulation through droop characteristics, which determine the final operating point of the system.
+
+\subsubsection{Discussion}
+
+The results indicate that frequency stability is governed by a combination of inertial response and active power control. While inertia (physical or emulated) is essential to limit the initial frequency deviation, the frequency nadir and overall system stability depend strongly on the effectiveness of primary frequency control.
+
+Grid-forming converters provide a balanced response by combining inertia emulation with active power support, whereas grid-following converters offer limited contribution to frequency stability. The observed behaviour also highlights the importance of control tuning, particularly in converter-based technologies, where different implementations can lead to significantly different dynamic responses.
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Figures/Chapter 7/Phase1/Loadstep/fatPCR.png}
+    \caption{Frequency response at PCR}
+    \label{fig:fatpcr}
+\end{figure}
+
+
 
 \section{Phase 2: IEEE 39 Bus System}
 \subsection{RMS Dynamic Stability}

@@ -6,7 +6,7 @@
 
 The increasing penetration of inverter-based resources (IBRs), mainly photovoltaic and battery systems, has significantly changed the dynamic behaviour of modern power networks. As these resources interface through power-electronic converters and do not provide mechanical inertia, system frequency and voltage become more sensitive to disturbances, particularly in weak-grid conditions with low short-circuit ratio (SCR). This motivates the need for advanced converter control methods capable of contributing to system stability \cite{8586162, Rathnayake2021}.
 
-Two main control paradigms exist: grid-following (GFL) and grid-forming (GFM) inverters. Their fundamental differences define how each device interacts with the grid and determines its ability to support voltage, frequency, and overall system strength.
+Two main control paradigms exist: grid-following (GFL) and grid-forming (GFM) inverters. Their fundamental differences determine their capability to support system stability.
 
 \subsection{Grid-Following Inverters}
 
@@ -21,14 +21,7 @@ While GFL inverters are effective in delivering programmed power, their performa
  \label{fig:GFL Current Control Source Approximation}
 \end{figure}
 
-The detailed control block diagram in Fig.~\ref{fig:Grid Following Inverter Detailes Control Blocks} illustrates the typical GFL architecture. Since GFL units depend on accurate grid measurements, their dynamic behaviour under disturbances is limited by PLL response time, current controller bandwidth, and the available grid strength.
 
-\begin{figure}[htbp!]
- \centering
- \includegraphics[width=0.8\textwidth]{Figures/Chapter 2/GFL Detailed Control Block.png}
- \caption{Detailed control blocks of a grid-following inverter \cite{9751441}}
- \label{fig:Grid Following Inverter Detailes Control Blocks}
-\end{figure}
 
 \subsection{Grid-Forming Inverters}
 
@@ -41,32 +34,15 @@ GFM inverters operate fundamentally differently. Instead of relying on the grid 
  \label{fig:GFM Control Structure}
 \end{figure}
 
-Figure~\ref{fig:GFM Control Structure Islanding Operation} shows the behaviour of a GFM inverter during islanded operation, where the converter must regulate the voltage at the point of common coupling while supplying loads represented by an equivalent impedance.
 
-\begin{figure}[htbp!]
- \centering
- \includegraphics[width=0.8\textwidth]{Figures/Chapter 2/GFM Control Structure Islanding Operation.png}
- \caption{Grid-forming control structure during islanded operation \cite{9751441}}
- \label{fig:GFM Control Structure Islanding Operation}
-\end{figure}
+Common GFM control strategies include droop control, virtual synchronous machine (VSM), and virtual oscillator control (VOC). These methods aim to provide fast frequency support, synthetic inertia, voltage regulation, improved damping, black-start capability, and stable operation under low SCR. 
 
-Common GFM control strategies include droop control, virtual synchronous machine (VSM), and virtual oscillator control (VOC). These methods aim to provide fast frequency support, synthetic inertia, voltage regulation, improved damping, black-start capability, and stable operation under low SCR. The detailed block structure is shown in Fig.~\ref{fig:Grid Forming Inverter Detailed Control Blocks}.
-
-\begin{figure}[htbp!]
- \centering
- \includegraphics[width=0.8\textwidth]{Figures/Chapter 2/GFM Detailed Control Block.png}
- \caption{Detailed control blocks of a grid-forming inverter \cite{9751441}}
- \label{fig:Grid Forming Inverter Detailed Control Blocks}
-\end{figure}
-
-Overall, the distinction between GFL and GFM is essential for evaluating system stability in converter-dominated networks. GFL units depend on the grid's voltage and frequency, whereas GFMs can regulate these quantities directly. As a result, the sensitivity of GFM control parameters—virtual inertia, droop, and damping—to different SCR levels becomes a central aspect of the system's dynamic behaviour, forming the basis for the stability analysis conducted in this thesis.
+The distinction between GFL and GFM is fundamental for stability assessment in converter-dominated systems. While GFL units are limited in their ability to support system dynamics, GFM control parameters—such as virtual inertia, droop, and damping—directly influence key stability indicators, including RoCoF, frequency nadir, and voltage recovery. This forms the basis for the analyses performed in this thesis.
 
 % Control Methods
 \section{GFM Control Methods}
 
-Distributed generators (DGs) are typically composed of a DC link, an input-side converter, and a grid-side DC/AC converter. While the input stage depends on the specific generation technology, the grid-side converter defines the dynamic interaction between the inverter and the electrical network.
-
-Grid-forming (GFM) inverters autonomously regulate their terminal voltage and frequency, ensuring stable operation even under varying load conditions or fluctuations in generation, such as in photovoltaic or battery systems \cite{10755449}. Their control framework is generally organised around three main objectives:
+Grid-forming (GFM) inverters regulate voltage and frequency by emulating the behaviour of voltage sources. Their control structure is designed to ensure stable operation and grid code compliance under disturbances while maintaining power balance and voltage support. \cite{10755449, 10620991}. Their control framework is generally organised around three main objectives:
 
 \begin{itemize}
     \item \textbf{Power control:} Regulation of active and reactive power to maintain the balance between generation and demand.
@@ -74,11 +50,10 @@ Grid-forming (GFM) inverters autonomously regulate their terminal voltage and fr
     \item \textbf{Voltage control:} Reactive power modulation to support voltage stability during transients.
 \end{itemize}
 
-Regardless of the specific control strategy, GFM controllers must comply with grid-code requirements to guarantee stable operation during steady-state and dynamic events \cite{10620991}.
 
 \subsection{Droop Control}
 
-Droop control emulates the primary frequency regulation mechanism of synchronous machines. It introduces a proportional relationship between frequency deviation and active power, and between voltage deviation and reactive power \cite{10620991}. By using \(P\text{--}f\) and \(Q\text{--}V\) characteristics, multiple inverters can share load without communication, which makes the method robust and suitable for decentralised operation.
+Droop control establishes a proportional relationship between frequency and active power, and between voltage and reactive power \cite{10620991}. By using \(P\text{--}f\) and \(Q\text{--}V\) characteristics, multiple inverters can share load without communication, which makes the method robust and suitable for decentralised operation.
 
 Although droop control can regulate voltage and frequency effectively, it does not reproduce the synchronous machine swing dynamics. As a consequence, conventional droop controllers do not inherently provide inertia support.
 
@@ -91,13 +66,6 @@ V &= V_{\text{ref}} + K_Q (Q_{\text{ref}} - Q).
 \end{aligned}
 \right.
 \end{equation}
-
-\begin{figure}[htbp!]
- \centering
- \includegraphics[width=0.8\textwidth]{Figures/Chapter 2/Block Diagram frequency and voltage droop control.PNG}
- \caption{Block diagram of frequency and voltage droop control \cite{10620991}.}
- \label{fig:Block Diagram frequency and voltage droop control}
-\end{figure}
 
 Here, \(K_P\) and \(K_Q\) denote the active- and reactive-power droop coefficients, while \(P\), \(Q\), \(V\), and \(\omega\) represent the measured quantities. This strategy enables decentralised and reliable load sharing, although its dynamic performance is limited by the absence of inertia emulation.
 
@@ -113,54 +81,19 @@ A representative formulation of VSM behaviour is \cite{10949993}:
 
 where \(J\) and \(D_p\) denote the virtual inertia and damping, respectively. By replicating synchronous machine dynamics, VSM-based control avoids rapid variations in frequency and voltage during disturbances. However, tuning the inertia and damping parameters is more complex than in droop control, and improper tuning may affect stability \cite{10755449}.
 
-The classical swing equation is given by \cite{Rathnayake2021}:
-\begin{equation}
-J \omega_0 \frac{d\omega_r}{dt} + D_p \omega_r = P_m - P_e.
-\end{equation}
 
-A simplified transfer function representation is:
-\begin{equation}
-K_{\text{vsg}} = \frac{\Delta \omega}{\Delta P}
-= \frac{1}{(D_p + k_m)} \left( \frac{1}{\frac{J \omega_0}{D_p + k_m}s + 1} \right),
-\end{equation}
 
-where \(k_m\) is a gain selected according to the desired \(P\text{--}\omega\) characteristic.
-
-\begin{figure}[htbp!]
- \centering
- \includegraphics[width=0.8\textwidth]{Figures/Chapter 2/Swing based VSG.png}
- \caption{Swing-based virtual synchronous generator \cite{Rathnayake2021}.}
- \label{fig:Swing Based VSG}
-\end{figure}
-
-The ability to emulate synchronous machine inertia makes VSM-based control suitable for low-inertia and weak-grid systems, although the increased tuning complexity is a notable drawback.
-
-\subsection{Virtual Oscillator Control}
-
-Virtual Oscillator Control (VOC) synchronises multiple GFM inverters using oscillator dynamics instead of PLLs or explicit power calculations. The method uses an internal nonlinear oscillator that generates a reference waveform, allowing the inverter to naturally synchronize with other devices connected to the grid \cite{7512614}.
-
-VOC operates directly in the time domain and therefore provides faster transient performance compared to droop control. It is particularly suitable for parallel operation of multiple inverters but is highly sensitive to parameter tuning and may exhibit a limited synchronization range \cite{10755449}.
-
-\begin{figure}[htbp!]
- \centering
- \includegraphics[width=0.8\textwidth]{Figures/Chapter 2/Virtual Resonance Generator Models.png}
- \caption{Virtual oscillator and virtual resonance generator models \cite{7512614}.}
- \label{fig:Virtual Resonance Generators}
-\end{figure}
-
-In Fig.~\ref{fig:Virtual Resonance Generators}, \(u(t)\) denotes the capacitor voltage of an LC oscillator. VOC uses the capacitor voltage as the modulation signal in the PWM process, enabling the inverter to behave similarly to a nonlinear electrical oscillator. This behaviour allows fast self-synchronisation without requiring power calculations.
-
-Under steady-state conditions, VOC converges to droop-like behaviour. In transient conditions, its time-domain nature results in a faster and more stable response \cite{9479398}.
 % Power System Stability
 \section{Power System Stability}
 
-Electric power systems are undergoing significant changes due to the increasing penetration of power-electronic-interfaced technologies. These developments have introduced new stability considerations, although the mathematical foundations remain consistent with general dynamic system theory \cite{1318675}.
+Electric power systems are undergoing significant changes due to the increasing penetration of inverter-based resources (IBRs). These technologies introduce fast dynamics, reduced inertia, and new interactions between converter control systems and the grid, while the underlying mathematical framework of stability remains consistent with classical dynamic system theory \cite{1318675, 9286772}.
 
-Historically, system dynamics were dominated by synchronous machines. Their inertia, electromechanical behaviour, and well-understood control characteristics provided predictable system responses. Modern power systems, however, incorporate large shares of inverter-based resources (IBRs)—including wind and photovoltaic plants, FACTS devices, HVDC links, and power-electronic loads such as electric vehicles and heat pumps. These elements modify the overall stability landscape by introducing fast dynamics, reduced inertia, and new types of interactions between controllers and the grid \cite{9286772}.
+Historically, system dynamics were dominated by synchronous machines, whose inertia and electromechanical behaviour ensured predictable responses to disturbances. In contrast, modern systems with high shares of IBRs exhibit increased sensitivity to disturbances, particularly under weak-grid conditions characterised by low short-circuit ratio (SCR), where control interactions become more pronounced \cite{9286772}.
 
-Power system stability is defined as the ability of the electrical network to return to an acceptable operating equilibrium after a disturbance, with system variables remaining within permissible limits and the network remaining intact \cite{1318675}. Disturbances range from continuous small load variations to severe events such as faults or generator outages. Since it is not feasible to guarantee stability for all possible scenarios, system operators rely on contingency-based analyses, prioritising the most probable or most critical events.
+Power system stability is defined as the ability of the electrical network to return to an acceptable operating equilibrium after a disturbance, with system variables remaining within permissible limits and the network remaining intact \cite{1318675}. In converter-dominated systems, this capability is strongly influenced by converter control strategies and grid strength.
 
-The increasing share of IBRs introduces additional challenges, such as reduced short-circuit current, interactions between converter control loops, and lower system inertia. These aspects can affect frequency and voltage stability, especially in weak-grid conditions where electromagnetic and control interactions become more pronounced \cite{9286772}.
+The increasing share of IBRs introduces additional challenges, including reduced short-circuit current, limited inherent inertia, and stronger interactions between converter control loops and network impedance. These effects can significantly impact both frequency and voltage stability, particularly in weak-grid conditions \cite{9286772}.
+
 
 Different types of disturbances activate system components with distinct response times. Figure~\ref{fig:Power System Time Scales} illustrates the typical time scales of relevant dynamic phenomena.
 
@@ -173,7 +106,7 @@ Different types of disturbances activate system components with distinct respons
 
 IBRs exhibit significantly faster dynamic responses than synchronous machines. While electromechanical time-scale analysis allows model simplifications suitable for traditional stability studies, fast inverter dynamics—particularly those related to internal control loops or switching—are not fully captured using simplified phasor-domain models. This motivates the inclusion of faster time scales when assessing systems with high IBR penetration \cite{9286772}.
 
-Modern power systems can thus be regarded as high-order, multivariable dynamic processes in which stability depends on operating conditions, network topology, and the type and magnitude of the disturbance \cite{1318675}. Figure~\ref{fig:Classification of Power System Stability} presents the standard classification of stability phenomena.
+
 
 \begin{figure}[htbp!]
     \centering
@@ -182,38 +115,34 @@ Modern power systems can thus be regarded as high-order, multivariable dynamic p
     \label{fig:Classification of Power System Stability}
 \end{figure}
 
-Classifying stability phenomena enables the use of appropriate analytical methods and modelling approaches for each category \cite{9286772}.
 
 \subsection{Categories of Stability}
 
-\begin{enumerate}
-    \item \textbf{Rotor Angle Stability:} Ability of interconnected synchronous machines to remain in synchronism during normal operation and following disturbances.
-    
-    \item \textbf{Voltage Stability:} Ability of the system to maintain acceptable voltage levels after a disturbance. It depends on generation and transmission capability, reactive power availability, and the limits of maximum power transfer.
-    
-    \item \textbf{Frequency Stability:} Ability of the system to maintain or restore nominal frequency following large imbalances between load and generation. Instability may manifest as sustained frequency swings or widespread tripping of units.
-    
-    \item \textbf{Resonance Stability:} Occurs when insufficient damping leads to energy exchange in oscillatory modes, resulting in magnified voltage, current, or torque oscillations.
-    
-    \item \textbf{Converter-Driven Stability (CDS):} Stability associated with interactions between converter control systems and the grid. These phenomena span a wide frequency range and are increasingly relevant in power systems dominated by power-electronic devices.
-\end{enumerate}
+Power system stability can be broadly classified into frequency and voltage stability, which are the primary focus of this work.
+
+\begin{figure}[htbp!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/Chapter 2/Power System Stability.png}
+    \caption{Classification of power system stability \cite{9286772}.}
+    \label{fig:Classification of Power System Stability}
+\end{figure}
+\begin{itemize}
+    \item \textbf{Frequency Stability:} Ability of the system to maintain or restore nominal frequency following power imbalances between generation and demand.
+    \item \textbf{Voltage Stability:} Ability of the system to maintain acceptable voltage levels following disturbances, depending on reactive power availability and network conditions.
+\end{itemize}
+
+Other stability categories, such as rotor angle stability and resonance phenomena, are not explicitly addressed in this work, as the focus is placed on converter-dominated system behaviour.
 
 \subsubsection{Converter-Driven Stability}
 
-High penetration of converter-interfaced renewable generation has introduced new dynamic interactions not present in synchronous machine-dominated grids. Converters lack mechanical inertia and rely entirely on fast digital control loops, making system behaviour strongly dependent on controller tuning and grid strength. As IBR penetration increases, these interactions may lead to oscillatory or poorly damped behaviour across a broad frequency spectrum—including sub-synchronous oscillations, electromechanical modes, and high-frequency resonances. Real-world incidents have shown that weak-grid conditions can significantly reduce system damping or even trigger instability \cite{en14144290}.
+The increasing penetration of converter-interfaced renewable generation introduces new dynamic interactions driven primarily by control systems rather than physical inertia. In such systems, stability becomes highly dependent on controller design and grid strength.
 
-Converter-driven stability encompasses dynamic phenomena influenced or caused by converters and their internal controls. Slow interactions typically arise below 10~Hz and are linked to outer control loops or system-level dynamics. Fast interactions originate from inner control loops and power-electronic behaviour, covering tens to hundreds of hertz or more. These frequency ranges are illustrated in Fig.~\ref{fig:Frequency Range of Converter Driven Stability} \cite{10497578}.
+In weak-grid conditions, interactions between converter control loops and network impedance may lead to poorly damped oscillations or even instability \cite{en14144290}. These phenomena span a wide frequency range and are particularly relevant in systems with high penetration of grid-forming and grid-following converters.
 
-\begin{figure}[htbp!]
-\centering
-\includegraphics[width=0.8\textwidth]{Figures/Chapter 2/Converter Driven Stability Classification.png}
-\caption{Frequency range of converter-driven stability \cite{10497578}.}
-\label{fig:Frequency Range of Converter Driven Stability}
-\end{figure}
+Fast converter-driven interactions often require electromagnetic transient (EMT) modelling for accurate representation, as they involve dynamics that are not captured by RMS models. However, EMT simulations require small time steps and are computationally intensive.
 
-The analysis of fast converter-driven interactions typically requires EMT models, which represent detailed electromagnetic and control dynamics. However, EMT simulations require very small time steps, resulting in high computational effort. For larger systems, they may become impractical or computationally prohibitive \cite{10497578}.
+Overall, the increasing share of IBRs requires modelling approaches capable of capturing both system-level dynamics and converter-driven interactions. While EMT simulations provide detailed insights into fast dynamics, their computational cost limits their application to smaller systems. Therefore, efficient RMS-based approaches, complemented by EMT validation, are essential for analysing the impact of GFM control parameters under varying grid strength conditions.
 
-Overall, the literature highlights that increasing IBR penetration necessitates advanced and scalable modelling approaches to capture converter-grid interactions. While EMT simulations provide valuable insights, they are difficult to apply at large scale, motivating the development of efficient methods capable of representing converter-driven dynamics in future power systems.
 
 % EMT VS RMS 
 \section{RMS and EMT Approaches}
@@ -239,29 +168,19 @@ Figure~\ref{fig:Frequency range of coverage EMT and PDT studies} summarises the 
 
 \section{Frequency and Voltage Stability Indicators}
 
-Power system stability analysis requires quantitative measures that describe how the system reacts to disturbances and how fast it returns to an acceptable operating point. Modern converter-dominated grids exhibit faster dynamics and reduced inertia, which makes stability indicators essential for comparing control strategies, evaluating inverter performance, and assessing system strength. The indicators presented in this section are widely used in international standards (IEEE, ENTSO-E), system operator guidelines, and the scientific literature.
+Power system stability analysis requires quantitative indicators to evaluate the system response to disturbances and its ability to return to an acceptable operating point. In converter-dominated systems, reduced inertia and faster dynamics increase the importance of such indicators for assessing control strategies and grid strength.
 
 \subsection{Frequency Stability Indicators}
 
-Frequency stability refers to the ability of a power system to maintain its nominal frequency following a sudden disturbance such as a generation outage or a load change. In traditional systems, the electromechanical response of synchronous machines limits the initial frequency deviation through inertia, while primary frequency control determines the steady-state deviation \cite{kundur1994}. In converter-dominated systems, reduced inertia and faster dynamics increase the importance of suitable frequency indicators for stability assessment, inverter control design, and compliance with operational requirements.
+Frequency stability refers to the ability of the system to maintain nominal frequency following disturbances such as generation outages or load changes. In traditional systems, inertia limits the initial frequency deviation, while primary control determines the steady-state behaviour \cite{kundur1994}. In systems with high shares of inverter-based resources, reduced inertia makes frequency indicators particularly critical.
 
 \subsubsection{Theoretical Background}
 
-System frequency is determined by the balance between mechanical input power and electrical output power. A sudden load increase causes electrical power to exceed mechanical input, leading to a frequency drop governed by the swing equation:
+System frequency is determined by the balance between mechanical input and electrical output power. A disturbance leads to a frequency deviation governed by the swing equation:
 \begin{equation}
     2H \frac{df}{dt} = P_m - P_e,
 \end{equation}
-where $H$ is the inertia constant, $P_m$ the mechanical power, and $P_e$ the electrical power.
-
-As frequency declines, the governor responds according to its droop characteristic:
-\begin{equation}
-    \Delta P_m = -\frac{1}{R} \Delta f,
-\end{equation}
-with $R$ the generator droop. This drives the frequency towards a new equilibrium that generally differs from nominal. The resulting steady-state deviation is
-\begin{equation}
-    \Delta f_{\mathrm{ss}} = -\frac{\Delta P_L}{\frac{1}{R} + D},
-\end{equation}
-where $\Delta P_L$ is the load change and $D$ the load-damping coefficient. This behaviour characterises the inertial dip, frequency nadir, and primary frequency control response.
+where $H$ is the inertia constant.
 
 \begin{figure}[htbp!]
 \centering
@@ -270,80 +189,39 @@ where $\Delta P_L$ is the load change and $D$ the load-damping coefficient. This
 \label{fig:Frequency Respone of a generating unit.}
 \end{figure}
 
-Figure~\ref{fig:Frequency Respone of a generating unit.} illustrates the characteristic inertial frequency dip, the nadir, and the subsequent primary control recovery governed by governor droop, as well as the new steady-state frequency value.
+Figure~\ref{fig:Frequency Respone of a generating unit.} illustrates the inertial response, frequency nadir, and recovery following a disturbance.
 
 \subsubsection{Rate of Change of Frequency (RoCoF)}
 
-The rate of change of frequency (RoCoF) quantifies the initial speed of frequency deviation following a disturbance and is a key indicator of system robustness. Immediately after the event, it can be approximated by \cite{ENTSOE2020_RoCoF}:
+RoCoF quantifies the initial rate of frequency change and is a key indicator of system inertia and robustness. It can be approximated as \cite{ENTSOE2020_RoCoF}:
 \begin{equation}
     \text{RoCoF}\big|_{t=0^+} = 
-    \frac{\Delta P_{\mathrm{Imbalance}}}{P_{\mathrm{LOAD}}} \cdot \frac{f_0}{2H},
+    \frac{\Delta P_{\mathrm{Imbalance}}}{P_{\mathrm{LOAD}}} \cdot \frac{f_0}{2H}.
 \end{equation}
-where $\Delta P_{\mathrm{Imbalance}}$ is the generation–load imbalance, $P_{\mathrm{LOAD}}$ the system load, and $f_0$ the nominal frequency.
 
-ENTSO-E regards RoCoF withstand capability as a fundamental operational requirement and notes that high RoCoF values may lead to generator tripping, loss of synchronism, or malfunction of protection devices \cite{ENTSOE2020_RoCoF}. Typical limits in Continental Europe range from $0.5$ to $2\,\mathrm{Hz/s}$ depending on system conditions \cite{entsoe2016_freq}.
-
-The minimum system inertia needed to contain RoCoF within a specified limit is
-\begin{equation}
-    T_{N,\min} = 
-    \frac{\Delta P_{\mathrm{Imbalance}}}{P_{\mathrm{Load}}}
-    \cdot \frac{f_0}{\text{RoCoF}_{\max}},
-\end{equation}
-where $T_N$ is the equivalent system inertia constant.
+High RoCoF values may lead to protection maloperation or generator tripping, and are therefore constrained by grid codes \cite{ENTSOE2020_RoCoF}.
 
 \subsubsection{Frequency Nadir}
 
-The frequency nadir is the minimum frequency reached after a disturbance and represents the balance between inertial response and primary frequency control. It is typically reached after the initial inertial frequency decline and before governor action has fully developed \cite{kundur1994}.
-
-In practice, both RoCoF and nadir are defined and constrained by grid codes and system operator requirements. For example, the Irish Grid Code defines the nadir as the minimum frequency occurring within a 5--15~s window following an event; if the absolute minimum lies outside this interval, the nadir is taken as the lowest value within that window \cite{EirGrid2025_GridCode}. ENTSO-E focuses on maintaining RoCoF withstand capabilities, typically between $0.5$ and $1\,\mathrm{Hz/s}$, while nadir requirements are indirectly linked to the avoidance of under-frequency load shedding \cite{ENTSOE2020_RoCoF}. VDE-FNN requires generating units in Germany to remain connected for RoCoF values up to approximately $2$--$2.5\,\mathrm{Hz/s}$, with nadir limits coordinated with national UFLS thresholds \cite{VDEFNN2019_TechnicalConnection}. In Great Britain, generators must withstand RoCoF levels up to $\pm 1\,\mathrm{Hz/s}$ for at least one second \cite{NGESO2022_GridCode}, whereas in low-inertia systems such as South Australia, AEMO specifies RoCoF withstand levels up to $4\,\mathrm{Hz/s}$, with nadir evaluated against frequency operating standards \cite{AEMO2020_FOS}. These different definitions illustrate the diversity of frequency stability criteria worldwide and highlight the operational relevance of nadir and RoCoF in low-inertia grids.
+The frequency nadir is the minimum frequency reached after a disturbance and reflects the combined effect of inertia and primary control \cite{kundur1994}. It is a critical indicator for avoiding under-frequency load shedding.
 
 \subsubsection{Steady-State Frequency Deviation}
 
-Following primary frequency control, the system settles at a new equilibrium frequency that depends on generator droop and load damping. The steady-state deviation is
+Following primary control, the system settles at a new equilibrium frequency:
 \begin{equation}
     \Delta f_{\mathrm{ss}} = 
     -\frac{\Delta P_L}{\frac{1}{R} + D}.
 \end{equation}
-This indicator is used to assess compliance with allowable frequency ranges (for instance, 49.8--50.2~Hz in Continental Europe) and to evaluate the adequacy of primary control reserves.
 
-\subsubsection{Aggregate Frequency: Centre of Inertia (COI)}
+This indicator reflects the adequacy of primary frequency control reserves.
 
-The aggregate frequency of a multi-machine system is often represented using the Centre of Inertia (COI), which provides an inertia-weighted average frequency. The COI rotor angle is defined as
-\begin{equation}
-    \delta_{\mathrm{COI}} = 
-    \frac{1}{H_T} \sum_{i=1}^{N} H_i \delta_i,
-\end{equation}
-where $H_i$ and $\delta_i$ are the inertia constant and rotor angle of generator $i$, and $H_T = \sum_{i=1}^{N} H_i$.  
-
-When nominal generator powers $S_{n,i}$ are included, the COI angle becomes
-\begin{equation}
-    \delta_{\mathrm{COI},S_n} = 
-    \frac{\sum_{i=1}^{N} H_i \delta_i S_{n,i}}
-         {\sum_{i=1}^{N} H_i S_{n,i}},
-\end{equation}
-and the corresponding COI frequency is
-\begin{equation}
-    f_{\mathrm{COI},S_n} = 
-    \frac{\sum_{i=1}^{N} H_i f_i S_{n,i}}
-         {\sum_{i=1}^{N} H_i S_{n,i}}.
-\end{equation}
-The COI representation simplifies the analysis of aggregate frequency behaviour, especially under large disturbances, and is useful for comparing the impact of different inertia levels and control strategies.
-
-Overall, RoCoF, nadir, steady-state deviation, and COI frequency are key quantitative measures used to evaluate frequency stability in modern power systems and are central to analysing the impact of reduced inertia and high renewable penetration.
+Overall, RoCoF and nadir are the primary indicators used in this work to assess frequency stability under different control strategies and grid strength conditions.
 
 \subsection{Voltage Stability Indicators}
 
-\subsubsection{Theoretical Background}
+Voltage stability refers to the ability of the system to maintain acceptable voltages under normal conditions and after disturbances. It is primarily determined by the balance of reactive power and network strength \cite{kundur1994}.
 
-Voltage stability refers to the ability of a power system to maintain acceptable voltages at all buses under normal operating conditions and following disturbances. Its underlying cause is the inability of the system to supply the reactive power demanded by loads and the network \cite{kundur1994}. Voltage stability phenomena are typically classified into large-disturbance and small-disturbance categories. Large-disturbance voltage stability concerns the system response to major events, such as faults or loss of generation, and is assessed using nonlinear time-domain simulations over short- or long-term time frames. Small-disturbance voltage stability focuses on the response to small perturbations around an operating point and can be analysed using steady-state or linearised dynamic methods \cite{kundur1994}.
-
-In conventional grids, long transmission distances and high network impedances contribute to voltage instability by limiting reactive power transfer and increasing voltage sensitivity \cite{8750828}. Additional influencing factors include generator reactive power limits, load characteristics, reactive compensation devices, and the action of voltage control equipment such as under-load tap changers \cite{kundur1994}.
-
-The fundamental mechanisms of voltage stability can be illustrated using a simple radial system composed of a voltage source, a transmission line, and a load. The line impedance determines the voltage drop and the maximum transferable active power. As load increases, the receiving-end power initially rises and eventually reaches a maximum, beyond which no high-voltage equilibrium exists \cite{kundur1994}. This defines the classical $P$--$V$ curve, where the nose point marks the boundary between stable and unstable operation. Load behaviour plays a critical role: constant-power loads and induction motors increase current and reactive power demand during voltage dips, accelerating the transition towards instability. These effects shape the characteristic $P$--$V$ and $Q$--$V$ curves and explain why weak grids—characterised by high impedance or low short-circuit ratio (SCR)—exhibit steep voltage sensitivities and reduced stability margins. In converter-dominated systems, grid-forming inverters assume the voltage-support role; their reactive current limits and control dynamics therefore determine short-term voltage recovery following disturbances.
-
-Voltage collapse refers to the progressive and uncontrollable decline of bus voltages caused by the inability of the power system to meet reactive power demand \cite{kundur1994}.
-
-Voltage stability can be interpreted using the classical $P$--$V$ and $Q$--$V$ characteristics. The $P$--$V$ curve represents the receiving-end voltage as a function of active power transfer and exhibits a maximum power point (nose point) beyond which no high-voltage equilibrium exists. The upper branch corresponds to stable operation, whereas the lower branch indicates voltage instability. The $Q$--$V$ curve expresses the steady-state relationship between reactive power injection and bus voltage. Its slope, often referred to as $V$--$Q$ sensitivity, provides a measure of the ability of the system to support voltage via reactive power. Steep negative slopes indicate weak-grid conditions and reduced voltage stability margins. These characteristics form the theoretical basis for the voltage indicators used in this thesis.
+The fundamental mechanisms of voltage stability can be illustrated using the classical $P$--$V$ and $Q$--$V$ characteristics, which describe the relationship between power transfer, reactive power, and voltage.
 
 \begin{figure}[htbp!]
 \centering
@@ -352,108 +230,46 @@ Voltage stability can be interpreted using the classical $P$--$V$ and $Q$--$V$ c
 \label{fig:PV QV Curves}
 \end{figure}
 
+Figure~\ref{fig:PV QV Curves} shows the $P$--$V$ and $Q$--$V$ curves, where the nose point defines the stability limit and the slope indicates voltage sensitivity.
+
 \subsubsection{Voltage Magnitude Deviation}
 
-The voltage magnitude deviation quantifies how far a bus voltage deviates from its nominal or pre-disturbance value. It is commonly used in short-term voltage stability assessment \cite{kundur1994,anderson2003}. Many grid codes specify allowable steady-state ranges, often within $0.9$--$1.1\,\mathrm{pu}$.
-
+Voltage deviation quantifies the difference between the instantaneous and pre-disturbance voltage:
 \begin{equation}
-\Delta V_i(t) = V_i(t) - V_{i,0},
+\Delta V_i(t) = V_i(t) - V_{i,0}.
 \end{equation}
-where $V_{i,0}$ is the pre-fault voltage (typically close to $1\,\mathrm{pu}$). The maximum absolute deviation over the simulation window is
+
+The maximum deviation is
 \begin{equation}
 \Delta V_{i,\max} = \max_t \left| \Delta V_i(t) \right|.
 \end{equation}
-Typical grid codes restrict steady-state deviations to a prescribed band around nominal voltage \cite{rfg2016}.
 
 \subsubsection{Post-Fault Voltage Dip}
 
-The post-fault voltage dip (or sag) is the minimum RMS voltage reached during and immediately after a disturbance. It is directly related to low-voltage ride-through (LVRT) requirements for inverter-based resources in modern grid codes and IEEE standards \cite{ieee1547,ieee2800}.
-
-From the simulated RMS voltage trace $V(t)$ at the bus of interest, the minimum value in a given time interval $[t_{\mathrm{fault}}, t_{\mathrm{end}}]$ is
+The voltage dip is the minimum voltage reached during and after a disturbance:
 \begin{equation}
 V_{\min} = \min_{t \in [t_{\mathrm{fault}},\, t_{\mathrm{end}}]} V(t).
 \end{equation}
-The relative depth of the dip with respect to the pre-fault voltage $V_0$ is
-\begin{equation}
-\text{Dip} = \frac{V_0 - V_{\min}}{V_0} \cdot 100\% .
-\end{equation}
-These quantities are compared against the admissible voltage profiles prescribed in \cite{rfg2016,ieee2800}.
 
 \subsubsection{Voltage Recovery Time}
 
-Voltage recovery time characterises how fast the bus voltage returns close to its pre-disturbance level after fault clearing, or to a predefined band around this pre-disturbance point. It is commonly used in short-term voltage stability assessment and reflects the reactive power support capability of the system \cite{kundur1994,cigre_vsa2024}.
-
-Given a tolerance band $\epsilon$ around the pre-fault voltage $V_0$ (for example $\epsilon = 0.05\,\mathrm{pu}$), the recovery time is defined as
+Voltage recovery time measures how fast the system returns to acceptable voltage levels:
 \begin{equation}
 t_{\mathrm{rec}} = 
-\min \left\{ t > t_{\mathrm{clear}} \;\big|\; \left| V(t) - V_0 \right| \leq \epsilon \ \text{and}\ \left| V(\tau) - V_0 \right| \leq \epsilon\ \forall \tau \geq t \right\}.
+\min \left\{ t > t_{\mathrm{clear}} \;\big|\; \left| V(t) - V_0 \right| \leq \epsilon \right\}.
 \end{equation}
-The indicator reported in this thesis is the elapsed time $t_{\mathrm{rec}} - t_{\mathrm{clear}}$.
 
 \subsubsection{Voltage Oscillation Damping Ratio}
 
-The damping ratio characterises how fast post-disturbance voltage oscillations decay. It is particularly relevant in weak grids, where low electromechanical damping can lead to sustained oscillations even in the absence of synchronous machines \cite{kundur1994,cigre_ibr_inertia851}. After a disturbance, the bus voltage may exhibit decaying oscillations whose damping depends on system strength and control design \cite{kundur1994}. A convenient scalar indicator is the damping ratio of the dominant mode, estimated from successive peaks of the voltage waveform.
-
-Let $x_1$ and $x_2$ denote two consecutive peaks (for example the first and second maxima of the oscillatory component). The logarithmic decrement is
+The damping ratio characterises how fast post-disturbance oscillations decay:
 \begin{equation}
-\delta = \ln\left( \frac{x_1}{x_2} \right).
-\end{equation}
-Assuming underdamped oscillations, the corresponding damping ratio is approximated by
-\begin{equation}
+\delta = \ln\left( \frac{x_1}{x_2} \right), \quad
 \zeta = \frac{\delta}{\sqrt{4\pi^2 + \delta^2}}.
 \end{equation}
-In this work, this procedure is applied to the voltage at the PCC to compare the effect of different GFM parameter settings and short-circuit ratios.
 
-\subsubsection{Voltage Overshoot}
+This indicator is used to assess the effect of control parameters on oscillatory behaviour in weak grids.
 
-Voltage overshoot measures how much the bus voltage exceeds its nominal or pre-disturbance value during the post-fault recovery. Excessive overshoot may indicate aggressive reactive power control or poorly tuned grid-forming parameters and must remain within admissible overvoltage limits \cite{anderson2003,ieee2800}.
-
-The maximum RMS voltage in a selected post-fault interval $[t_{\mathrm{clear}}, t_{\mathrm{end}}]$ is
-\begin{equation}
-V_{\max} = \max_{t \in [t_{\mathrm{clear}},\, t_{\mathrm{end}}]} V(t),
-\end{equation}
-and the relative overshoot with respect to $V_0$ is
-\begin{equation}
-\text{OS} = \frac{V_{\max} - V_0}{V_0} \cdot 100\% .
-\end{equation}
-Both $V_{\max}$ and $\text{OS}$ are evaluated at the PCC for the different GFM parameter sets.
-
-\subsubsection{V--Q Sensitivity}
-
-The $V$--$Q$ sensitivity quantifies the change of steady-state voltage at a bus with respect to small variations of reactive power injection. It is a classical indicator of proximity to voltage collapse and is closely related to the slope of the $Q$--$V$ curve \cite{kundur1994,cigre_vsa2024}.
-
-Formally, the local sensitivity at the operating point is
-\begin{equation}
-\mathrm{Slope}_{VQ} = \frac{\partial V}{\partial Q}.
-\end{equation}
-In practice, it is estimated numerically by perturbing the reactive power injection by a small $\Delta Q$ and resolving the power flow:
-\begin{equation}
-\mathrm{Slope}_{VQ} \approx \frac{V(Q + \Delta Q) - V(Q)}{\Delta Q}.
-\end{equation}
-The voltage stability limit is reached when the slope of the $Q$--$V$ curve becomes zero,
-\begin{equation}
-\frac{\partial V}{\partial Q} = 0,
-\end{equation}
-beyond which no stable operating point exists for increasing reactive demand \cite{kundur1994}.
-
-\subsubsection{Critical Clearing Time}
-
-The critical clearing time (CCT) is a classical transient stability indicator that represents the maximum allowable fault duration after which the system can still return to a stable post-fault operating point. If the fault is cleared later than the CCT, the system loses synchronism and voltage or angle instability occurs \cite{kundur1994,anderson2003}.
-
-Let $t_{\mathrm{fault}}$ denote the instant when the disturbance is applied and $t_{\mathrm{clear}}$ the fault clearing time. The CCT is defined as
-\begin{equation}
-\mathrm{CCT} = \max \left\{ t_{\mathrm{clear}} - t_{\mathrm{fault}} \; \big|\; \text{system remains stable after clearing} \right\}.
-\end{equation}
-
-For a simple generator, stability can be assessed via the post-fault evolution of the power angle $\delta(t)$ or other relevant state variables. If $\delta(t)$ remains bounded and converges to a new equilibrium, the clearing time is considered stable; otherwise, instability is detected. Mathematically,
-\begin{equation}
-\text{Stable} \;\Longleftrightarrow\; \lim_{t \to \infty} \delta(t) = \delta_{\mathrm{eq}},
-\end{equation}
-whereas divergence,
-\begin{equation}
-\text{Unstable} \;\Longleftrightarrow\; \delta(t) \to \infty \ \text{or oscillations grow unbounded},
-\end{equation}
-indicates loss of synchronism \cite{kundur1994}.
+Overall, voltage dip, recovery time, and damping are the key indicators used in this work to evaluate voltage stability under different GFM parameter settings and short-circuit ratios.
 
 
 %% Grid Stenght
