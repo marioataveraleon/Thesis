@@ -7,6 +7,7 @@ def connect_to_powerfactory():
         raise RuntimeError("Could not connect to PowerFactory.")
     app.ClearOutputWindow()
     app.PrintPlain("=== PF Automation OK ===")
+    app.PrintPlain("Connection to Powerfactory successful")
     return app
 
 
