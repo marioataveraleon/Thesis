@@ -78,8 +78,6 @@ def main():
         app.PrintPlain("Contingencies are considered")
         contingency = None
         contingencies = study.GetContents('*.ComSimoutage')
-        cs = contingencies[0]
-        cs.AddContingencies()
         for c in contingencies:
             if c.loc_name == "Contingencies for HCA":
                 contingency = c
