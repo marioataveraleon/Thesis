@@ -3,168 +3,172 @@ import importlib
 import pandas as pd
 import numpy as np
 import os
+import tca
+import re
 
-def get_relevant_objects(app):
-    terminals = app.GetCalcRelevantObjects("*.ElmTerm")
-    lines = app.GetCalcRelevantObjects("*.ElmLne")
-    trafos = app.GetCalcRelevantObjects("*.ElmTr2")
-    app.PrintPlain(f"Len Terminals: {len(terminals)}")
-    app.PrintPlain(f"Len lines: {len(lines)}")
-    app.PrintPlain(f"Len trafos: {len(trafos)}")
-    return terminals,lines,trafos
+def get_smax_dicts(lines, trafos):
 
-def build_line_limits(lines):
-    rows = []
+    # --- Lines ---
+    df_smax_lines = []
     for line in lines:
         name = line.loc_name
         ltype = line.typ_id
-        uline = ltype.uline #kV
-        iline = ltype.sline # kA
-        smax = np.sqrt(3) * uline * iline #MVA
-        rows.append({
+        smax = np.sqrt(3) * ltype.uline * ltype.sline
+
+        df_smax_lines.append({
             "name": name,
-            "class": "Line",
-            "smax": smax,
-            "uline": uline,
-            "iline": iline,
+            "smax": smax
         })
-    return pd.DataFrame(rows)
 
-def build_trafo_limits(trafos):
-    rows = []
+    df_smax_lines = pd.DataFrame(df_smax_lines)
+
+    # --- Trafos ---
+    df_smax_trafos = []
     for trafo in trafos:
         name = trafo.loc_name
         ttype = trafo.typ_id
         smax = ttype.strn
-        
-        rows.append({"name":name,"class": "Trafo", "smax": smax})
-    return pd.DataFrame(rows)
 
-def build_static_limits(lines,trafos):
-    df_lines = build_line_limits(lines)
-    df_trafos = build_trafo_limits(trafos)
-    return pd.concat([df_lines, df_trafos], ignore_index=True)
-
-def get_actual_loading(lines,trafos):
-    rows = []
-    
-    for line in lines:
-        ltype = line.typ_id
-        if ltype is None:
-            continue
-        uline = ltype.uline
-        iline = ltype.sline
-        smax = np.sqrt(3) * uline * iline
-        loading = line.GetAttribute("c:loading")
-
-        if loading is None:
-            loading = np.nan
-
-        actual = (loading / 100.0) * smax if pd.notna(loading) else np.nan
-
-        rows.append({
-            "name": line.loc_name,
-            "class": "Line",
-            "loading": loading,
-            "actual": actual,
+        df_smax_trafos.append({
+            "name": name,
+            "smax": smax
         })
 
-    for trafo in trafos:
-        ttype = trafo.typ_id
-        if ttype is None:
-            continue
+    df_smax_trafos = pd.DataFrame(df_smax_trafos)
 
-        smax = ttype.strn
-        loading = trafo.GetAttribute("c:loading")
+    # --- Dicts (más rápido para loops grandes) ---
+    smax_lines_dict = dict(zip(df_smax_lines["name"], df_smax_lines["smax"]))
+    smax_trafos_dict = dict(zip(df_smax_trafos["name"], df_smax_trafos["smax"]))
 
-        if loading is None:
-            loading = np.nan
+    return smax_lines_dict, smax_trafos_dict
 
-        actual = (loading / 100.0) * smax if pd.notna(loading) else np.nan
+def get_case_limits(app,lines, trafos, smax_lines_dict, smax_trafos_dict):
 
-        rows.append({
-            "name": trafo.loc_name,
-            "class": "Trafo",
-            "loading": loading,
-            "actual": actual,
-        })
-
-    return pd.DataFrame(rows)
-
-def execute_ldf(app):
-    ldf = app.GetFromStudyCase('ComLdf')
-    rc = ldf.Execute()
-    return rc
-
-def calculate_smax_and_margin_lines(app,lines):
+    # --- Líneas ---
     rows_lines = []
+
     for line in lines:
+        if line.outserv == 1:
+            app.PrintPlain(f"Skipping out of service line: {line.loc_name}, has no loading")
+            continue
         name = line.loc_name
-        ltype = line.typ_id
-        uline = ltype.uline #kV
-        iline = ltype.sline # kA
-        smax = np.sqrt(3) * uline * iline #MVA
         loading = line.GetAttribute('c:loading')
-        p_used = (loading/100) * smax 
-        margin = smax - p_used
-        rows_lines.append({"name": name,"uline":uline,"iline":iline,
-                           "smax":smax,"loading":loading,"p_used":p_used,
-                           "margin": margin})
-        service = line.outserv
-        app.PrintPlain(f"name: {name} & smax: {smax} & loading: {loading} & pused: {p_used} & margin: {margin} & service: {service}")
-    df_lines= pd.DataFrame(rows_lines)
-    return df_lines
+        smax = smax_lines_dict.get(name, np.nan)
 
+        if loading is None:
+            loading = np.nan
 
+        actual = (loading / 100) * smax if pd.notna(loading) else np.nan
+        margin = smax - actual if pd.notna(actual) else np.nan
 
+        rows_lines.append({
+            "name": name,
+            "smax": smax,
+            "loading": loading,
+            "actual": actual,
+            "margin": margin
+        })
 
+    df_lines = pd.DataFrame(rows_lines)
 
-def calculate_smax_margin_trafos(app,trafos):
+    # --- Trafos ---
     rows_trafos = []
+
     for trafo in trafos:
+        if trafo.outserv == 1:
+            app.PrintPlain(f"Skipping trafo: {trafo}, has no loading")
+            continue
         name = trafo.loc_name
-        ttype = trafo.typ_id
-        smax = ttype.strn
         loading = trafo.GetAttribute('c:loading')
-        p_used = (loading/100) * smax
-        margin = smax - p_used
-        rows_trafos.append({"name":name,"smax": smax,"loading":loading,
-                            "p_used":p_used,"margin": margin})
-        service = trafo.outserv
-        app.PrintPlain(f"name: {name} smax: {smax} & loading {loading} & pused:{p_used} & margin: {margin} & service: {service}")
+        smax = smax_trafos_dict.get(name, np.nan)
+
+        if loading is None:
+            loading = np.nan
+
+        actual = (loading / 100) * smax if pd.notna(loading) else np.nan
+        margin = smax - actual if pd.notna(actual) else np.nan
+
+        rows_trafos.append({
+            "name": name,
+            "smax": smax,
+            "loading": loading,
+            "actual": actual,
+            "margin": margin
+        })
+
     df_trafos = pd.DataFrame(rows_trafos)
-    return df_trafos
 
-def export_lines_trafos_limits(base_path,df_lines,df_trafos):
-    limits = {"Lines": df_lines , "Trafos": df_trafos}
-    limits_path = os.path.join(base_path,"Limits")
-    os.makedirs(limits_path,exist_ok=True)
-    df_lines.to_csv(limits_path + "\\limits_lines.csv",sep = ";", index = False)
-    df_trafos.to_csv(limits_path + "\\limits_trafos.csv", sep = ";", index = False)
-
-
-def get_actual_loading(app,lines,trafos):
-    for line in lines:
-        line.outserv = 1 #Put the element out of service
-        execute_ldf(app)
+    return df_lines, df_trafos
     
 
 def main():
     base_path = r"C:\Users\UI450907\Desktop\TE RWEST\Tesis\Phase3Results"
     app = pf_utils.connect_to_powerfactory()
+    loadings = {}
 
     # Relevante netzobjekte lesen
-    terminals,lines,trafos = get_relevant_objects(app)
+    terminals,lines,trafos = tca.get_relevant_objects(app)
     ## Execute Loadflow
-    execute_ldf(app)
+    #Get Static Data
+    smax_lines_dict,smax_trafos_dict = get_smax_dicts(lines,trafos)
+    # Run load flow and get loading for base case
+    ldf = app.GetFromStudyCase('ComLdf')
+    rc = ldf.Execute()
+    if rc == 0:
+        app.PrintPlain(f"Load flow calculated: {rc}")
+    df_lines,df_trafos = get_case_limits(app,lines,trafos,smax_lines_dict,smax_trafos_dict)
+    df = pd.concat([df_lines,df_trafos],ignore_index= True)
+    loadings["Base Case"] = df
 
-    ## Get the voltage and current to calculate Smax
-    df_lines = calculate_smax_and_margin_lines(app,lines)
-    df_trafos = calculate_smax_margin_trafos(app, trafos)
+    for line in lines:
+        line.outserv = 0
+    for trafo in trafos:
+        trafo.outserv = 0
+    app.PrintPlain("All Lines & Trafos in Service")
+    tca.execute_ldf(app)
+    app.PrintPlain("Load flow calculated before shutting down lines")
+    for line_out in lines:
+        case_name = re.sub(r"_+", "_", f"{line_out.loc_name}_Cnt".replace("-", "_").replace(" ", "_"))
+        app.PrintPlain(f"Line out: {line_out.loc_name}")
 
-    # Generate the limits based on what was found in PF
-    export_lines_trafos_limits(base_path,df_lines,df_trafos)
+        line_out.outserv = 1
+        rc = tca.execute_ldf(app)
 
+        if rc == 0:
+            app.PrintPlain(f"Load flow OK: {rc}, getting limits")
+            df_lines, df_trafos = get_case_limits(app, lines, trafos, smax_lines_dict, smax_trafos_dict)
+            df = pd.concat([df_lines, df_trafos], ignore_index=True)
+            loadings[case_name] = df
+        else:
+            app.PrintPlain(f"LoadFlow did not converge for {case_name}")
+
+        line_out.outserv = 0
+        
+
+    for trafo_out in trafos:
+        name = trafo_out.loc_name
+        case_name = re.sub(r"_+", "_", f"{name}_Cnt".replace("-", "_").replace(" ", "_"))
+        trafo_out.outserv = 1
+        rc = tca.execute_ldf(app)
+        if rc == 0:
+            df_lines, df_trafos = get_case_limits(app,
+                lines, trafos, smax_lines_dict, smax_trafos_dict
+            )
+            df = pd.concat([df_lines, df_trafos], ignore_index=True)
+            loadings[case_name] = df
+        else:
+            print(f"Loadflow did not converge for {case_name}")
+        trafo_out.outserv = 0
+    df_all = []
+
+    for case, df in loadings.items():
+        df_copy = df.copy()
+        df_copy["case"] = case
+        df_all.append(df_copy)
+
+    df_all = pd.concat(df_all, ignore_index=True)
+    df_all.to_csv(rf"{base_path}\loadings_all.csv", index=False)
+    app.PrintPlain(f"Results exported:{base_path}\loadings_all.csv ")
     ## Check if there is a SetSelect Element that contains the buses ('Set - Busbars') 
 
     study = app.GetActiveStudyCase()
