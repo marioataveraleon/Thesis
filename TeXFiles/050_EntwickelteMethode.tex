@@ -2,14 +2,14 @@
 \chaptermark{Developed Method}  % short form for headlines on pages
 \label{ch:Developed Method}
 
-\section{Phase 1}
+\section{Phase 1: Converter Technology benchmark in Equivalent Grid}
 The objective of Phase 1 is to perform a comparative analysis of the inverter models available in DIgSILENT PowerFactory, with a particular focus on the differences in dynamic behaviour between grid-following (GFL) and grid-forming (GFM) inverters. This phase is intended to highlight the fundamental response characteristics of both inverter types when the power system is subjected to grid disturbances.
 
 The analysis is conducted by exposing the system to predefined disturbances and observing the resulting frequency and voltage dynamics. By applying identical operating conditions and disturbance scenarios, the comparison isolates the influence of the inverter control philosophy, allowing a clear distinction between GFL and GFM behaviour during transient events.
 
 The power system model used in this phase is the Spanish equivalent grid (Red Eléctrica Española equivalent system), which is widely applied in the context of European grid-code compliance studies. This equivalent grid is defined within the framework of the European Network Codes and their Spanish implementation, and it represents a standardized reference system for the assessment of power generating modules, the grid model is based on the documentation developed by the Working Group for Compliance Monitoring of technical requirements under Regulation (EU) 2016/631 for Power Generating Modules (PGMs). The Technical Standards for the Compliance of Generators (NTS-Generators), version 2.1, published on 9 July 2021, define in Section 7.2 the structure and parameters of the equivalent grid model applicable to the Spanish peninsular electrical system.
 
-\subsection{Phase 1: Equivalent Grid Model and Test System Definition}
+\subsection{Grid Model and Test System Definition}
 
 The dynamic system consists of an equivalent node of the electrical system (\textit{EQ\_SISTEMA}), to which an equivalent power generating module (PGM), \textit{GEN\_EQ}, is connected via an equivalent machine transformer, \textit{TFR\_EQ}, installed between the generation node (\textit{GEN\_EQ}) and the \textit{EQ\_SISTEMA} node.
 
@@ -76,10 +76,11 @@ In addition, voltage-related indicators are evaluated, including the maximum vol
 
 
 
-\section{Impact of GFL PV Penetration}
+\section{Phase 2: System-Level Stability Assessment under Increasing Converter Pene-
+tration}
 
 
-\subsection{System description}
+\subsection{Grid Model }
 
 The investigations in this phase are conducted using the classical IEEE 39-bus New England test system as implemented in DIgSILENT PowerFactory \cite{DIgSILENT_IEEE39}. The model corresponds to the official DIgSILENT reference implementation of the benchmark system.
 
@@ -182,8 +183,8 @@ The converter penetration level is quantified based on dispatched active power, 
 
 
 
-\section{Small signal stability}
-\subsection{Small-Signal Stability Analysis Methodology}
+\subsection{Small signal stability}
+\subsubsection{Small-Signal Stability Analysis Methodology}
 
 Small-signal stability was assessed through eigenvalue analysis of the linearized system model. For each replacement scenario, the system was first solved under steady-state conditions using a power flow calculation. The dynamic model was then linearized around the corresponding operating point and the eigenvalues of the resulting state matrix were computed using the modal analysis tool available in DIgSILENT PowerFactory.
 
@@ -193,9 +194,70 @@ For each scenario, the eigenvalue spectrum was evaluated and the dominant modes 
 
 Small-signal stability analysis is performed to evaluate how the dynamic characteristics of the system evolve as the penetration of converter-based generation increases. The replacement of synchronous machines by converter-interfaced resources can alter the dynamic behavior of the power system by modifying the location and damping of the eigenvalues of the linearized system. In particular, converter control dynamics may introduce new modes or shift existing electromechanical modes, potentially affecting system stability. Therefore, eigenvalue analysis provides a useful tool to assess how increasing converter penetration influences the dominant system modes and the overall stability of the operating point.
 
+\section{Phase 3: Network-Constrained Transfer Capability Assessment}
 
-\section{Methoddology structure proposed}
-\subsection{Phase 1: Equivalent Grid Spain}
-\subsection{Phase 2: Stability Assessment (IEEE 39)}
-\subsection{Phase 3: Transfer Capability Analysis}
+\subsection{Grid Model}
 
+The transfer capability analysis is conducted using the IEEE 39-bus test system described in Phase 2. The same network topology, generation dispatch, and load models are preserved.
+
+Only steady-state conditions are considered for this analysis, and all simulations are performed in DIgSILENT PowerFactory.
+
+\subsection{Methodology for Transfer Capability Assessment}
+
+The objective of this phase is to determine the maximum incremental active power injection (hosting capacity) that can be accommodated at each bus of the network without violating operational constraints. Particular emphasis is placed on identifying the limiting network elements (i.e., transmission lines or transformers) that constrain power transfer. This information is highly relevant from a planning perspective, as it enables the identification of grid bottlenecks and supports comparisons with potential network reinforcements, thereby facilitating decisions on suitable locations for new generation or storage projects.
+
+The analysis is based on a sensitivity-driven approach using Power Transfer Distribution Factors (PTDFs), combined with load-flow calculations to accurately determine the loading of network elements under different operating conditions. This approach combines a linear sensitivity-based estimation (PTDF) with AC load-flow evaluation of element loading, thereby improving accuracy while maintaining computational efficiency.
+
+In DIgSILENT PowerFactory, PTDFs are obtained using the \textit{Sensitivities / Distribution Factors} calculation, which linearises the system around an operating point derived from a load-flow solution.
+
+PTDFs quantify the incremental change in active power flow on each network element (in MW/MW) resulting from a 1 MW injection at a given bus, assuming a corresponding withdrawal at the slack bus. In other words, PTDFs indicate how an incremental power injection is distributed across the network elements. It is important to note that PTDF values strongly depend on the network topology and operating point.
+
+For each injection at each bus in the system, PTDF values are computed for all relevant network elements (transmission lines and transformers). In parallel, the thermal limits of these elements are extracted via Python scripting. For transmission lines, the apparent power limit is calculated from the rated voltage and current as:
+
+\begin{equation}
+    S_{\text{max}} = \sqrt{3} \cdot U_{\text{rated}} \cdot I_{\text{rated}}
+\end{equation}
+
+For transformers, the rated apparent power is directly used:
+
+\begin{equation}
+    S_{\text{max}} = S_{\text{rated}}
+\end{equation}
+
+To improve the accuracy of the assessment, load-flow calculations are performed for the base case. This allows the extraction of the actual loading of all network elements under the given operating condition.
+
+The loading of each element is then used to approximate the active power flow as:
+
+\begin{equation}
+    P_{\text{actual}} \approx \frac{\text{loading}}{100} \cdot S_{\text{max}}
+\end{equation}
+
+This approximation assumes that apparent power is predominantly composed of active power, which is acceptable for screening-level transfer capability assessments.
+
+Based on this, the available margin to the thermal limit is calculated as:
+
+\begin{equation}
+    \text{Margin} = S_{\text{max}} - P_{\text{actual}}
+\end{equation}
+
+Using the previously computed PTDF values, the maximum allowable additional injection before reaching the limit of each element is estimated as:
+
+\begin{equation}
+    P_{\text{max}} = \frac{\text{Margin}}{\text{PTDF}}
+\end{equation}
+
+For each bus, the transfer capability is defined as the minimum value of $P_{\text{max}}$ across all network elements. The corresponding element is identified as the limiting element.
+
+All calculations and post-processing steps are automated using Python scripts interfaced with PowerFactory, enabling systematic evaluation of all buses in the test system.
+
+It should be noted that this approach is based on a linear approximation of system behaviour around the operating point. Therefore, its accuracy may decrease for large power injections or in cases where voltage or reactive power constraints become dominant.
+
+\subsection{Contingency Analysis and Security Criteria}
+
+To ensure secure system operation, $N-1$ contingency conditions are explicitly considered in the assessment. Each contingency is simulated by removing a single network element (transmission line or transformer) from service, followed by a load-flow calculation (e.g., using \textit{ComLdf} in PowerFactory :contentReference[oaicite:0]{index=0}).
+
+For each contingency scenario, the transfer capability is evaluated using the methodology described in the previous subsection. A transfer is considered feasible only if no network element exceeds its thermal loading limits under both the base case and all contingency conditions.
+
+If a contingency leads to an overload in the base operating point (i.e., without additional injection), the corresponding scenario is considered infeasible for transfer capability assessment, as the system is already operating beyond its secure limits.
+
+The final transfer capability for each bus is therefore defined as the most restrictive value across all considered operating conditions, ensuring compliance with $N-1$ security requirements.
