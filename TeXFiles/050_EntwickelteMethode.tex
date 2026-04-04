@@ -82,7 +82,7 @@ tration}
 
 \subsection{Grid Model }
 
-The investigations in this phase are conducted using the classical IEEE 39-bus New England test system as implemented in DIgSILENT PowerFactory \cite{DIgSILENT_IEEE39}. The model corresponds to the official DIgSILENT reference implementation of the benchmark system.
+The investigations in this phase are conducted using the classical IEEE 39-bus New England test system as implemented in DIgSILENT PowerFactory \cite{DIgSILENT_IEEE39}. The model corresponds to the official DIgSILENT reference implementation of the benchmark system \ref{fig:IEEE 39 Equivalent grid}.
 
 The network consists of 39 buses, 10 synchronous generators, 19 loads, 34 transmission lines, and 12 transformers and a total installed generation of 6140 MW. The nominal system frequency is 60 Hz. The transmission network operates predominantly at 345 kV. However, the following buses are modeled at different nominal voltage levels in the PowerFactory implementation:
 
@@ -92,10 +92,17 @@ The network consists of 39 buses, 10 synchronous generators, 19 loads, 34 transm
     \item Buses 30--38: 16.5 kV (generator terminal voltage level)
 \end{itemize}
 
+\begin{figure}[htbp!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/Chapter 5/IEEE39BusGridDiagram.png}
+    \caption{IEEE 39 Bus System electric network model \cite{digsilent2024pfmanual}}
+    \label{fig:IEEE 39 Equivalent grid}
+\end{figure}
+
 
 The system contains ten synchronous generators. Generator G02 (Bus 31) operates as the slack element of the network, while the remaining generators operate as PV buses with fixed active power dispatch and controlled terminal voltage magnitude. Automatic Voltage Regulators (AVRs) and turbine governors are active according to the default dynamic models provided in the PowerFactory implementation.
 
-The inertia constants of the synchronous generators range between approximately 3.45 s and 5.0 s, defining the initial aggregate system inertia prior to any generator replacement. These inertia values form the reference against which reductions in rotational inertia due to synchronous generator replacement are assessed. Inertia constants can be seen in the following table.
+The inertia constants of the synchronous generators range between approximately 3.45 s and 5.0 s, defining the initial aggregate system inertia prior to any generator replacement. These inertia values form the reference against which reductions in rotational inertia due to synchronous generator replacement are assessed. Inertia constants can be seen in the table. \ref{tab:inertia_constants of sg in the IEEE39} .
 \begin{table}[h]
     \centering
     \caption{Inertia constants of synchronous generators}
@@ -153,7 +160,7 @@ To preserve the operating point, the PV plant operates under constant reactive p
 
 No modifications are introduced to the network topology, line parameters, transformer data, or load models; only the generation technology at selected buses is altered according to the defined replacement sequence.
 
-The converter penetration level is quantified based on dispatched active power, expressed as a percentage of the total system generation and is calculated as follows.
+The converter penetration level is quantified based on dispatched active power, expressed as a percentage of the total system generation and is calculated as follows, the summary can be seen in the replacement path table \ref{tab:replacement_path}.
 \begin{equation}
 \mathrm{PV\ penetration}~[\%] = \frac{\sum P_{\mathrm{PV}}}{\sum P_{\mathrm{gen}}}\times 100 .
 \end{equation}
