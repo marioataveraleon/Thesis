@@ -5,6 +5,7 @@ import numpy as np
 import os
 import tca
 import re
+import time
 
 def get_smax_dicts(lines, trafos):
 
@@ -53,19 +54,21 @@ def get_case_limits(app,lines, trafos, smax_lines_dict, smax_trafos_dict):
             continue
         name = line.loc_name
         loading = line.GetAttribute('c:loading')
+        p_terminali = line.GetAttribute('m:P:bus1')
         smax = smax_lines_dict.get(name, np.nan)
 
         if loading is None:
             loading = np.nan
 
-        actual = (loading / 100) * smax if pd.notna(loading) else np.nan
-        margin = smax - actual if pd.notna(actual) else np.nan
+        #actual = (loading / 100) * smax if pd.notna(loading) else np.nan
+        #margin = smax - actual if pd.notna(actual) else np.nan
+        margin = smax - p_terminali
 
         rows_lines.append({
             "name": name,
             "smax": smax,
             "loading": loading,
-            "actual": actual,
+            "actual": p_terminali,
             "margin": margin
         })
 
@@ -79,54 +82,31 @@ def get_case_limits(app,lines, trafos, smax_lines_dict, smax_trafos_dict):
             app.PrintPlain(f"Skipping trafo: {trafo}, has no loading")
             continue
         name = trafo.loc_name
+        phv = trafo.GetAttribute('m:P:bushv')
         loading = trafo.GetAttribute('c:loading')
         smax = smax_trafos_dict.get(name, np.nan)
 
         if loading is None:
             loading = np.nan
 
-        actual = (loading / 100) * smax if pd.notna(loading) else np.nan
-        margin = smax - actual if pd.notna(actual) else np.nan
+        # actual = (loading / 100) * smax if pd.notna(loading) else np.nan
+        # margin = smax - actual if pd.notna(actual) else np.nan
+        margin = smax - phv
 
         rows_trafos.append({
             "name": name,
             "smax": smax,
             "loading": loading,
-            "actual": actual,
+            "actual": phv,
             "margin": margin
         })
 
     df_trafos = pd.DataFrame(rows_trafos)
 
     return df_lines, df_trafos
-    
 
-def main():
-    base_path = r"C:\Users\UI450907\Desktop\TE RWEST\Tesis\Phase3Results"
-    app = pf_utils.connect_to_powerfactory()
-    loadings = {}
+def run_contingency_cases(app,lines,trafos,smax_lines_dict,smax_trafos_dict,loadings):
 
-    # Relevante netzobjekte lesen
-    terminals,lines,trafos = tca.get_relevant_objects(app)
-    ## Execute Loadflow
-    #Get Static Data
-    smax_lines_dict,smax_trafos_dict = get_smax_dicts(lines,trafos)
-    # Run load flow and get loading for base case
-    ldf = app.GetFromStudyCase('ComLdf')
-    rc = ldf.Execute()
-    if rc == 0:
-        app.PrintPlain(f"Load flow calculated: {rc}")
-    df_lines,df_trafos = get_case_limits(app,lines,trafos,smax_lines_dict,smax_trafos_dict)
-    df = pd.concat([df_lines,df_trafos],ignore_index= True)
-    loadings["Base Case"] = df
-
-    for line in lines:
-        line.outserv = 0
-    for trafo in trafos:
-        trafo.outserv = 0
-    app.PrintPlain("All Lines & Trafos in Service")
-    tca.execute_ldf(app)
-    app.PrintPlain("Load flow calculated before shutting down lines")
     for line_out in lines:
         case_name = re.sub(r"_+", "_", f"{line_out.loc_name}_Cnt".replace("-", "_").replace(" ", "_"))
         app.PrintPlain(f"Line out: {line_out.loc_name}")
@@ -143,7 +123,8 @@ def main():
             app.PrintPlain(f"LoadFlow did not converge for {case_name}")
 
         line_out.outserv = 0
-        
+        tca.execute_ldf(app)
+            
 
     for trafo_out in trafos:
         name = trafo_out.loc_name
@@ -157,8 +138,46 @@ def main():
             df = pd.concat([df_lines, df_trafos], ignore_index=True)
             loadings[case_name] = df
         else:
-            print(f"Loadflow did not converge for {case_name}")
+            app.PrintPlain(f"Loadflow did not converge for {case_name}")
         trafo_out.outserv = 0
+        tca.execute_ldf(app)
+    return loadings
+
+def put_all_lines_trafos_inservice(app,lines,trafos):
+    for line in lines:
+        line.outserv = 0 #In service
+    for trafo in trafos:
+        trafo.outserv = 0 # In service
+    app.PrintPlain("All Lines & Trafos in Service")
+    tca.execute_ldf(app)
+
+
+
+
+def main():
+    start = time.time()
+    base_path = r"C:\Users\UI450907\Desktop\TE RWEST\Tesis\Phase3Results"
+    app = pf_utils.connect_to_powerfactory()
+    loadings = {}
+
+    # Relevante netzobjekte lesen
+    terminals,lines,trafos = tca.get_relevant_objects(app)
+    ## Execute Loadflow
+    #Get Static Data
+    smax_lines_dict,smax_trafos_dict = get_smax_dicts(lines,trafos)
+    # Run load flow and get loading for base case
+    ldf = app.GetFromStudyCase('ComLdf')
+    rc = ldf.Execute()
+    if rc == 0:
+        app.PrintPlain(f"Load flow for Base Case calculated: {rc}")
+        df_lines,df_trafos = get_case_limits(app,lines,trafos,smax_lines_dict,smax_trafos_dict)
+        df = pd.concat([df_lines,df_trafos],ignore_index= True)
+        loadings["Base Case"] = df
+    else:
+        app.PrintPlain(f"Loadflow for the basecase did not converged, rc: {rc}")
+
+    put_all_lines_trafos_inservice(app,lines,trafos)
+    loadings = run_contingency_cases(app,lines,trafos,smax_lines_dict,smax_trafos_dict,loadings)
     df_all = []
 
     for case, df in loadings.items():
@@ -249,7 +268,7 @@ def main():
         comres.ciopt_head = 2 # Short description
         rc = comres.Execute()
         app.PrintPlain(f"Exported result: {r} -> filename: {filename}, rc: {rc}")
-  
-
+    end = time.time()
+    app.PrintPlain(f"Execution time: {end - start:.4f} seconds")
 if __name__ == "__main__":
     main()
