@@ -4,21 +4,21 @@
 
 \section{Inverter-Based Resources (IBR): GFL vs GFM}
 
-The increasing penetration of inverter-based resources (IBRs), mainly photovoltaic and battery systems, has significantly changed the dynamic behaviour of modern power networks. As these resources interface through power-electronic converters and do not provide mechanical inertia, system frequency and voltage become more sensitive to disturbances, particularly in weak-grid conditions with low short-circuit ratio (SCR). This motivates the need for advanced converter control methods capable of contributing to system stability \cite{8586162, Rathnayake2021}.
+The increasing penetration of inverter-based resources (IBRs), such as photovoltaic, wind and battery systems, has significantly changed the dynamic behaviour of modern power networks. As these resources interface through power-electronic converters and do not provide mechanical inertia, system frequency and voltage become more sensitive to disturbances, particularly in weak-grid conditions with low short-circuit ratio (SCR). This motivates the need for advanced converter control methods capable of contributing to system stability \cite{8586162, Rathnayake2021}.
 
 Two main control paradigms exist: grid-following (GFL) and grid-forming (GFM) inverters. Their fundamental differences determine their capability to support system stability.
 
 \subsection{Grid-Following Inverters}
 
-Most utility-scale PV and wind inverters operate under GFL control. These inverters behave as controlled current sources and synchronise to the grid using a phase-locked loop (PLL), which provides the voltage angle reference. Active and reactive power are regulated through outer power loops and a fast current controller using this PLL reference \cite{8586162}.
+Most utility-scale PV, wind and BESS inverters operate under GFL control. These inverters behave as controlled current sources and synchronise to the grid using a phase-locked loop (PLL), which provides the voltage angle reference. Active and reactive power are regulated through outer power loops and a fast current controller using this PLL reference \cite{8586162}.
 
 While GFL inverters are effective in delivering programmed power, their performance depends on the external grid establishing voltage and frequency. Under low SCR conditions, the PLL interacts with grid impedance, resulting in reduced stability margins, delays in reactive current injection, or oscillatory behaviour. These limitations become more relevant in highly converter-dominated systems, where the absence of synchronous machine inertia amplifies frequency deviations and weakens voltage regulation \cite{Rathnayake2021}.
 
 \begin{figure}[htbp!]
  \centering
  \includegraphics[width=0.8\textwidth]{Figures/Chapter 2/GFL Control Structure.png}
- \caption{Grid-following inverter control structure \cite{11041180}}
- \label{fig:GFL Current Control Source Approximation}
+ \caption{Grid-Following Converter Representation as a Controlled Current Source \cite{11041180}}
+ \label{fig:GFL Current Control Source Controlled Current Source}
 \end{figure}
 
 
@@ -30,14 +30,14 @@ GFM inverters operate fundamentally differently. Instead of relying on the grid 
 \begin{figure}[htbp!]
  \centering
  \includegraphics[width=0.8\textwidth]{Figures/Chapter 2/GFM Control Structure.png}
- \caption{Grid-forming inverter control structure \cite{11041180}}
- \label{fig:GFM Control Structure}
+ \caption{Grid-Forming Converter Representation as a Controlled Voltage Source \cite{11041180}}
+ \label{fig:GFM Control Structure Controlled Voltage Source}
 \end{figure}
 
 
 Common GFM control strategies include droop control, virtual synchronous machine (VSM), and virtual oscillator control (VOC). These methods aim to provide fast frequency support, synthetic inertia, voltage regulation, improved damping, black-start capability, and stable operation under low SCR. 
 
-The distinction between GFL and GFM is fundamental for stability assessment in converter-dominated systems. While GFL units are limited in their ability to support system dynamics, GFM control parameters—such as virtual inertia, droop, and damping—directly influence key stability indicators, including RoCoF, frequency nadir, and voltage recovery. This forms the basis for the analyses performed in this thesis.
+The distinction between GFL and GFM is fundamental for stability assessment in converter-dominated systems. While GFL units are limited in their ability to support system dynamics, GFM control parameters—such as virtual inertia, droop, and damping—directly influence key stability indicators, including RoCoF, frequency nadir, voltage recovery, settling time and frequency overshoot. This forms the basis for the analyses performed in this thesis.
 
 % Control Methods
 \section{GFM Control Methods}
@@ -71,7 +71,7 @@ Here, \(K_P\) and \(K_Q\) denote the active- and reactive-power droop coefficien
 
 \subsection{Virtual Synchronous Machine}
 
-The Virtual Synchronous Machine (VSM), also referred to as Virtual Synchronous Generator (VSG), aims to emulate the electromechanical behaviour of a synchronous machine. This includes reproducing the rotor dynamics described by the swing equation, which enables the inverter to provide virtual inertia, damping, and improved transient voltage and frequency stability.
+The Virtual Synchronous Machine (VSM), also referred to as Virtual Synchronous Generator (VSG), aims to emulate the electromechanical behaviour of a synchronous machine. This includes reproducing the rotor dynamics described by the swing equation, which enables the inverter to provide virtual inertia, damping, and improved transient voltage and frequency stability. \cite{10755449}
 
 A representative formulation of VSM behaviour is \cite{10949993}:
 \begin{align}
@@ -124,7 +124,7 @@ Power system stability can be broadly classified into frequency and voltage stab
     \item \textbf{Voltage Stability:} Ability of the system to maintain acceptable voltage levels following disturbances, depending on reactive power availability and network conditions.
 \end{itemize}
 
-Other stability categories, such as rotor angle stability and resonance phenomena, are not explicitly addressed in this work, as the focus is placed on converter-dominated system behaviour.
+Other stability categories, such as rotor angle stability and resonance phenomena, are not explicitly addressed in this work, as the focus is placed on converter-dominated system behaviour. The general classification of power system stability phenomena is illustrated in Figure \ref{fig:Classification of Power System Stability}
 
 \subsubsection{Converter-Driven Stability}
 
@@ -172,17 +172,19 @@ Frequency stability refers to the ability of the system to maintain nominal freq
 System frequency is determined by the balance between mechanical input and electrical output power. A disturbance leads to a frequency deviation governed by the swing equation:
 \begin{equation}
     2H \frac{df}{dt} = P_m - P_e,
+    \label{swing equation}
 \end{equation}
 where $H$ is the inertia constant.
 
 \begin{figure}[htbp!]
 \centering
-\includegraphics[width=0.8\textwidth]{Figures/Chapter 2/frequency response of generating unit.png}
-\caption{Frequency response of a generating unit \cite{kundur1994}.}
-\label{fig:Frequency Respone of a generating unit.}
+\includegraphics[width=0.8\textwidth]{Figures/Chapter 2/frequency response of generating unit with speed governor.png}
+\caption{Time response of a generating unit \cite{kundur1994}.}
+\label{fig:Time Respone of a generating unit.}
 \end{figure}
 
-Figure~\ref{fig:Frequency Respone of a generating unit.} illustrates the inertial response, frequency nadir, and recovery following a disturbance.
+Figure~\ref{fig:Frequency Respone of a generating unit.} illustrates the time response of a generating unit. The frequency response of a generating unit following a sudden increase in load is governed by \ref{swing equation}. The immediate imbalance between the mechanical power and the electrical power causes the rotor to decelerate. This drop in speed triggers the speed governor, which increases the mechanical power to contrarest this rotor deceleration. The frequency nadir is reached at the precise moment when the increasing mechanical power is equal to the electric power ($P_m = P_ e$), resulting in a zero change in speed $\frac{d\omega}{dt} = 0$ and recovery following a disturbance. Ultimately, the system settles at a new steady state where $\Delta P_m = \Delta P_L$. Due to the governor droop characteristic, a permanent steady-state frequency deviation ($\Delta\omega_{ss}$) remains unless secondary control action is taken.
+
 
 \subsubsection{Rate of Change of Frequency (RoCoF)}
 
@@ -209,6 +211,14 @@ Following primary control, the system settles at a new equilibrium frequency:
 This indicator reflects the adequacy of primary frequency control reserves.
 
 Overall, RoCoF and nadir are the primary indicators used in this work to assess frequency stability under different control strategies and grid strength conditions.
+
+The frequency response stages can be observed in 
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/Chapter 2/frequency response entsoe.png}
+    \caption{Frequency response stages defined by ENTSOE \cite{kundur1994}.}
+    \label{fig:Frequency response stages ENTSOE}
+    \end{figure}
 
 \subsection{Voltage Stability Indicators}
 
