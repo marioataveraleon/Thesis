@@ -4,7 +4,7 @@
 \section{Phase 1}
 \subsection{Three Phase Short Circuit Response}
 
-A three-phase short-circuit was applied at the point of connection (PCR) at $t = 1\,\text{s}$ and cleared at $t = 1.1\,\text{s}$. The fault was modeled as a solid fault ($R = 0$, $X = 0$), resulting in a voltage drop at the PCR close to $0\,\text{pu}$. All technologies were evaluated under identical equivalent Spanish network conditions with a short-circuit ratio (SCR) of 5.
+A three-phase short-circuit was applied at the point of connection (PCR) at $t = 1\,\text{s}$ and cleared at $t = 1.1\,\text{s}$. The fault was modeled as a solid fault ($R = 0$, $X = 0.001 p.u.$), resulting in a voltage drop at the PCR close to $0\,\text{pu}$. All technologies were evaluated under identical equivalent Spanish network conditions with a short-circuit ratio (SCR) of 5.
 
 \begin{table}[htbp]
 \centering
@@ -14,13 +14,13 @@ A three-phase short-circuit was applied at the point of connection (PCR) at $t =
 \toprule
 Technology & Voltage min [pu] & Voltage Settling Time [s] & $V_{max}$ [pu] & Steady-State Voltage [pu] & $I_{pos,max}$ [pu] \\
 \midrule
-GFL\_IEC        & 0.000 & 0.437 & 1.107 & 1.001 & 1.048 \\
-GFL\_WECC       & 0.000 & 0.534 & 1& 1.000 & 1.086 \\
-GFM\_Droop      & 0.000 & 0.148 &1& 1.000 & 1.985 \\
-GFM\_VSM        & 0.000 & 0.046 &1.126& 1.000 & 1.893 \\
+GFL IEC        & 0.000 & 0.437 & 1.107 & 1.001 & 1.048 \\
+GFL WECC       & 0.000 & 0.534 & 1& 1.000 & 1.086 \\
+GFM Droop      & 0.000 & 0.148 &1& 1.000 & 1.985 \\
+GFM VSM        & 0.000 & 0.046 &1.126& 1.000 & 1.893 \\
 SG              & 0.000 & 0.426 &1.027& 1.000 & 5.064 \\
-SMA\_BESS\_GFL  & 0.000 & 0.057 & 1.082 & 1.000 & 1.078 \\
-SMA\_PV\_GFL    & 0.000 & 0.041 & 1.093 & 1.000 & 1.078 \\
+SMA BESS GFL  & 0.000 & 0.057 & 1.082 & 1.000 & 1.078 \\
+SMA PV GFL    & 0.000 & 0.041 & 1.093 & 1.000 & 1.078 \\
 \bottomrule
 \end{tabular}
 \label{tab:3phsc_voltage_current}
@@ -31,17 +31,13 @@ SMA\_PV\_GFL    & 0.000 & 0.041 & 1.093 & 1.000 & 1.078 \\
 
 \subsubsection{Current Contribution During the Fault}
 
-The short-circuit current contribution differs significantly among the analyzed technologies. The synchronous generator (SG) exhibits the highest current injection, reaching values of approximately $5\,\text{pu}$. This behavior is consistent with the physical characteristics of synchronous machines, where the internal voltage source and low subtransient impedance lead to large fault current contributions.
+The short-circuit current contribution differs significantly among the analyzed technologies. The synchronous generator (SG) exhibits the highest current injection, reaching values of approximately $5\,\text{pu}$. This behavior is consistent with the physical characteristics of synchronous machines, where the internal voltage source and low subtransient impedance lead to large fault current contributions (between 5 and 10 p.u. in the first cycles).
 
-The grid-forming converter (GFM) shows an intermediate response. An initial current peak of approximately $1.8$--$1.9\,\text{pu}$ is observed, followed by a rapid limitation to around $1.2\,\text{pu}$ for the duration of the fault. This behavior is associated with the implemented current limiting mechanisms and virtual impedance control, which restrict the converter current to protect the hardware, as can be seen in \ref{fig:PositiveSeqCurrent}
+The grid-forming converter (GFM) shows an intermediate response. An initial current peak of approximately $1.8$--$1.9\,\text{pu}$ is observed, followed by a rapid limitation to around $1.2\,\text{pu}$ for the duration of the fault. This behavior is associated with the implemented current limiting mechanisms and virtual impedance control, which restrict the converter current to protect the hardware, as can be seen in \ref{fig:PositiveSeqCurrent}. The 1.8 peak is also visible during a small time sample (highlighning the relevance of EMT dtudies for protections, etc, which exhibits the complete waveforms of the three phase signal)
 
-In contrast, the grid-following converter (GFL) maintains a nearly constant current close to its nominal value (approximately $1\,\text{pu}$) throughout the fault. 
+In contrast, the grid-following converter (GFL) maintains a nearly constant current close to its nominal value (approximately $1\,\text{pu}$) throughout the fault.
 
-These results highlight the fundamental differences between synchronous and converter-based technologies in terms of short-circuit current contribution.
-
-On the other hand, the observed current behavior reflects the inherent limitations of converter-based technologies. Both GFM and GFL units are subject to current constraints, although implemented differently. In the GFM case, the limitation is actively enforced through control mechanisms such as virtual impedance and voltage control loops. In the GFL case, the limitation is intrinsic to its current-controlled structure.
-
-As a result, converter-based units do not provide fault current support comparable to synchronous machines, which has important implications for protection systems and grid strength.
+These results highlight the fundamental differences between synchronous and converter-based technologies in terms of short-circuit current contribution, as converters are limited to provide short circuit current due to the fact that switches and semiconductors can not be subject of large current so the control must limit to around 1.1 or 1.2 p.u. to avoid damagind the power electronics of the converter. in Conlcusion, converter-based units do not provide fault current support comparable to synchronous machines, which has important implications for protection systems and grid strength.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\linewidth]{Figures/Chapter 7/Phase1/threephsc/PosSeqCurrent.png}
@@ -53,9 +49,7 @@ As a result, converter-based units do not provide fault current support comparab
 
 After the fault clearance at $t=1.1$ s, distinct dynamic behaviors are observed. The synchronous generator exhibits pronounced oscillations in the current response, reflecting its electromechanical nature and the interaction between rotor dynamics and the network. \ref{fig:PositiveSeqCurrent}
 
-The grid-forming converter demonstrates a smoother and more damped recovery. The current gradually returns to steady-state values without significant oscillations, indicating effective damping introduced by the control strategy.
-
-The grid-following converter shows a delayed recovery characterized by a temporary drop in current after fault clearing, followed by a gradual return to steady-state conditions. This behavior is associated with the re-synchronization process of the phase-locked loop (PLL).
+The grid-forming converter demonstrates a smoother and more damped recovery. The current gradually returns to steady-state values without significant oscillations. On the other hand, the grid-following converter shows a delayed recovery characterized by a temporary drop in current after fault clearing, followed by a gradual return to steady-state conditions. This behavior is associated with the re-synchronization process of the phase-locked loop (PLL). Is important to highlight the different behavior of the inverters, in this image it is visible the effect of the PLL in the grid following inverter, as the converter follows the behavior happening on the grid, however the grid forming inverter has the capacity to form the grid voltage and create its own reference, therefore after the falut clearence, the converter continues providing support of short circuit current. 
 
 
 
@@ -69,13 +63,15 @@ The grid-following converter shows a delayed recovery characterized by a tempora
 
 The voltage at the PCR drops to approximately $0\,\text{pu}$ during the fault for all technologies, which is consistent with the modeled solid fault. After fault clearance, differences in voltage recovery are observed. The highest overshoots are observed in the grid-forming VSM and GFL IEC models, reaching values of up to $1.126\,\text{pu}$ and $1.107\,\text{pu}$, respectively. The synchronous generator exhibits a more moderate overshoot of approximately $1.027\,\text{pu}$, while the grid-forming droop-controlled converter shows no significant overshoot, remaining close to $1.0\,\text{pu}$.
 
-In terms of voltage settling time, the fastest responses are observed for the converter-based technologies with fast control dynamics, particularly the GFM VSM and SMA-based models, which settle within approximately $0.04$--$0.06\,\text{s}$. The grid-forming droop control also shows a relatively fast response with a settling time of $0.148\,\text{s}$. In contrast, the synchronous generator and GFL IEC model exhibit slower voltage recovery, with settling times of $0.426\,\text{s}$ and $0.437\,\text{s}$, respectively, while the GFL WECC model shows the slowest response, reaching $0.534\,\text{s}$.
+In terms of voltage settling time, the fastest responses are observed for the converter-based technologies with fast control dynamics, particularly the GFM VSM and SMA-based models, which settle within approximately $0.04$--$0.06\,\text{s}$. The grid-forming droop control also shows a relatively fast response with a settling time of $0.148\,\text{s}$. In contrast, the synchronous generator and GFL IEC model exhibit slower voltage recovery, with settling times of $0.426\,\text{s}$ and $0.437\,\text{s}$, respectively, while the GFL WECC model shows the slowest response, reaching $0.534\,\text{s}$. Is important to highlight that the responses of the converters can be adapted based on parameters parametrization. However, until now the parametrization of these parameters depends strongly on the grid strength, point of connection, and desired response.
 
 These results indicate that converter-based technologies are capable of achieving significantly faster voltage recovery due to their control-based response, whereas synchronous machines exhibit slower dynamics associated with their electromechanical nature. Additionally, the magnitude of the voltage overshoot is influenced by the control strategy, where faster control action may lead to larger transient excursions if not sufficiently damped. \ref{fig:Vpcr}
 
 \subsubsection{Conclusion}
 
-The comparison demonstrates that synchronous generators, grid-forming converters, and grid-following converters exhibit fundamentally different behaviors under fault conditions. Grid-forming converters provide a compromise between fault current contribution and stable dynamic performance, while grid-following converters offer limited support to the grid during disturbances.
+The comparison demonstrates that synchronous generators, grid-forming converters, and grid-following converters exhibit fundamentally different behaviors under fault conditions. On one hand, Synchronous generators have the capability to provide large short circuit currents, which improve the system strength and help the system. On the other hand, traditional protection systems in the grid rely on high short circuit currents, which are easy to detect, with converters, fault currents are low and controlled which may lead to more difficulties to detect the fault and at the end to fail detecting the faults which can lead to a misoperation, On the other hand, large short circuit currents are related to grid strength, and at the end related to the short ciruit ratio observed by the generating unit, $SCR =\frac{S_{kss}}{S_{rated}}$, If the short circuit current is high, then the higher the short circuit ratio, a higher short circuit ratio is related to a strong grid, on the other hand, as converter units provide low short circuit currents, this lead to smaller values of SCR, which are related to weak grids. As a consequence of weak grids, the grid experiments higher voltage sensitivity, larger voltage dips and poor fault ride through margins. The explanation of grid stifness comes from the definition where $S_{SC} = \frac{V^2}{Z_{TH}}$, high short circuit power means low Thevenin equivalent impedance, as well, a high Thevenin equivalent impedance implies a weak grid condition, when a disturbance happens, the change in voltage is $\Delta V = Z{TH} * I$, in the case $Z_{TH}$ is small, the change in voltage is also small,  for the case where the $Z_{TH}$ is big, the change in voltage in case of a disturbance is also bigger, as  can be seen in the relation. On the other hand, high current injection also supports voltage stability, during faults, in order to maintain the voltage levels, current injection is needed (especially reactive current) to support the voltage at a certain bus, synchrnous generators can supply high fault currents, which support the voltage and limits the depth of the voltage dips. However, and as mentioned before, since converter units can not provide large short circuit currents, is often observed that systems dominated by converters experience deeper voltage drops and weaker post-fault voltage recovery, particularly under severe disturbances such as three-phase faults.
+
+
 
 \newpage
 \subsection{Loadstep}
@@ -87,13 +83,13 @@ The comparison demonstrates that synchronous generators, grid-forming converters
 \toprule
 Technology & $f_{nadir}$ [Hz] & RoCoF [Hz/s] & $f_{ss}$ [Hz] & $t_{settling}$ [s] & $f_{max}$ [Hz] & $\Delta f$ [Hz] \\
 \midrule
-GFL\_IEC        & 49.928 & 0.077 & 49.974 & 5.798  & 50.000 & -0.026 \\
-GFL\_WECC       & 49.862 & 0.070 & 49.974 & 11.095 & 50.039 & -0.026 \\
-GFM\_Droop      & 49.918 & 0.088 & 49.972 & 5.898  & 50.000 & -0.028 \\
-GFM\_VSM        & 49.912 & 0.057 & 49.971 & 6.598  & 50.000 & -0.029 \\
+GFL IEC        & 49.928 & 0.077 & 49.974 & 5.798  & 50.000 & -0.026 \\
+GFL WECC       & 49.862 & 0.070 & 49.974 & 11.095 & 50.039 & -0.026 \\
+GFM Droop      & 49.918 & 0.088 & 49.972 & 5.898  & 50.000 & -0.028 \\
+GFM VSM        & 49.912 & 0.057 & 49.971 & 6.598  & 50.000 & -0.029 \\
 SG              & 49.922 & 0.064 & 49.972 & 6.298  & 50.000 & -0.028 \\
-SMA\_BESS\_GFL  & 49.925 & 0.082 & 49.974 & 5.686  & 50.000 & -0.026 \\
-SMA\_PV\_GFL    & 49.925 & 0.082 & 49.974 & 5.781  & 50.000 & -0.026 \\
+SMA BESS GFL  & 49.925 & 0.082 & 49.974 & 5.686  & 50.000 & -0.026 \\
+SMA PV GFL    & 49.925 & 0.082 & 49.974 & 5.781  & 50.000 & -0.026 \\
 \bottomrule
 \end{tabular}
 \label{tab:loadstep_frequency}
@@ -132,13 +128,18 @@ At steady state, all grid-following units converge to the same final frequency v
 
 In contrast, small deviations in steady-state frequency are observed for grid-forming converters and the synchronous generator. This is a consequence of their active participation in frequency regulation through droop characteristics, which determine the final operating point of the system.
 
-\subsubsection{Discussion}
+\subsubsection{Conclusions}
 
 The results indicate that frequency stability is governed by a combination of inertial response and active power control. While inertia (physical or emulated) is essential to limit the initial frequency deviation, the frequency nadir and overall system stability depend strongly on the effectiveness of primary frequency control.
 
 Grid-forming converters provide a balanced response by combining inertia emulation with active power support, whereas grid-following converters offer limited contribution to frequency stability. The observed behaviour also highlights the importance of control tuning, particularly in converter-based technologies, where different implementations can lead to significantly different dynamic responses.
+Frequency stability.
+Synchronous generators inherently provide inertia and strong electromechanical coupling, which helps stabilize system frequency during disturbances. In contrast, converters do not have physical inertia and their current limitation reduces their contribution during faults. Grid-forming converters can partially compensate for this by emulating inertia and droop control, improving frequency response. However, their limited current capability still constrains their overall stabilizing effect compared to synchronous machines.
 
-\begin{figure}[htpb]
+RMS vs EMT modelling.
+The difference in fault current behaviour is also reflected in simulation approaches. RMS models often represent converters as controlled current sources with simplified dynamics, which may not fully capture current limitation and fast control interactions. EMT models, on the other hand, include detailed converter dynamics and accurately represent current limiting, control saturation, and fast transients. Therefore, discrepancies between RMS and EMT results are expected, especially during faults and in weak-grid conditions.
+
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{Figures/Chapter 7/Phase1/Loadstep/fatPCR.png}
     \caption{Frequency response at PCR}
@@ -148,18 +149,18 @@ Grid-forming converters provide a balanced response by combining inertia emulati
 
 
 \section{Phase 2: IEEE 39 Bus System}
-\subsection{RMS Dynamic Stability}
+
 \subsection{Small Signal Stability Results}
 
-\subsection{Evolution of the Dominant System Modes}
+\subsubsection{Evolution of the Least Damped System Modes}
 
 
 
-The analyzed operating scenarios are defined in Table~\ref{tab:scenario_definition}. The scenarios represent increasing levels of converter-based generation in the IEEE 39-bus system, obtained by progressively replacing synchronous generators with grid-following converters. Additional scenarios introduce grid-forming converters at selected buses in order to evaluate their impact on system stability.
+The analyzed operating scenarios are defined in Table~\ref{tab:scenario_definition}. The scenarios represent increasing levels of converter-based generation in the IEEE 39-bus system, obtained by progressively replacing synchronous generators with SMA PV grid-following converters. Additional scenarios introduce grid-forming converters at selected buses in order to evaluate their impact on system stability.
 
-For each operating condition, a small-signal stability analysis was performed to identify the dominant oscillatory eigenvalue governing the system dynamics. The results of this analysis are summarized in Table~\ref{tab:dominant_modes}, which reports the dominant mode for each scenario together with the corresponding eigenvalue location, oscillation frequency, and damping ratio.
+For each operating condition, a small-signal stability analysis was performed to identify the oscillatory eigenvalues governing the system dynamics. The results of this analysis are summarized in Table~\ref{tab:dominant_modes}, which reports the lesat damped mode for each scenario together with the corresponding eigenvalue location, oscillation frequency, and damping ratio.
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \caption{Definition of operating scenarios and generation mix}
 \label{tab:scenario_definition}
@@ -190,8 +191,8 @@ R09A--Slack & 83.71 & SG + GFL + 4 GFM & Buses 31,38,35,32 & 16.29 / 40.54 / 43.
 
 \begin{table}[h]
 \centering
-\caption{Dominant eigenvalues for the analyzed operating scenarios}
-\label{tab:dominant_modes}
+\caption{Least damped eigenvalues for the analyzed operating scenarios}
+\label{tab:least_damped_modes}
 \begin{tabular}{lccccc}
 \toprule
 Case & Dominant Mode & Eigenvalue $\sigma + j\omega$ [1/s] & Frequency [Hz] & Damping [\%] & Small signal stable \\
@@ -217,21 +218,21 @@ R09A--Slack & Mode 00044 & $-0.422 + j3.815$ & 0.607 & 10.99 & Stable \\
 \end{tabular}
 \end{table}
 
-The results show that the dominant damped frequency remains close to 1~Hz for the majority of the analyzed operating scenarios. This frequency range is characteristic of electromechanical oscillations typically observed in large interconnected power systems and is mainly associated with the rotor dynamics of synchronous machines.
+The results show that the damped frequency remains close to 1~Hz for the majority of the analyzed operating scenarios. This frequency range is characteristic of electromechanical oscillations typically observed in large interconnected power systems and is mainly associated with the rotor dynamics of synchronous machines.
 
-Figure~\ref{fig:eigenvalue_evolution} illustrates the evolution of the dominant eigenvalues in the complex plane. For scenarios R00--R06 and the stabilized cases including grid-forming converters, the dominant oscillatory modes remain located in the left half-plane of the complex plane. This indicates that the corresponding operating points are locally stable when subjected to small disturbances. 
+Figure~\ref{fig:eigenvalue_evolution} illustrates the evolution of the least damped eigenvalues in the complex plane. For scenarios R00--R06 and the stabilized cases including grid-forming converters, the oscillatory modes remain located in the left half-plane of the complex plane. This indicates that the corresponding operating points are locally stable when subjected to small disturbances. 
 
-For the scenarios that exhibit unstable behavior, the dominant eigenvalue crosses into the right half-plane, indicating a loss of small-signal stability. In these cases, participation factor analysis was performed in order to identify the states contributing most strongly to the unstable mode and to better understand the underlying mechanism driving the instability.
+For the scenarios that exhibit unstable behavior, the eigenvalue crosses into the right half-plane, indicating a loss of small-signal stability. In these cases, participation factor analysis was performed in order to identify the states contributing most strongly to the unstable mode and to better understand the underlying mechanism driving the instability.
 
-\begin{figure}[htbp!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{Figures/Chapter 7/Small Signal/eigenvalue_plot.png}
     \caption{Eigenvalue evolution}
     \label{fig:eigenvalue_evolution}
 \end{figure}
-Across the analyzed scenarios, the damping ratio of the dominant oscillatory mode ranges approximately between 3\% and 12\%. This indicates that increasing converter penetration up to these levels does not significantly degrade the small-signal stability of the system. This behavior can be attributed to the fact that the dominant oscillatory modes are primarily associated with the electromechanical dynamics of synchronous machines, while converter-based resources typically respond faster due to their control-based dynamics.
+Across the analyzed scenarios, the damping ratio of the least damped oscillatory mode ranges approximately between 3\% and 12\%. This indicates that increasing converter penetration up to these levels does not significantly degrade the small-signal stability of the system. This behavior can be attributed to the fact that the oscillatory modes are associated with the electromechanical dynamics of synchronous machines, while converter-based resources typically respond faster due to their control-based dynamics.
 
-\subsection{Dynamic Feasibility of Operating Points}
+\subsubsection{Dynamic Feasibility of Operating Points}
 
 Although the eigenvalue analysis indicates stable operating points for scenarios up to R06, time-domain RMS simulations reveal additional limitations when large disturbances are applied.
 
@@ -264,14 +265,14 @@ This behavior suggests that the system becomes increasingly sensitive to large d
 
 These results highlight the fundamental difference between small-signal stability and large-disturbance dynamic performance. Small-signal analysis evaluates the stability of the system in the vicinity of the operating point, whereas RMS time-domain simulations capture the nonlinear dynamic response of the system under large disturbances.
 
-\subsection{Emergence of an Unstable Mode}
+\subsubsection{Emergence of an Unstable Mode}
 
 At scenario R07, the system becomes unstable even in the absence of disturbances. The eigenvalue analysis reveals the appearance of a positive real eigenvalue ($\sigma > 0$), indicating loss of small-signal stability.
 
-Unlike the previously observed oscillatory modes, the unstable mode is non-oscillatory and corresponds to a purely real eigenvalue. Participation factor analysis indicates that this mode is dominated by internal states associated with the phase-locked loop (PLL) of the grid-following converters.
+Unlike the previously observed oscillatory modes, the unstable mode is non-oscillatory and corresponds to a purely real eigenvalue. Participation factor analysis \ref{fig: participation_factor_r07,fig: participation_factor_r08}indicates that this mode is dominated by internal states associated with the phase-locked loop (PLL) of the grid-following converters.
 
 This behavior suggests that at very high penetration levels, grid-following converters struggle to maintain synchronization due to the reduced presence of synchronous machines providing a strong voltage and frequency reference. 
-\begin{figure}[htbp!]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{Figures/Chapter 7/Small Signal/Mode Dominant Unstable R07.png}
     \caption{Participation factors of the unstable mode for scenario R07.}
@@ -285,7 +286,7 @@ This behavior suggests that at very high penetration levels, grid-following conv
     \label{fig: participation_factor_r08}
 \end{figure}
 
-\subsection{Stabilization Through Grid-Forming Converters}
+\subsubsection{Stabilization Through Grid-Forming Converters}
 
 Additional scenarios were evaluated by introducing grid-forming converters into the system. The results for scenarios R06A, R06B, R06BA, R07A, R07B, R08A demonstrate that the introduction of grid-forming units shifts the dominant eigenvalues further into the left half-plane.
 
@@ -295,7 +296,7 @@ This improvement in damping indicates that grid-forming converters provide addit
 
 Furthermore, in the final scenarios (R09 and R09A), where the synchronous slack generator is replaced by grid-forming converters, the dominant oscillation frequency decreases to approximately 0.6~Hz. This represents a noticeable reduction compared to the $\sim$1~Hz electromechanical mode observed in the preceding scenarios. The shift toward a lower oscillation frequency indicates a change in the dominant system dynamics as the share of converter-based generation increases.
 
-\subsection{Summary of Observed Stability Limits}
+\subsubsection{Summary of Observed Stability Limits}
 
 Based on the performed analysis, three key observations regarding system stability can be identified.
 
@@ -314,9 +315,10 @@ Overall, the results highlight the increasing influence of converter control dyn
 Furthermore, increasing penetration of converter-based generation leads to a progressive shift of the eigenvalues in the complex plane. From a system-theoretic perspective, this reflects a modification of the system state matrix, implying that the overall dynamic representation of the power system changes as synchronous machines are replaced by converter-interfaced resources. As a result, the characteristics of the dominant oscillatory modes may also change.
 
 Finally the results also show that the integration of grid-forming converters can significantly improve system stability. In scenarios such as R06B and R06BA, the introduction of grid-forming capability increases modal damping and restores dynamic robustness. However, the results further indicate that the location of grid-forming units within the network influences the system dynamics, suggesting that the allocation of these assets plays an important role in the stability of converter-dominated power systems.
-\section{RMS Analysis}
 
-\subsection{Effect of Increasing GFL Penetration}
+\subsection{RMS Analysis}
+
+\subsubsection{Effect of Increasing GFL Penetration}
 
 The dynamic response of the IEEE-39 bus system was evaluated for increasing levels of grid-following (GFL) photovoltaic penetration. In all cases, the applied disturbance was a three-phase short-circuit fault at Bus 16 cleared after 100 ms. The resulting voltage response at the faulted bus was used to assess system stability and dynamic performance. The main results are summarized in Table~\ref{tab:rms_results}
 \begin{table}[htbp]
@@ -354,9 +356,9 @@ R09A & Bus 31,38,35,32 & yes & no & -- & -- & -- \\
 
 The base case (R00), consisting entirely of synchronous generators, provides the reference for the analysis. In this scenario, the voltage dip reaches 0.059 p.u., followed by a voltage overshoot of approximately 1.1 p.u. The recovery time is defined as the time required for the voltage signal to return and remain within a predefined operating band between 1.012 p.u. and 1.052 p.u., around the nominal pre-fault voltage of 1.032 p.u.
 
-For penetration levels up to 30\% (cases R00--R04), the system remains dynamically stable. The minimum voltage during the fault is only slightly affected, varying between approximately 0.054 p.u. and 0.059 p.u. However, the post-fault oscillations become progressively less damped as the share of synchronous generation decreases. As a result, the voltage takes longer to re-enter and remain within the recovery band. This is reflected in the increasing recovery time observed up to case R04.
+For penetration levels up to 30\% (cases R00--R04)\ref{fig:Vresponser00_r04}, the system remains dynamically stable. The minimum voltage during the fault is only slightly affected, varying between approximately 0.054 p.u. and 0.059 p.u. However, the post-fault oscillations become progressively less damped as the share of synchronous generation decreases. As a result, the voltage takes longer to re-enter and remain within the recovery band. This is reflected in the increasing recovery time observed up to case R04.
 
-Interestingly, for cases R01--R03 (up to 21.46\% GFL penetration), the voltage overshoot is slightly lower than in the pure synchronous generator case. This behavior can be attributed to changes in reactive power support and modified post-fault power flow distribution due to the presence of converter-interfaced generation.
+Interestingly, for cases R01--R03 (up to 21.46\% GFL penetration) , the voltage overshoot is slightly lower than in the pure synchronous generator case. This behavior can be attributed to changes in reactive power support and modified post-fault power flow distribution due to the presence of converter-interfaced generation.
 
 % FIGURE PLACEHOLDER
 % Voltage response comparison for cases R00–R04
@@ -364,9 +366,10 @@ Interestingly, for cases R01--R03 (up to 21.46\% GFL penetration), the voltage o
 
 
 \begin{figure}[htbp]
-\centering
-\includegraphics[width=0.85\textwidth]{Figures/Chapter 7/RMS/R00toR04Bus16voltage.png}
-\caption{Voltage response at Bus 16 for increasing GFL penetration levels (R00--R04).}
+    \centering
+    \includegraphics[width=0.85\textwidth]{Figures/Chapter 7/RMS/R00toR04Bus16voltage.png}
+    \label{fig:Vresponser00_r04}
+    \caption{Voltage response at Bus 16 for increasing GFL penetration levels (R00--R04).}
 \end{figure}
 
 A more pronounced change in system behavior appears in case R05, corresponding to a PV penetration of 40.54\%, where only grid-following converters are added to the system. In this case, the voltage dip becomes significantly deeper, reaching 0.033 p.u., which corresponds to a reduction of approximately 44\% relative to the synchronous generator base case. A stronger voltage overshoot is also observed. In addition, noticeable ripple appears in the voltage signal, indicating that converter control dynamics begin to dominate the system response.
@@ -375,26 +378,25 @@ In case R06, where the GFL penetration reaches 51.1\%, the voltage dip remains s
 
 This behavior becomes more evident in case R07, corresponding to a penetration level of 61.71\%. In this scenario the RMS simulation fails to converge even in the absence of a disturbance. Small-signal analysis reveals the presence of an eigenvalue located in the right half of the complex plane, indicating that the operating point itself is unstable. Participation factor analysis shows that this unstable mode is mainly associated with the phase-locked loop (PLL) dynamics of the grid-following converters, as shown in fig \ref{fig: participation_factor_r07}
 
-% FIGURE PLACEHOLDER
-% Eigenvalue plot showing unstable mode appearing in R07
 
 These results highlight the limitations of GFL converters in systems with high penetration of inverter-based resources. Since GFL converters rely on a phase-locked loop to synchronize with the grid voltage, they require a sufficiently strong grid to operate correctly. As synchronous machines are progressively displaced, the overall system strength decreases due to the reduction in short-circuit current and inertia. Consequently, the converters struggle to maintain stable synchronization with the grid.
 
 Cases R06 and R07 therefore indicate the approximate stability limit of the IEEE-39 bus system when only grid-following converters are introduced.
 
-\subsection{Stabilizing Effect of Grid Forming Converters}
+\subsubsection{Stabilizing Effect of Grid Forming Converters}
 
 From this point onward, the analysis investigates whether grid-forming (GFM) converters are capable of restoring system stability.
 
 In case R06A, one GFM unit based on a virtual synchronous machine (VSM) control was introduced. Instead of adding a GFL unit, the corresponding converter was replaced by a GFM unit while maintaining the same rated apparent power, dispatched active power, and voltage control strategy. In this way, the GFM unit delivers the same power as the replaced GFL unit.
 
-The introduction of this GFM unit produced only a small improvement in the voltage dip; however, the recovery time of the voltage signal improved significantly. The recovery time decreased from 1.713 s in case R06 (with only GFL units) to 0.698 s in case R06A. This indicates a substantial improvement in the damping of post-fault oscillations. The RMS solver in PowerFactory also did not report convergence problems, suggesting that the system regained dynamic robustness with the addition of the GFM unit.
+The introduction of this GFM unit produced only a small improvement in the voltage dip\ref{fig:r06avsr06ba}; however, the recovery time of the voltage signal improved significantly. The recovery time decreased from 1.713 s in case R06 (with only GFL units) to 0.698 s in case R06A. This indicates a substantial improvement in the damping of post-fault oscillations. The RMS solver in PowerFactory also did not report convergence problems, suggesting that the system regained dynamic robustness with the addition of the GFM unit.
 
 % FIGURE PLACEHOLDER
 % Voltage comparison between R06 and R06A
 
 \begin{figure}[htbp]
 \centering
+\label{fig:r06avsr06ba}
 \includegraphics[width=0.85\textwidth]{Figures/Chapter 7/RMS/R06BvsR06BA.png}
 \caption{Voltage response at Bus 16 comparing the GFL-only case (R06) with the introduction of one GFM unit (R06A).}
 \end{figure}
@@ -409,7 +411,7 @@ These results indicate that GFM converters can extend the feasible penetration r
 
 Further simulations were performed to investigate the influence of the spatial placement of GFM units within the network.
 
-When two GFM units were placed at buses close to each other (case R06B), the simulation produced convergence warnings after the fault was cleared. Although the voltage dip during the fault improved compared to the single-GFM case, the post-fault dynamics showed numerical instability. This behavior suggests that unfavorable interactions between the control loops of nearby GFM units may occur.
+When two GFM units were placed at buses close to each other (case R06B), the simulation produced convergence warnings after the fault was cleared. Although the voltage dip during the fault improved compared to the single-GFM case, the post-fault dynamics showed numerical instability. \ref{fig:r06bvsr06ba}This behavior suggests that unfavorable interactions between the control loops of nearby GFM units may occur.
 
 To evaluate this effect, a second configuration was tested in case R06BA, where the second GFM unit was relocated to Bus 36. In this scenario, the simulation converged successfully and the voltage recovery improved. The recovery time was reduced by approximately 17\% compared to the single-GFM case, indicating improved damping of post-fault oscillations.
 
@@ -417,6 +419,7 @@ To evaluate this effect, a second configuration was tested in case R06BA, where 
 
 \begin{figure}[htbp]
 \centering
+\label{fig:r06bvsr06ba}
 \includegraphics[width=0.85\textwidth]{Figures/Chapter 7/RMS/R06BvsR06BA.png}
 \caption{Influence of GFM placement on voltage recovery at Bus 16.}
 \end{figure}
@@ -430,3 +433,10 @@ Finally, case R09 represents an extreme scenario in which the slack generator is
 Although small-signal analysis shows that all eigenvalues remain in the left half of the complex plane, the system is still unable to withstand the three-phase fault. During the disturbance, pole slip of the remaining synchronous generator is observed. This indicates that restoring small-signal stability does not necessarily guarantee transient robustness under severe disturbances.
 
 Increasing the share of GFM units therefore extends the feasible penetration range of inverter-based resources. However, beyond a certain point, restoring operating-point feasibility and small-signal stability is no longer sufficient to guarantee transient fault stability. In other words, at very high converter penetration levels, simply adding more GFM units does not necessarily ensure adequate fault ride-through capability.
+
+\subsection{Conclusion}
+Add conclusion on this chapter as well
+
+\section{Phase 3: Transfer capability and Hosting Capacity Results}
+\subsection{Conclusions}
+Add pertinent conclusions and write the results of this phase

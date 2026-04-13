@@ -224,7 +224,10 @@ The frequency response stages defined by ENTSO-E can be observed in the figure \
 
 Voltage stability refers to the ability of the system to maintain acceptable voltages under normal conditions and after disturbances. It is primarily determined by the balance of reactive power and network strength \cite{kundur1994}.
 
-The fundamental mechanisms of voltage stability can be illustrated using the classical $P$--$V$ and $Q$--$V$ characteristics, which describe the relationship between power transfer, reactive power, and voltage.
+The fundamental mechanisms of voltage stability can be illustrated using the classical $P$--$V$ and $Q$--$V$ characteristics \ref{fig:PV QV Curves}, which describe the relationship between power transfer, reactive power, and voltage. 
+The P--V curve represents the variation of bus voltage as a function of increasing active power transfer. As loading increases, the voltage decreases until a maximum transferable power (nose point) is reached, beyond which no stable operating point exists, indicating voltage collapse. 
+
+The Q--V curve describes the relationship between reactive power injection and bus voltage. It provides insight into the reactive power required to maintain voltage levels, where the minimum point of the curve defines the reactive power stability limit. Insufficient reactive power support leads to an inability to sustain voltage, resulting in instability.
 
 \begin{figure}[htbp!]
 \centering
@@ -272,7 +275,6 @@ The damping ratio characterises how fast post-disturbance oscillations decay:
 
 This indicator is used to assess the effect of control parameters on oscillatory behaviour in weak grids.
 
-Overall, voltage dip, recovery time, and damping are the key indicators used in this work to evaluate voltage stability under different GFM parameter settings and short-circuit ratios.
 
 
 %% Grid Stenght
@@ -303,7 +305,7 @@ Here, $S_{SC}$ is the short-circuit power at the point of interconnection, obtai
 
 \section{Small signal stability}
 
-Small-signal stability refers to the ability of a power system to maintain synchronism when subjected to small disturbances. A disturbance is considered small if the equations describing the resulting system response can be linearized around an operating point for the purpose of analysis \cite{Kundur}.
+Small-signal stability refers to the ability of a power system to maintain synchronism when subjected to small disturbances. A disturbance is considered small if the equations describing the resulting system response can be linearized around an operating point for the purpose of analysis \cite{kundur1994}.
 
 Small-signal instability may occur in two forms: (i) a steady increase in generator rotor angle due to insufficient synchronizing torque, and (ii) rotor oscillations of increasing amplitude due to insufficient damping torque.
 
@@ -391,14 +393,16 @@ Each eigenvalue corresponds to a dynamic mode of the system, representing a spec
 Modal analysis techniques such as participation factors, eigenvector analysis, and measures of controllability and observability can be used to identify the contribution of individual state variables to each mode. However, this work focuses on the dominant eigenvalues and their associated damping characteristics as indicators of system stability.
 
 
-\section{Transfer Capability Analysis}
+\section{Transfer Capability and Hosting Capacity Analyses}
 
-Transmission networks enable the exchange of electrical power between geographically separated regions. However, the amount of power that can be transferred through the transmission network is limited by physical constraints such as thermal limits of transmission lines, voltage limits, and system stability requirements. In addition, system operators must ensure that these limits are respected not only in the base operating condition but also under credible contingencies. Therefore, determining the maximum transferable power between two areas is an important task in both transmission system planning and operation \cite{wood2013power,kundur1994power}.
+Transmission networks enable the exchange of electrical power between geographically separated regions. However, the amount of power that can be transferred through the transmission network is limited by physical constraints such as thermal limits of transmission lines, voltage limits, and system stability requirements. In addition, system operators must ensure that these limits are respected not only in the base operating condition but also under credible contingencies. Therefore, determining the maximum transferable power between two areas is an important task in both transmission system planning and operation \cite{wood2013power,kundur1994}. 
 
 The concept of transfer capability is commonly used to quantify the maximum amount of power that can be exchanged between two regions of a power system while maintaining secure system operation. In practical applications, the Total Transfer Capability (TTC) represents the maximum power transfer that can be accommodated without violating system operating limits. Considering operational uncertainties, a transmission reliability margin (TRM) is typically introduced, resulting in the Available Transfer Capability (ATC), which represents the remaining transmission capacity available for additional transactions \cite{taylor1994power,nerc1996atc}.
-Security assessment of transfer capability is typically based on the verification of operating limits in both the base-case condition (\(N\)) and under single-component outage conditions (\(N-1\)). The \(N\) condition represents normal system operation with all relevant network elements in service, whereas the \(N-1\) criterion requires that the system remains within acceptable operating limits after the outage of any one critical component, such as a transmission line, transformer, or generator \cite{kundur1994power,wood2013power}. In practice, the maximum transferable power is therefore not only limited by the pre-contingency operating point, but also by post-contingency violations such as line overloads, unacceptable voltage deviations, or loss of stability. For this reason, contingency analysis is an essential part of transfer capability assessment.
+Security assessment of transfer capability is typically based on the verification of operating limits in both the base-case condition (\(N\)) and under single-component outage conditions (\(N-1\)). The \(N\) condition represents normal system operation with all relevant network elements in service, whereas the \(N-1\) criterion requires that the system remains within acceptable operating limits after the outage of any one critical component, such as a transmission line, transformer, or generator \cite{kundur1994,wood2013power}. In practice, the maximum transferable power is therefore not only limited by the pre-contingency operating point, but also by post-contingency violations such as line overloads, unacceptable voltage deviations, or loss of stability. For this reason, contingency analysis is an essential part of transfer capability assessment.
 
 In power system analysis tools such as DIgSILENT PowerFactory, transfer capability analysis determines the maximum power transfer between two regions or between sets of generators and loads by progressively scaling generation or demand until a network limit is reached \cite{digsilent2024pfmanual}. The limiting factors may include line thermal limits, voltage constraints, or violations that occur under contingency conditions.
+
+In addition to this system-wide perspective, a complementary nodal interpretation can be considered through the concept of hosting capacity, which refers to the maximum additional power injection that can be accommodated at a specific network location without violating operational limits. Although hosting capacity analysis is more commonly applied in distribution systems, a similar insight can be obtained in transmission systems by evaluating how incremental injections affect network constraints. In this context, sensitivity-based methods, such as Power Transfer Distribution Factors (PTDFs), can be used to approximate the impact of nodal injections on line loadings and to identify the elements that limit further power transfer. This enables a node-specific interpretation of transfer limits, complementing the conventional transfer capability framework.
 
 \subsection{Power Transfer Distribution Factors}
 
@@ -417,3 +421,5 @@ DIgSILENT PowerFactory provides a dedicated Transfer Capability Analysis tool to
 Two main approaches are available for defining the transfer interface. In the \textit{region-based} option, importing and exporting regions are defined by grouping network elements into predefined areas. The transfer capability is then calculated for the transmission lines connecting the two regions or across a user-defined boundary. Alternatively, the \textit{element-based} option allows the user to explicitly define a boundary consisting of selected network elements for which the transfer capability is evaluated.
 
 During the analysis, generation in the exporting region is increased while demand in the importing region is increased correspondingly. This incremental transfer continues until operational limits such as thermal ratings, voltage limits, or contingency violations are reached. The corresponding transfer level represents the maximum allowable power exchange between the defined regions.
+
+While this approach provides a system-level assessment of transfer limits, it can be complemented by a nodal perspective through sensitivity-based methods. In particular, Power Transfer Distribution Factors (PTDFs) allow the estimation of how incremental injections at specific buses affect power flows on network elements. This enables the identification of limiting components and supports a node-specific interpretation of injection capability, analogous to hosting capacity assessments, thereby extending the applicability of transfer capability analysis beyond predefined regions.

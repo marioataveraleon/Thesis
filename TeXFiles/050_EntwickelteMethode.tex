@@ -17,9 +17,30 @@ From the \textit{EQ\_SISTEMA} node, a transmission line is modelled up to the ne
 
 The \textit{Nudo PCR} (network connection point, NCP) is used to model the PGM to be assessed, including its corresponding private network, i.e., evacuation lines and transformers where applicable. The short-circuit power at the \textit{Nudo PCR}, denoted as $S_{\mathrm{cc,PCR}}$, shall be set such that the resulting short-circuit ratio (SCR) equals 5.
 
-Based on the selected value of $S_{\mathrm{cc,PCR}}$, the maximum PGM capacity to be assessed ($p_{\max}$) and the nominal voltage at the \textit{Nudo PCR} ($v_{\mathrm{Base,PCR}}$) are determined for the remaining parameters of the equivalent network model. In particular, the
-maximum apparent power of the equivalent PGM ($m_{\mathrm{Base,Eq}}$) and the impedance of the transmission line ($R + jX$) are calculated such that the short-circuit power at the \textit{Nudo PCR} matches the specified value. This ensures that all connected PGMs are
-simulated under disturbances with equivalent network characteristics.
+Based on the selected value of $S_{\mathrm{cc,PCR}}$, the maximum PGM capacity to be assessed ($p_{\max}$) and the nominal voltage at the \textit{Nudo PCR} ($v_{\mathrm{Base,PCR}}$) are determined for the remaining parameters of the equivalent network model. In particular, the maximum apparent power of the equivalent PGM ($m_{\mathrm{Base,Eq}}$) and the impedance of the transmission line ($R + jX$) are calculated such that the short-circuit power at the \textit{Nudo PCR} matches the specified value. This ensures that all connected PGMs are simulated under disturbances with equivalent network characteristics. 
+\begin{table}[htbp]
+    \centering
+    \caption{Summary of Equivalent System Electrical Characteristics}
+    \label{tab:network_characteristics}
+    \begin{tabular}{llll}
+    \hline
+    \textbf{Parameter} & \textbf{Symbol} & \textbf{Value} & \textbf{Description} \\
+    \hline
+    Short-circuit ratio & SCR & 5 & Grid strength at Nudo PCR \\
+    Short-circuit power at PCR & $S_{cc,PCR}$ & -- & Defined to achieve SCR \\
+    Nominal voltage (Nudo Gen EQ) & $V_{GEN,EQ}$ -- & Voltage at equivalent generator node \\ 
+    Nominal voltage (EQ SISTEMA) & $V_{SIS,EQ}$ & -- & Grid equivalent voltage level \\
+    Nominal voltage (Nudo PCR) & $V_{PCR}$ & -- & Voltage at point of connection \\
+    Equivalent machine inertia & $H_{EQ}$ & -- & Inertia constant of GEN EQ \\
+    Transmission line impedance & $R + jX$ & -- & Equivalent grid impedance \\
+    Transformer rated power & $S_{r,TFR}$ & -- & Rated apparent power of TFR EQ \\
+    Transformer impedance & $Z_{TFR}$ & -- & Equivalent transformer impedance \\
+    Load demand & $P_{load}, Q_{load}$ & -- & Load connected at PCR \\
+    Maximum generation capacity & $P_{max}$ & -- & Rated active power of PGM \\
+    Equivalent generator base power & $S_{base,EQ}$ & -- & Apparent power base of GEN EQ \\
+    \hline
+    \end{tabular}
+    \end{table}
 
 \begin{figure}[htbp!]
     \centering
@@ -43,10 +64,10 @@ To evaluate the dynamic behavior of the considered generation technology, two st
 as a severe disturbance affecting the transmission grid.
 
 \subsubsection{Load Step}
-A sudden change in active power demand is applied at the network conneection point (PCR Node) to create an positive active power imbalance in the system. The system disturbance occurs at 15s, the load connected in PCR is of 20 MW, at 15 s the load step occurs of an increase in 25\% rising the active power from 20 to 25 MW. The disturbance is used to asses the frequency response of the system, including frequency deviation and dynamic recovery characteristics. 
+A sudden change in active power demand is applied at the network conneection point (PCR Node) to create an positive active power imbalance in the system. The system disturbance occurs at $t = 1\,\mathrm{s}$, the load connected in PCR is of 20 MW, at 15 s the load step occurs of an increase in 25\% rising the active power from 20 to 25 MW. The disturbance is used to asses the frequency response of the system, including frequency deviation and dynamic recovery characteristics. 
 
 \subsubsection{Three-Phase Short Circuit}
-A symmetrical three-phase short-circuit is applied at the network connection point (\textit{Nudo PCR}) at $t = 15\,\mathrm{s}$ and cleared after $0.1\,\mathrm{s}$. The selected fault duration is consistent with the recommendations provided in \cite{REE_NTS_2016_631_v21}, which specify a clearing time between 80~ms and 120~ms.
+A symmetrical three-phase short-circuit is applied at the network connection point (\textit{Nudo PCR}) at $t = 1\,\mathrm{s}$ and cleared after $0.1\,\mathrm{s}$. The selected fault duration is consistent with the recommendations provided in \cite{REE_NTS_2016_631_v21}, which specify a clearing time between 80~ms and 120~ms.
 This scenario represents a severe grid disturbance and is used to evaluate the transient voltage stability and frequency response of the system following fault clearance. Furthermore, this disturbance allows the assessment of the low-voltage ride-through
 (LVRT) behaviour, as transmission system operators typically require generating units to remain connected to the grid and support voltage recovery during fault conditions \cite{entsoe2016}.
 
@@ -64,6 +85,27 @@ For the grid-following technology, built-in wind turbine models compliant with I
 
 For the grid-forming technology, the built-in PowerFactory models are used. In particular, droop-controlled and virtual synchronous machine (VSM) based grid-forming inverters are considered in this study to evaluate their dynamic behaviour under grid disturbances.
 
+\begin{table}[htbp]
+    \centering
+    \caption{Summary of Technologies Considered for Dynamic Performance Assessment}
+    \label{tab:technologies_summary}
+    \begin{tabular}{llll}
+    \hline
+    \textbf{Technology} & \textbf{Category} & \textbf{Model / Implementation} & \textbf{Key Characteristics} \\
+    \hline
+    Synchronous Generator & Conventional & PowerFactory ElmSym & Physical inertia, voltage control via AVR \\
+    \hline
+    GFL Wind (IEC) & Grid-Following & Built-in IEC WT models & PLL-based, current source behaviour \\
+    GFL Wind (WECC) & Grid-Following & Built-in WECC WT models & Standardized dynamic response, current control \\
+    SMA PV Inverter & Grid-Following & OEM SMA model & Manufacturer-specific control, realistic behaviour \\
+    SMA BESS Inverter & Grid-Following & OEM SMA model & Fast response, grid-following operation \\
+    \hline
+    GFM Droop Control & Grid-Forming & PowerFactory built-in & Voltage source behaviour, P--f and Q--V droop \\
+    GFM VSM & Grid-Forming & PowerFactory built-in & Virtual inertia, emulates synchronous machine dynamics \\
+    \hline
+    \end{tabular}
+    \end{table}
+
 
 \subsection{Stability indicators}
 
@@ -71,6 +113,23 @@ For the grid-forming technology, the built-in PowerFactory models are used. In p
 To evaluate and compare the dynamic performance of the considered technologies, a set of commonly used stability indicators is defined. Frequency-related indicators include the rate of change of frequency (RoCoF), the frequency nadir, and the settling time following a disturbance. These metrics are used to assess the system's ability to withstand active power imbalances and to recover frequency stability.
 
 In addition, voltage-related indicators are evaluated, including the maximum voltage dip during a disturbance and the subsequent voltage recovery behaviour. These indicators are particularly relevant for the assessment of transient voltage stability and compliance with low-voltage ride-through requirements.
+\begin{table}[htbp]
+    \centering
+    \caption{Stability Indicators for Dynamic Performance Assessment}
+    \label{tab:stability_indicators}
+    \begin{tabular}{llll}
+    \hline
+    \textbf{Indicator} & \textbf{Symbol} & \textbf{Description} & \textbf{Relevance} \\
+    \hline
+    Rate of Change of Frequency & RoCoF & Initial frequency slope after disturbance & Inertia response / system strength \\
+    Frequency nadir & $f_{min}$ & Minimum frequency reached & Frequency stability margin \\
+    Settling time & $t_s$ & Time to reach steady-state frequency & Dynamic damping / control effectiveness \\
+    \hline
+    Voltage dip & $\Delta V_{min}$ & Maximum voltage drop during disturbance & Fault response / LVRT performance \\
+    Voltage recovery time & $t_{rec}$ & Time to restore voltage after fault & Reactive support / stability \\
+    \hline
+    \end{tabular}
+    \end{table}
 
 \sectionmark{Phase 1} % short form for headlines on pages
 
@@ -141,7 +200,7 @@ Post-fault stability is assessed using:
     \item (ii) Rotor-speed response of the remaining synchronous generators.
 \end{itemize}
 
-A case is considered post-fault stable if the bus voltage recovers and remains bounded (e.g., $V_{16} > 0.9$~p.u. after clearing) and if synchronous generator speeds remain synchronized and converge toward a steady value (no growing oscillations or loss of synchronism).
+A case is considered post-fault stable if the bus voltage recovers and remains bounded and if synchronous generator speeds remain synchronized and converge toward a steady value (no growing oscillations or loss of synchronism).
 
 Cases exhibiting sustained solver non-convergence during the post-fault period are classified as numerically not feasible in RMS under the selected disturbance.
 
@@ -152,11 +211,11 @@ Cases exhibiting sustained solver non-convergence during the post-fault period a
 \subsection{Generator Replacement Method}
 
 
-To investigate the impact of increasing converter-based generation, synchronous generators are progressively replaced by grid-following PV plants while preserving the steady-state operating point of the original IEEE~39 benchmark case. The replacement sequence follows the initial active power dispatch of the synchronous generators, starting with the unit supplying the lowest active power and proceeding in ascending order (Table~\ref{tab:replacement_path}). This dispatch-based criterion ensures a systematic and reproducible replacement path.
+To investigate the impact of increasing converter-based generation, synchronous generators are progressively replaced by grid-following PV model plants while preserving the steady-state operating point of the original IEEE~39 benchmark case. The model used is the OEM SMA grid following PV model. The replacement sequence follows the initial active power dispatch of the synchronous generators, starting with the unit supplying the lowest active power and proceeding in ascending order (Table~\ref{tab:replacement_path}). This dispatch-based criterion ensures a systematic and reproducible replacement path.
 
 Each removed synchronous generator is replaced by a PV plant connected to the same generator bus as the decommissioned unit. The PV plant is rated to match the apparent power of the replaced synchronous generator and is connected through a step-up transformer representing the plant interfacing transformer to the 16.5~kV generator bus.
 
-To preserve the operating point, the PV plant operates under constant reactive power control (local controller: Const.~Q). The active and reactive power setpoints are assigned to reproduce the pre-replacement dispatch of the corresponding synchronous generator. Where generators are represented by multiple parallel units, the PV setpoints are scaled such that the aggregated PV output matches the original dispatched P and Q. All remaining synchronous generators retain their original control settings, and Generator G02 remains the slack unit throughout the replacement process.
+To preserve the operating point, the PV plant operates under constant voltage control (local controller: Const.~V). The active power setpoint is assigned to reproduce the pre-replacement dispatch of the corresponding synchronous generator. The PV setpoints are scaled such that the aggregated PV output matches the original dispatched P. All remaining synchronous generators retain their original control settings, and Generator G02 remains the slack unit throughout the replacement process.
 
 No modifications are introduced to the network topology, line parameters, transformer data, or load models; only the generation technology at selected buses is altered according to the defined replacement sequence.
 
@@ -195,21 +254,21 @@ The converter penetration level is quantified based on dispatched active power, 
 
 Small-signal stability was assessed through eigenvalue analysis of the linearized system model. For each replacement scenario, the system was first solved under steady-state conditions using a power flow calculation. The dynamic model was then linearized around the corresponding operating point and the eigenvalues of the resulting state matrix were computed using the modal analysis tool available in DIgSILENT PowerFactory.
 
-The analysis focuses on the dominant oscillatory modes, i.e., those with the lowest damping ratios or located closest to the imaginary axis. These modes govern the dynamic response of the system and are therefore the most relevant for assessing small-signal stability.
+The analysis focuses on the least damped oscillatory modes, i.e., those with the lowest damping ratios or located closest to the imaginary axis. These modes determine how fast the system oscillation decay  govern the dynamic response of the system and are therefore are relevant for assessing small-signal stability.
 
-For each scenario, the eigenvalue spectrum was evaluated and the dominant modes were characterized in terms of their damped frequency and damping ratio. These indicators allow the evolution of system oscillatory behavior to be assessed as synchronous generators are progressively replaced by converter-based generation.
+For each scenario, the eigenvalue spectrum was evaluated and the least damped modes were characterized in terms of their damped frequency and damping ratio. These indicators allow the evolution of system oscillatory behavior to be assessed as synchronous generators are progressively replaced by converter-based generation.
 
 Small-signal stability analysis is performed to evaluate how the dynamic characteristics of the system evolve as the penetration of converter-based generation increases. The replacement of synchronous machines by converter-interfaced resources can alter the dynamic behavior of the power system by modifying the location and damping of the eigenvalues of the linearized system. In particular, converter control dynamics may introduce new modes or shift existing electromechanical modes, potentially affecting system stability. Therefore, eigenvalue analysis provides a useful tool to assess how increasing converter penetration influences the dominant system modes and the overall stability of the operating point.
 
-\section{Phase 3: Network-Constrained Transfer Capability Assessment}
+\section{Phase 3: Network-Constrained Transfer Capability and Hosting Capacity Assessments}
 
 \subsection{Grid Model}
 
-The transfer capability analysis is conducted using the IEEE 39-bus test system described in Phase 2. The same network topology, generation dispatch, and load models are preserved.
+The transfer capability analysis is conducted using the IEEE 39-bus test system described in Phase 2. The same network topology, generation dispatch, and load models are preserved. No replacement of synchronous generators with PV units is considered. 
 
 Only steady-state conditions are considered for this analysis, and all simulations are performed in DIgSILENT PowerFactory.
 
-\subsection{Methodology for Transfer Capability Assessment}
+\subsection{Methodology}
 
 The objective of this phase is to determine the maximum incremental active power injection (hosting capacity) that can be accommodated at each bus of the network without violating operational constraints. Particular emphasis is placed on identifying the limiting network elements (i.e., transmission lines or transformers) that constrain power transfer. This information is highly relevant from a planning perspective, as it enables the identification of grid bottlenecks and supports comparisons with potential network reinforcements, thereby facilitating decisions on suitable locations for new generation or storage projects.
 
@@ -219,7 +278,7 @@ In DIgSILENT PowerFactory, PTDFs are obtained using the \textit{Sensitivities / 
 
 PTDFs quantify the incremental change in active power flow on each network element (in MW/MW) resulting from a 1 MW injection at a given bus, assuming a corresponding withdrawal at the slack bus. In other words, PTDFs indicate how an incremental power injection is distributed across the network elements. It is important to note that PTDF values strongly depend on the network topology and operating point.
 
-For each injection at each bus in the system, PTDF values are computed for all relevant network elements (transmission lines and transformers). In parallel, the thermal limits of these elements are extracted via Python scripting. For transmission lines, the apparent power limit is calculated from the rated voltage and current as:
+For each injection at each bus in the system, PTDF values are computed for all relevant network elements (transmission lines and transformers). PTDF values are also obtained for all contingency topologies. In parallel, the thermal limits of these elements are extracted via Python scripting. For transmission lines, the apparent power limit is calculated from the rated voltage and current as:
 
 \begin{equation}
     S_{\text{max}} = \sqrt{3} \cdot U_{\text{rated}} \cdot I_{\text{rated}}
@@ -231,17 +290,9 @@ For transformers, the rated apparent power is directly used:
     S_{\text{max}} = S_{\text{rated}}
 \end{equation}
 
-To improve the accuracy of the assessment, load-flow calculations are performed for the base case. This allows the extraction of the actual loading of all network elements under the given operating condition.
+Load flow calculations are used to obtain the actual load flow of each element at each congintency topology, that means that at ech contingency topology, a load flow is runned, and the actual power flow of all elements is obtained. 
 
-The loading of each element is then used to approximate the active power flow as:
-
-\begin{equation}
-    P_{\text{actual}} \approx \frac{\text{loading}}{100} \cdot S_{\text{max}}
-\end{equation}
-
-This approximation assumes that apparent power is predominantly composed of active power, which is acceptable for screening-level transfer capability assessments.
-
-Based on this, the available margin to the thermal limit is calculated as:
+Based on the actual power flowing throug the element, the available margin is calculated as:
 
 \begin{equation}
     \text{Margin} = S_{\text{max}} - P_{\text{actual}}
@@ -261,7 +312,7 @@ It should be noted that this approach is based on a linear approximation of syst
 
 \subsection{Contingency Analysis and Security Criteria}
 
-To ensure secure system operation, $N-1$ contingency conditions are explicitly considered in the assessment. Each contingency is simulated by removing a single network element (transmission line or transformer) from service, followed by a load-flow calculation (e.g., using \textit{ComLdf} in PowerFactory :contentReference[oaicite:0]{index=0}).
+To ensure secure system operation, $N-1$ contingency conditions are explicitly considered in the assessment. Each contingency is simulated by removing a single network element (transmission line or transformer) from service, followed by a load-flow calculation (e.g., using \textit{ComLdf} in PowerFactory
 
 For each contingency scenario, the transfer capability is evaluated using the methodology described in the previous subsection. A transfer is considered feasible only if no network element exceeds its thermal loading limits under both the base case and all contingency conditions.
 
