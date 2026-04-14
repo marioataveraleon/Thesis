@@ -11,33 +11,31 @@ The power system model used in this phase is the Spanish equivalent grid (Red El
 
 \subsection{Grid Model and Test System Definition}
 
-The dynamic system consists of an equivalent node of the electrical system (\textit{EQ\_SISTEMA}), to which an equivalent power generating module (PGM), \textit{GEN\_EQ}, is connected via an equivalent machine transformer, \textit{TFR\_EQ}, installed between the generation node (\textit{GEN\_EQ}) and the \textit{EQ\_SISTEMA} node.
+The dynamic system is represented by an equivalent network model based on the Spanish grid code (NTS 2.1), consisting of an equivalent system node (\textit{EQ\_SISTEMA}) and an equivalent power generating module (PGM), denoted as \textit{GEN\_EQ}. The equivalent generator is connected to the system node through a step-up transformer (\textit{TFR\_EQ}), representing the interface between generation and the transmission system.
 
-From the \textit{EQ\_SISTEMA} node, a transmission line is modelled up to the network connection point of the PGM under assessment (\textit{Nudo PCR}); this line represents the transmission grid.
+From the \textit{EQ\_SISTEMA} node, an equivalent transmission line is modelled up to the point of connection (\textit{Nudo PCR}), representing the external grid. The \textit{Nudo PCR} serves as the connection point for the PGM under assessment, including its associated internal network (e.g., evacuation lines and transformers).
 
-The \textit{Nudo PCR} (network connection point, NCP) is used to model the PGM to be assessed, including its corresponding private network, i.e., evacuation lines and transformers where applicable. The short-circuit power at the \textit{Nudo PCR}, denoted as $S_{\mathrm{cc,PCR}}$, shall be set such that the resulting short-circuit ratio (SCR) equals 5.
+The strength of the grid is defined through the short-circuit ratio (SCR), which is fixed to a value of 5 in the base case. This is achieved by setting the short-circuit power at the \textit{Nudo PCR}, denoted as $S_{\mathrm{cc,PCR}}$, accordingly. Based on this value, the equivalent generator base power ($S_{\mathrm{base,EQ}}$) and the transmission system impedance are determined such that the desired grid strength is reproduced.
 
-Based on the selected value of $S_{\mathrm{cc,PCR}}$, the maximum PGM capacity to be assessed ($p_{\max}$) and the nominal voltage at the \textit{Nudo PCR} ($v_{\mathrm{Base,PCR}}$) are determined for the remaining parameters of the equivalent network model. In particular, the maximum apparent power of the equivalent PGM ($m_{\mathrm{Base,Eq}}$) and the impedance of the transmission line ($R + jX$) are calculated such that the short-circuit power at the \textit{Nudo PCR} matches the specified value. This ensures that all connected PGMs are simulated under disturbances with equivalent network characteristics. 
-\begin{table}[htbp]
+This formulation ensures that all simulations are performed under consistent and controlled grid conditions, allowing a systematic assessment of the impact of different generation technologies, particularly grid-forming converters, on system stability. The Parameters of the Equivalent Model are described in table \ref{tab:eq_system_parameters}
+\begin{table}[htbp!]
     \centering
-    \caption{Summary of Equivalent System Electrical Characteristics}
-    \label{tab:network_characteristics}
-    \begin{tabular}{llll}
+    \caption{Parameters of the Equivalent System Model}
+    \label{tab:eq_system_parameters}
+    \begin{tabular}{lll}
     \hline
-    \textbf{Parameter} & \textbf{Symbol} & \textbf{Value} & \textbf{Description} \\
+    \textbf{Parameter} & \textbf{Symbol} & \textbf{Value} \\
     \hline
-    Short-circuit ratio & SCR & 5 & Grid strength at Nudo PCR \\
-    Short-circuit power at PCR & $S_{cc,PCR}$ & -- & Defined to achieve SCR \\
-    Nominal voltage (Nudo Gen EQ) & $V_{GEN,EQ}$ -- & Voltage at equivalent generator node \\ 
-    Nominal voltage (EQ SISTEMA) & $V_{SIS,EQ}$ & -- & Grid equivalent voltage level \\
-    Nominal voltage (Nudo PCR) & $V_{PCR}$ & -- & Voltage at point of connection \\
-    Equivalent machine inertia & $H_{EQ}$ & -- & Inertia constant of GEN EQ \\
-    Transmission line impedance & $R + jX$ & -- & Equivalent grid impedance \\
-    Transformer rated power & $S_{r,TFR}$ & -- & Rated apparent power of TFR EQ \\
-    Transformer impedance & $Z_{TFR}$ & -- & Equivalent transformer impedance \\
-    Load demand & $P_{load}, Q_{load}$ & -- & Load connected at PCR \\
-    Maximum generation capacity & $P_{max}$ & -- & Rated active power of PGM \\
-    Equivalent generator base power & $S_{base,EQ}$ & -- & Apparent power base of GEN EQ \\
+    Short-circuit ratio & SCR & 5 \\
+    Short-circuit power at PCR & $S_{cc,PCR}$ & 500 MVA \\
+    Nominal voltage (GEN EQ) & $V_{GEN,EQ}$ & 5 kV \\
+    Nominal voltage (EQ SISTEMA) & $V_{SIS,EQ}$ & 33 kV \\
+    Nominal voltage (PCR) & $V_{PCR}$ & 33 kV \\
+    Transmission line impedance & $R + jX$ & 0.6007 + 0.6007 (p.u.) \\
+    Transformer rated power & $S_{TRF,EQ}$ & 500 MVA \\
+    Transformer impedance & $X_{TFR}$ & 0.12 (p.u.) YNd11 \\
+    Load demand & $P_{CARGA,EQ}$ & 400 MW \\
+    Equivalent generator base power & $S_{base,EQ}$ & 500 MVA \\
     \hline
     \end{tabular}
     \end{table}
@@ -48,6 +46,41 @@ Based on the selected value of $S_{\mathrm{cc,PCR}}$, the maximum PGM capacity t
     \caption{Equivalent electric network model \cite{REE_NTS_2016_631_v21}}
     \label{fig:Equivalent Electric Network model}
 \end{figure}
+The data required to model the MGES are provided in Table \ref{tab:mges_parameters}, expressed in per unit (on a of 500 MVA base) and assuming unsaturated machine characteristics. Additionally, magnetic saturation is not considered in the adopted model. 
+\begin{table}[htbp!]
+    \centering
+    \caption{Parameters of the Equivalent Synchronous Machine (MGES)}
+    \label{tab:mges_parameters}
+    \begin{tabular}{lll}
+    \hline
+    \textbf{Parameter} & \textbf{Value} & \textbf{Description} \\
+    \hline
+    $T'_{do}$ & 4.61 s & Direct-axis transient open-circuit time constant \\
+    $T''_{do}$ & 0.054 s & Direct-axis subtransient open-circuit time constant \\
+    $T'_{qo}$ & 1.5 s & Quadrature-axis transient open-circuit time constant \\
+    $T''_{qo}$ & 0.107 s & Quadrature-axis subtransient open-circuit time constant \\
+    $R_a$ & negligible & Armature resistance \\
+    $X_d$ & 1.85 p.u. & Direct-axis synchronous reactance \\
+    $X_q$ & 1.74 p.u. & Quadrature-axis synchronous reactance \\
+    $X'_d$ & 0.225 p.u. & Direct-axis transient reactance \\
+    $X'_q$ & 0.306 p.u. & Quadrature-axis transient reactance \\
+    $X''_d = X''_q$ & 0.2 p.u. & Subtransient reactance \\
+    $X_l$ & 0.113 p.u. & Leakage reactance \\
+    $H$ & 2.5 s & Inertia constant \\
+    \hline
+    \end{tabular}
+    \end{table}
+
+    The implemented model in PowerFactory is shown in Fig. \ref{fig:Equivalent Electric Network model in PowerFactory}
+
+    \begin{figure}[htbp!]
+        \centering
+        \includegraphics[width=0.8\textwidth]{Figures/Chapter 5/EqDiagramPF.png}
+        \caption{Equivalent electric network model in PowerFactory}
+        \label{fig:Equivalent Electric Network model in PowerFactory}
+    \end{figure}
+
+    The MGES defines the electromechanical dynamic behaviour of the system, thereby providing a coherent baseline against which the performance of grid-forming converters can be evaluated.
 
 \subsection{Simulation Environment}
 All simulations are performed in DIgSILENT PowerFactory using the time-domain RMS simulation environment. The system is initialised from a steady-state load-flow solution.
@@ -83,52 +116,53 @@ Subsequently, the synchronous generator is replaced either by a grid-following (
 
 For the grid-following technology, built-in wind turbine models compliant with IEC and WECC standards available in DIgSILENT PowerFactory are employed. These models represent the dynamic behaviour of GFL wind turbines and allow parameter adaptation to approximate specific original equipment manufacturer (OEM) characteristics. In addition, OEM-specific inverter models provided by SMA for photovoltaic and battery energy storage systems are considered, allowing the assessment of dynamic behaviour based on realistic manufacturer control implementations.
 
-For the grid-forming technology, the built-in PowerFactory models are used. In particular, droop-controlled and virtual synchronous machine (VSM) based grid-forming inverters are considered in this study to evaluate their dynamic behaviour under grid disturbances.
+For the grid-forming technology, the built-in PowerFactory models are used. In particular, droop-controlled and virtual synchronous machine (VSM) based grid-forming inverters are considered in this study to evaluate their dynamic behaviour under grid disturbances. 
 
-\begin{table}[htbp]
+A summary of the technologies is seen in Table \ref{tab:technologies_summary}
+
+\begin{table}[htbp!]
     \centering
     \caption{Summary of Technologies Considered for Dynamic Performance Assessment}
     \label{tab:technologies_summary}
-    \begin{tabular}{llll}
-    \hline
+    \begin{tabularx}{\textwidth}{l l l X}
+    \toprule
     \textbf{Technology} & \textbf{Category} & \textbf{Model / Implementation} & \textbf{Key Characteristics} \\
-    \hline
+    \midrule
     Synchronous Generator & Conventional & PowerFactory ElmSym & Physical inertia, voltage control via AVR \\
-    \hline
-    GFL Wind (IEC) & Grid-Following & Built-in IEC WT models & PLL-based, current source behaviour \\
-    GFL Wind (WECC) & Grid-Following & Built-in WECC WT models & Standardized dynamic response, current control \\
+    GFL Wind (IEC) & Grid-Following & Built-in IEC wind turbine models & PLL-based, current-source behaviour \\
+    GFL Wind (WECC) & Grid-Following & Built-in WECC wind turbine models & Standardized dynamic response, current control \\
     SMA PV Inverter & Grid-Following & OEM SMA model & Manufacturer-specific control, realistic behaviour \\
     SMA BESS Inverter & Grid-Following & OEM SMA model & Fast response, grid-following operation \\
-    \hline
-    GFM Droop Control & Grid-Forming & PowerFactory built-in & Voltage source behaviour, P--f and Q--V droop \\
-    GFM VSM & Grid-Forming & PowerFactory built-in & Virtual inertia, emulates synchronous machine dynamics \\
-    \hline
-    \end{tabular}
+    GFM Droop Control & Grid-Forming & PowerFactory built-in model & Voltage-source behaviour, $P$--$f$ and $Q$--$V$ droop \\
+    GFM VSM & Grid-Forming & PowerFactory built-in model & Virtual inertia, emulates synchronous machine dynamics \\
+    \bottomrule
+    \end{tabularx}
     \end{table}
 
 
 \subsection{Stability indicators}
 
 
-To evaluate and compare the dynamic performance of the considered technologies, a set of commonly used stability indicators is defined. Frequency-related indicators include the rate of change of frequency (RoCoF), the frequency nadir, and the settling time following a disturbance. These metrics are used to assess the system's ability to withstand active power imbalances and to recover frequency stability.
+To evaluate and compare the dynamic performance of the considered technologies, a set of commonly used stability indicators is defined. Frequency-related indicators include the rate of change of frequency (RoCoF), the frequency nadir, and the settling time following a disturbance. These metrics are used to assess the system's ability to withstand active power imbalances and to recover frequency stability and are described in Table \ref{tab:stability_indicators}.
 
 In addition, voltage-related indicators are evaluated, including the maximum voltage dip during a disturbance and the subsequent voltage recovery behaviour. These indicators are particularly relevant for the assessment of transient voltage stability and compliance with low-voltage ride-through requirements.
-\begin{table}[htbp]
+
+\begin{table}[htbp!]
     \centering
     \caption{Stability Indicators for Dynamic Performance Assessment}
     \label{tab:stability_indicators}
-    \begin{tabular}{llll}
-    \hline
+    \begin{tabularx}{\textwidth}{l l X X}
+    \toprule
     \textbf{Indicator} & \textbf{Symbol} & \textbf{Description} & \textbf{Relevance} \\
-    \hline
-    Rate of Change of Frequency & RoCoF & Initial frequency slope after disturbance & Inertia response / system strength \\
-    Frequency nadir & $f_{min}$ & Minimum frequency reached & Frequency stability margin \\
-    Settling time & $t_s$ & Time to reach steady-state frequency & Dynamic damping / control effectiveness \\
-    \hline
-    Voltage dip & $\Delta V_{min}$ & Maximum voltage drop during disturbance & Fault response / LVRT performance \\
-    Voltage recovery time & $t_{rec}$ & Time to restore voltage after fault & Reactive support / stability \\
-    \hline
-    \end{tabular}
+    \midrule
+    Rate of Change of Frequency & RoCoF & Initial frequency slope following a disturbance & Inertia response and system strength \\
+    Frequency nadir & $f_{\min}$ & Minimum frequency reached after disturbance & Frequency stability margin \\
+    Settling time & $t_s$ & Time required to reach steady-state frequency & Dynamic damping and control effectiveness \\
+    
+    Voltage dip & $\Delta V_{\min}$ & Maximum voltage drop during disturbance & Fault response and LVRT performance \\
+    Voltage recovery time & $t_{rec}$ & Time required to restore voltage after fault & Reactive power support and voltage stability \\
+    \bottomrule
+    \end{tabularx}
     \end{table}
 
 \sectionmark{Phase 1} % short form for headlines on pages
@@ -162,7 +196,7 @@ The network consists of 39 buses, 10 synchronous generators, 19 loads, 34 transm
 The system contains ten synchronous generators. Generator G02 (Bus 31) operates as the slack element of the network, while the remaining generators operate as PV buses with fixed active power dispatch and controlled terminal voltage magnitude. Automatic Voltage Regulators (AVRs) and turbine governors are active according to the default dynamic models provided in the PowerFactory implementation.
 
 The inertia constants of the synchronous generators range between approximately 3.45 s and 5.0 s, defining the initial aggregate system inertia prior to any generator replacement. These inertia values form the reference against which reductions in rotational inertia due to synchronous generator replacement are assessed. Inertia constants can be seen in the table. \ref{tab:inertia_constants of sg in the IEEE39} .
-\begin{table}[h]
+\begin{table}[htbp!]
     \centering
     \caption{Inertia constants of synchronous generators}
     \label{tab:inertia_constants of sg in the IEEE39}
@@ -224,7 +258,7 @@ The converter penetration level is quantified based on dispatched active power, 
 \mathrm{PV\ penetration}~[\%] = \frac{\sum P_{\mathrm{PV}}}{\sum P_{\mathrm{gen}}}\times 100 .
 \end{equation}
 
-\begin{table}[h]
+\begin{table}[htbp!]
     \centering
     \caption{Generator replacement path and corresponding PV penetration levels}
     \label{tab:replacement_path}
