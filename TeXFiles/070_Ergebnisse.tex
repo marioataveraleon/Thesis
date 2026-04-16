@@ -155,7 +155,7 @@ The difference in fault current behaviour is also reflected in simulation approa
 
 The analyzed operating scenarios are defined in Table~\ref{tab:scenario_definition}. The scenarios represent increasing levels of converter-based generation in the IEEE 39-bus system, obtained by progressively replacing synchronous generators with SMA PV grid-following converters. Additional scenarios introduce grid-forming converters at selected buses in order to evaluate their impact on system stability.
 
-For each operating condition, a small-signal stability analysis was performed to identify the oscillatory eigenvalues governing the system dynamics. The results of this analysis are summarized in Table~\ref{tab:dominant_modes}, which reports the lesat damped mode for each scenario together with the corresponding eigenvalue location, oscillation frequency, and damping ratio.
+For each operating condition, a small-signal stability analysis was performed to identify the oscillatory eigenvalues governing the system dynamics. The results of this analysis are summarized in Table~\ref{tab:least_damped_modes}, which reports the lesat damped mode for each scenario together with the corresponding eigenvalue location, oscillation frequency, and damping ratio.
 
 \begin{table}[htbp]
 \centering
@@ -266,14 +266,14 @@ These results highlight the fundamental difference between small-signal stabilit
 
 At scenario R07, the system becomes unstable even in the absence of disturbances. The eigenvalue analysis reveals the appearance of a positive real eigenvalue ($\sigma > 0$), indicating loss of small-signal stability.
 
-Unlike the previously observed oscillatory modes, the unstable mode is non-oscillatory and corresponds to a purely real eigenvalue. Participation factor analysis \ref{fig: participation_factor_r07,fig: participation_factor_r08}indicates that this mode is dominated by internal states associated with the phase-locked loop (PLL) of the grid-following converters.
+Unlike the previously observed oscillatory modes, the unstable mode is non-oscillatory and corresponds to a purely real eigenvalue. Participation factor analysis \ref{fig:participation_factor_r07} and \ref{fig: participation_factor_r08} indicates that this mode is dominated by internal states associated with the phase-locked loop (PLL) of the grid-following converters.
 
 This behavior suggests that at very high penetration levels, grid-following converters struggle to maintain synchronization due to the reduced presence of synchronous machines providing a strong voltage and frequency reference. 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{Figures/Chapter 7/Small Signal/Mode Dominant Unstable R07.png}
     \caption{Participation factors of the unstable mode for scenario R07.}
-    \label{fig: participation_factor_r07}
+    \label{fig:participation_factor_r07}
 \end{figure}
 
 \begin{figure}[htbp!]
@@ -287,7 +287,7 @@ This behavior suggests that at very high penetration levels, grid-following conv
 
 Additional scenarios were evaluated by introducing grid-forming converters into the system. The results for scenarios R06A, R06B, R06BA, R07A, R07B, R08A demonstrate that the introduction of grid-forming units shifts the dominant eigenvalues further into the left half-plane.
 
-As shown in Table~\ref{tab:dominant_modes}, the damping ratios increase significantly in these scenarios, reaching values between approximately 7\% and 12\%.
+As shown in Table~\ref{tab:least_damped_modes}, the damping ratios increase significantly in these scenarios, reaching values between approximately 7\% and 12\%.
 
 This improvement in damping indicates that grid-forming converters provide additional stabilizing effects through their voltage and frequency control mechanisms, partially replacing the stabilizing role traditionally provided by synchronous machines.
 
@@ -373,7 +373,7 @@ A more pronounced change in system behavior appears in case R05, corresponding t
 
 In case R06, where the GFL penetration reaches 51.1\%, the voltage dip remains similar to that observed in R05. However, during the RMS simulation convergence warnings appear in the software when the fault is applied. Although the simulation completes successfully, these warnings indicate that the system is approaching the limits of dynamic robustness.
 
-This behavior becomes more evident in case R07, corresponding to a penetration level of 61.71\%. In this scenario the RMS simulation fails to converge even in the absence of a disturbance. Small-signal analysis reveals the presence of an eigenvalue located in the right half of the complex plane, indicating that the operating point itself is unstable. Participation factor analysis shows that this unstable mode is mainly associated with the phase-locked loop (PLL) dynamics of the grid-following converters, as shown in fig \ref{fig: participation_factor_r07}
+This behavior becomes more evident in case R07, corresponding to a penetration level of 61.71\%. In this scenario the RMS simulation fails to converge even in the absence of a disturbance. Small-signal analysis reveals the presence of an eigenvalue located in the right half of the complex plane, indicating that the operating point itself is unstable. Participation factor analysis shows that this unstable mode is mainly associated with the phase-locked loop (PLL) dynamics of the grid-following converters, as shown in fig \ref{fig:participation_factor_r07}
 
 
 These results highlight the limitations of GFL converters in systems with high penetration of inverter-based resources. Since GFL converters rely on a phase-locked loop to synchronize with the grid voltage, they require a sufficiently strong grid to operate correctly. As synchronous machines are progressively displaced, the overall system strength decreases due to the reduction in short-circuit current and inertia. Consequently, the converters struggle to maintain stable synchronization with the grid.
