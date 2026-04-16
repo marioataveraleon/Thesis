@@ -324,9 +324,9 @@ For transformers, the rated apparent power is directly used:
     S_{\text{max}} = S_{\text{rated}}
 \end{equation}
 
-Load flow calculations are used to obtain the actual load flow of each element at each congintency topology, that means that at ech contingency topology, a load flow is runned, and the actual power flow of all elements is obtained. 
+Load-flow calculations are used to obtain the actual power flow of each element for every contingency topology. That is, for each contingency case, a load-flow simulation is performed and the resulting power flows of all network elements are recorded.
 
-Based on the actual power flowing throug the element, the available margin is calculated as:
+Based on the actual power flowing through each element, the available margin is calculated as:
 
 \begin{equation}
     \text{Margin} = S_{\text{max}} - P_{\text{actual}}
