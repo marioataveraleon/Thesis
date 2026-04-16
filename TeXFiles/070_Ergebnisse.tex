@@ -67,9 +67,7 @@ In terms of voltage settling time, the fastest responses are observed for the co
 
 These results indicate that converter-based technologies are capable of achieving significantly faster voltage recovery due to their control-based response, whereas synchronous machines exhibit slower dynamics associated with their electromechanical nature. Additionally, the magnitude of the voltage overshoot is influenced by the control strategy, where faster control action may lead to larger transient excursions if not sufficiently damped. \ref{fig:Vpcr}
 
-\subsubsection{Conclusion}
 
-The comparison demonstrates that synchronous generators, grid-forming converters, and grid-following converters exhibit fundamentally different behaviors under fault conditions. On one hand, Synchronous generators have the capability to provide large short circuit currents, which improve the system strength and help the system. On the other hand, traditional protection systems in the grid rely on high short circuit currents, which are easy to detect, with converters, fault currents are low and controlled which may lead to more difficulties to detect the fault and at the end to fail detecting the faults which can lead to a misoperation, On the other hand, large short circuit currents are related to grid strength, and at the end related to the short ciruit ratio observed by the generating unit, $SCR =\frac{S_{kss}}{S_{rated}}$, If the short circuit current is high, then the higher the short circuit ratio, a higher short circuit ratio is related to a strong grid, on the other hand, as converter units provide low short circuit currents, this lead to smaller values of SCR, which are related to weak grids. As a consequence of weak grids, the grid experiments higher voltage sensitivity, larger voltage dips and poor fault ride through margins. The explanation of grid stifness comes from the definition where $S_{SC} = \frac{V^2}{Z_{TH}}$, high short circuit power means low Thevenin equivalent impedance, as well, a high Thevenin equivalent impedance implies a weak grid condition, when a disturbance happens, the change in voltage is $\Delta V = Z{TH} * I$, in the case $Z_{TH}$ is small, the change in voltage is also small,  for the case where the $Z_{TH}$ is big, the change in voltage in case of a disturbance is also bigger, as  can be seen in the relation. On the other hand, high current injection also supports voltage stability, during faults, in order to maintain the voltage levels, current injection is needed (especially reactive current) to support the voltage at a certain bus, synchrnous generators can supply high fault currents, which support the voltage and limits the depth of the voltage dips. However, and as mentioned before, since converter units can not provide large short circuit currents, is often observed that systems dominated by converters experience deeper voltage drops and weaker post-fault voltage recovery, particularly under severe disturbances such as three-phase faults.
 
 
 
@@ -128,8 +126,16 @@ At steady state, all grid-following units converge to the same final frequency v
 
 In contrast, small deviations in steady-state frequency are observed for grid-forming converters and the synchronous generator. This is a consequence of their active participation in frequency regulation through droop characteristics, which determine the final operating point of the system.
 
-\subsubsection{Conclusions}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Figures/Chapter 7/Phase1/Loadstep/fatPCR.png}
+    \caption{Frequency response at PCR}
+    \label{fig:fatpcr}
+\end{figure}
 
+\subsection{Conclusions}
+
+The comparison demonstrates that synchronous generators, grid-forming converters, and grid-following converters exhibit fundamentally different behaviors under fault conditions. On one hand, Synchronous generators have the capability to provide large short circuit currents, which improve the system strength and help the system. On the other hand, traditional protection systems in the grid rely on high short circuit currents, which are easy to detect, with converters, fault currents are low and controlled which may lead to more difficulties to detect the fault and at the end to fail detecting the faults which can lead to a misoperation, On the other hand, large short circuit currents are related to grid strength, and at the end related to the short ciruit ratio observed by the generating unit, $SCR =\frac{S_{kss}}{S_{rated}}$, If the short circuit current is high, then the higher the short circuit ratio, a higher short circuit ratio is related to a strong grid, on the other hand, as converter units provide low short circuit currents, this lead to smaller values of SCR, which are related to weak grids. As a consequence of weak grids, the grid experiments higher voltage sensitivity, larger voltage dips and poor fault ride through margins. The explanation of grid stifness comes from the definition where $S_{SC} = \frac{V^2}{Z_{TH}}$, high short circuit power means low Thevenin equivalent impedance, as well, a high Thevenin equivalent impedance implies a weak grid condition, when a disturbance happens, the change in voltage is $\Delta V = Z{TH} * I$, in the case $Z_{TH}$ is small, the change in voltage is also small,  for the case where the $Z_{TH}$ is big, the change in voltage in case of a disturbance is also bigger, as  can be seen in the relation. On the other hand, high current injection also supports voltage stability, during faults, in order to maintain the voltage levels, current injection is needed (especially reactive current) to support the voltage at a certain bus, synchrnous generators can supply high fault currents, which support the voltage and limits the depth of the voltage dips. However, and as mentioned before, since converter units can not provide large short circuit currents, is often observed that systems dominated by converters experience deeper voltage drops and weaker post-fault voltage recovery, particularly under severe disturbances such as three-phase faults.
 The results indicate that frequency stability is governed by a combination of inertial response and active power control. While inertia (physical or emulated) is essential to limit the initial frequency deviation, the frequency nadir and overall system stability depend strongly on the effectiveness of primary frequency control.
 
 Grid-forming converters provide a balanced response by combining inertia emulation with active power support, whereas grid-following converters offer limited contribution to frequency stability. The observed behaviour also highlights the importance of control tuning, particularly in converter-based technologies, where different implementations can lead to significantly different dynamic responses.
@@ -138,15 +144,6 @@ Synchronous generators inherently provide inertia and strong electromechanical c
 
 RMS vs EMT modelling.
 The difference in fault current behaviour is also reflected in simulation approaches. RMS models often represent converters as controlled current sources with simplified dynamics, which may not fully capture current limitation and fast control interactions. EMT models, on the other hand, include detailed converter dynamics and accurately represent current limiting, control saturation, and fast transients. Therefore, discrepancies between RMS and EMT results are expected, especially during faults and in weak-grid conditions.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\linewidth]{Figures/Chapter 7/Phase1/Loadstep/fatPCR.png}
-    \caption{Frequency response at PCR}
-    \label{fig:fatpcr}
-\end{figure}
-
-
 
 \section{Phase 2: IEEE 39 Bus System}
 
@@ -160,7 +157,7 @@ The analyzed operating scenarios are defined in Table~\ref{tab:scenario_definiti
 
 For each operating condition, a small-signal stability analysis was performed to identify the oscillatory eigenvalues governing the system dynamics. The results of this analysis are summarized in Table~\ref{tab:dominant_modes}, which reports the lesat damped mode for each scenario together with the corresponding eigenvalue location, oscillation frequency, and damping ratio.
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \caption{Definition of operating scenarios and generation mix}
 \label{tab:scenario_definition}
@@ -189,7 +186,7 @@ R09A--Slack & 83.71 & SG + GFL + 4 GFM & Buses 31,38,35,32 & 16.29 / 40.54 / 43.
 \end{tabular}
 \end{table}
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \caption{Least damped eigenvalues for the analyzed operating scenarios}
 \label{tab:least_damped_modes}
@@ -238,7 +235,7 @@ Although the eigenvalue analysis indicates stable operating points for scenarios
 
 Table~\ref{tab:rms_feasibility} summarizes the dynamic feasibility of the operating points obtained from RMS simulations, both under steady-state conditions and when a large disturbance is applied.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \caption{RMS simulation feasibility for increasing converter penetration}
 \label{tab:rms_feasibility}
@@ -435,8 +432,88 @@ Although small-signal analysis shows that all eigenvalues remain in the left hal
 Increasing the share of GFM units therefore extends the feasible penetration range of inverter-based resources. However, beyond a certain point, restoring operating-point feasibility and small-signal stability is no longer sufficient to guarantee transient fault stability. In other words, at very high converter penetration levels, simply adding more GFM units does not necessarily ensure adequate fault ride-through capability.
 
 \subsection{Conclusion}
-Add conclusion on this chapter as well
 
-\section{Phase 3: Transfer capability and Hosting Capacity Results}
+
+The small-signal and time-domain analyses consistently show that increasing penetration of grid-following (GFL) converters progressively reduces the stability margins of the system. While the least damped electromechanical modes remain within acceptable damping ranges for moderate penetration levels, a critical threshold is reached between scenarios R06 and R07, where a non-oscillatory unstable mode emerges. This instability is primarily associated with the phase-locked loop (PLL) dynamics of GFL converters, highlighting their dependence on a sufficiently strong grid for stable operation.
+
+The results further demonstrate that small-signal stability alone is not sufficient to guarantee overall system robustness. Although operating points up to R06 remain locally stable, time-domain simulations reveal a degradation in dynamic performance under large disturbances, indicating the presence of a dynamic robustness limit prior to the loss of small-signal stability.
+
+The introduction of grid-forming (GFM) converters significantly improves system stability by increasing modal damping and restoring stable operating conditions in scenarios that would otherwise be unstable. In particular, GFM units effectively compensate for the loss of synchronous machine behavior by providing voltage and frequency support, thereby enhancing both small-signal stability and large-disturbance performance.
+
+However, the results also show that the stabilizing effect of GFM converters depends not only on their penetration level but also on their spatial placement within the network. Inadequate placement can lead to adverse control interactions, while well-distributed GFM units improve damping and voltage recovery.
+
+Finally, at very high levels of converter penetration, even the introduction of multiple GFM units is not sufficient to guarantee transient stability under severe disturbances. This indicates that, beyond a certain threshold, additional measures may be required, such as enhanced control strategies, system strengthening, or coordinated placement of grid-forming resources.
+
+Overall, the analysis highlights the critical role of converter control dynamics in modern power systems and demonstrates that a balanced integration of grid-following and grid-forming technologies is essential to maintain system stability under high renewable penetration levels.
+
+\section{Phase 3: Hosting Capacity Analysis Results}
+
+\subsection{Spatial Distribution of Hosting Capacity}
+
+The hosting capacity analysis under N-1 conditions reveals strong spatial variability across the network, indicating that the ability to integrate additional generation is highly dependent on the location of the injection point.
+
+The figure illustrates the minimum hosting capacity across all single contingencies for each bus. In other words, it represents the lower bound of the maximum admissible injection that can be safely accommodated at each bus under any N-1 condition. This ensures that any generation added at a given bus does not lead to overloads or violations in the remaining network following a contingency. As a result, the obtained limits guarantee secure operation even under the most critical grid conditions.
+
+Such results are widely used by transmission system operators and developers to support interconnection decisions, as they define the maximum allowable injection at each bus while ensuring compliance with N-1 security requirements. The observed variability highlights that only a limited number of buses can accommodate large injections, while most locations are constrained by network limitations.
+
+\begin{figure}[htbp]
+    \centering
+    \label{fig:HCA}
+    \includegraphics[width=0.85\textwidth]{Figures/Chapter 7/Phase3/HCA.png}
+    \caption{Security-Constrained Hosting Capacity per Bus under N-1 Conditions}
+    \end{figure}
+    
+
+\subsection{Identification of Limiting Contingencies}
+
+The analysis of limiting contingencies shows that a small number of outages dominate the system behavior. In particular, the outage of the corridor between buses 26--27 appears as the limiting contingency for 13 out of 39 buses, corresponding to approximately 33\% of the system. This indicates that a significant portion of the network relies on this corridor for power transfer.
+
+Similarly, the contingency of the corridor between buses 06--11 limits 10 out of 39 buses (around 25\%), confirming that this element also plays a critical role in maintaining system transfer capability. The concentration of limiting contingencies suggests that the system is not uniformly constrained, but rather dominated by a few critical network components.
+
+Additionally, the occurrence of the base case as a limiting condition indicates that, for some buses, the system is already operating close to its thermal or voltage limits under normal operating conditions. These cases represent pre-existing constraints and require further investigation.
+    \begin{figure}[htbp]
+        \centering
+        \label{fig:Limitingcontingencies}
+        \includegraphics[width=0.85\textwidth]{Figures/Chapter 7/Phase3/MostCriticalContingencies.png}
+        \caption{Frequency of Limiting Contingencies across All Buses}
+    \end{figure}
+    
+
+\subsection{Critical Network Elements}
+
+Beyond identifying limiting contingencies, it is also essential to determine the specific network elements responsible for these constraints. The results show that the dominant bottleneck in the system is the line between buses 02--03, followed by lines 04--14, 21--22, and 16--17.
+
+In particular, the line 02--03 appears as a structural limitation affecting multiple buses across the network. This indicates that several injection points share common evacuation paths, and that this corridor plays a central role in transferring power to the rest of the system. Consequently, constraints in this element propagate across multiple locations, limiting the overall hosting capacity.
+    \begin{figure}[htbp]
+        \centering
+        \label{fig:Limitingelements}
+        \includegraphics[width=0.85\textwidth]{Figures/Chapter 7/Phase3/MostCriticalElements.png.png}
+        \caption{Identification of Critical Network Elements Limiting Hosting Capacity}
+    \end{figure}
+    
+
+\subsection{Practical Implications for Grid Planning and Development}
+
+From a practical perspective, this type of analysis provides valuable insights for both transmission system operators and project developers. By identifying the contingencies and network elements that most strongly constrain hosting capacity, it becomes possible to prioritize grid reinforcements in a targeted and efficient manner.
+
+For instance, strengthening critical corridors such as lines 26--27 or 02--03 could significantly increase the hosting capacity across multiple buses, rather than improving only a single location. This highlights the importance of system-level planning, where reinforcing key transmission paths can unlock additional capacity across large portions of the network.
+
+Furthermore, the identification of limiting elements enables a transparent cost-benefit analysis for developers. Knowing the exact bottleneck allows for the evaluation of potential mitigation measures, such as reconductoring or upgrading specific transmission lines. In this context, developers can compare the cost of the required grid reinforcement with the expected revenue of a project to assess its economic viability.
+
+In addition, the fact that certain elements limit multiple buses provides valuable locational intelligence. It suggests that these buses are electrically connected through common corridors, and that improvements in these critical paths could simultaneously increase hosting capacity at several locations.
+
+\subsection{Limitations of the Method}
+
+It should be noted that the results presented are based on a linearized approximation of the system behavior. While this approach provides a fast and effective screening tool to assess hosting capacity across the network, it does not fully capture nonlinear effects present in real power systems.
+
+Therefore, more detailed AC load flow or dynamic simulations are required to validate the exact hosting capacity limits and ensure accurate representation of voltage behavior, reactive power interactions, and stability constraints.
 \subsection{Conclusions}
-Add pertinent conclusions and write the results of this phase
+
+
+The hosting capacity analysis under N-1 conditions demonstrates that the integration potential of additional generation is highly dependent on the injection location, with significant variability observed across the network. A limited number of buses exhibit high hosting capacity, while the majority are constrained by network limitations, highlighting the non-uniform strength of the system.
+
+The results further show that a small set of contingencies and network elements dominate the system behavior, with specific corridors acting as critical bottlenecks that restrict power transfer across multiple locations. This indicates that the overall hosting capacity is largely governed by a few structurally weak components rather than uniformly distributed constraints.
+
+From a practical perspective, these findings confirm that targeted reinforcement of key transmission corridors can significantly increase the hosting capacity of the network. Moreover, the identification of limiting elements provides valuable insight for both system operators and developers, enabling more informed planning decisions and cost-effective integration strategies.
+
+Finally, the applied methodology proves to be an effective screening tool for identifying critical constraints and prioritizing network improvements, although further detailed AC-based analyses are required to validate the exact hosting capacity limits.
