@@ -6,7 +6,7 @@
 
 The increasing penetration of inverter-based resources (IBRs), such as photovoltaic, wind and battery systems, has significantly changed the dynamic behaviour of modern power networks. As these resources interface through power-electronic converters and do not provide mechanical inertia, system frequency and voltage become more sensitive to disturbances, particularly in weak-grid conditions with low short-circuit ratio (SCR). This motivates the need for advanced converter control methods capable of contributing to system stability \cite{8586162,Rathnayake2021}
 
-Two main control paradigms exist: grid-following (GFL) and grid-forming (GFM) inverters. Their fundamental differences determine their capability to support system stability.\cite{Mirafzal2020}
+Two main control paradigms exist: grid-following (GFL) and grid-forming (GFM) inverters. Their fundamental differences determine their capability to support system stability.\cite{Mirafzal2020,10968238}
 
 \subsection{Grid-Following Inverters}
 
@@ -25,7 +25,7 @@ While GFL inverters are effective in delivering programmed power, their performa
 
 \subsection{Grid-Forming Inverters}
 
-GFM inverters operate fundamentally differently. Instead of relying on the grid to establish voltage and frequency, they behave as controlled voltage sources and generate their own internal voltage and frequency references without a PLL. This allows them to regulate frequency and voltage directly and provide synthetic inertia, damping, and fast fault response. Their behaviour is therefore more robust in weak-grid and low-inertia conditions \cite{9751441, 11041180}.
+GFM inverters operate fundamentally differently. Instead of relying on the grid to establish voltage and frequency, they behave as controlled voltage sources and generate their own internal voltage and frequency references without a PLL.\cite{6869789} This allows them to regulate frequency and voltage directly and provide synthetic inertia, damping, and fast fault response. Their behaviour is therefore more robust in weak-grid and low-inertia conditions \cite{9751441, 11041180}.
 
 \begin{figure}[htbp!]
  \centering
@@ -71,7 +71,7 @@ Here, \(K_P\) and \(K_Q\) denote the active- and reactive-power droop coefficien
 
 \subsection{Virtual Synchronous Machine}
 
-The Virtual Synchronous Machine (VSM), also referred to as Virtual Synchronous Generator (VSG), aims to emulate the electromechanical behaviour of a synchronous machine. This includes reproducing the rotor dynamics described by the swing equation, which enables the inverter to provide virtual inertia, damping, and improved transient voltage and frequency stability. \cite{10755449}
+The Virtual Synchronous Machine (VSM), also referred to as Virtual Synchronous Generator (VSG), aims to emulate the electromechanical behaviour of a synchronous machine.\cite{9479398} This includes reproducing the rotor dynamics described by the swing equation, which enables the inverter to provide virtual inertia, damping, and improved transient voltage and frequency stability. \cite{10755449}
 
 A representative formulation of VSM behaviour is \cite{10949993}:
 \begin{align}
@@ -92,7 +92,7 @@ Historically, system dynamics were dominated by synchronous machines, whose iner
 
 Power system stability is defined as the ability of the electrical network to return to an acceptable operating equilibrium after a disturbance, with system variables remaining within permissible limits and the network remaining intact \cite{1318675}. In converter-dominated systems, this capability is strongly influenced by converter control strategies and grid strength.
 
-The increasing share of IBRs introduces additional challenges, including reduced short-circuit current, limited inherent inertia, and stronger interactions between converter control loops and network impedance. These effects can significantly impact both frequency and voltage stability, particularly in weak-grid conditions \cite{9286772}.
+The increasing share of IBRs introduces additional challenges, including reduced short-circuit current, limited inherent inertia, and stronger interactions between converter control loops and network impedance. These effects can significantly impact both frequency and voltage stability, particularly in weak-grid conditions \cite{9913670}.
 
 
 Different types of disturbances activate system components with distinct response times. Figure~\ref{fig:Power System Time Scales} illustrates the typical time scales of relevant dynamic phenomena.
@@ -128,11 +128,11 @@ Other stability categories, such as rotor angle stability and resonance phenomen
 
 \subsubsection{Converter-Driven Stability}
 
-The increasing penetration of converter-interfaced renewable generation introduces new dynamic interactions driven primarily by control systems rather than physical inertia. In such systems, stability becomes highly dependent on controller design and grid strength.
+The increasing penetration of converter-interfaced renewable generation introduces new dynamic interactions driven primarily by control systems rather than physical inertia. In such systems, stability becomes highly dependent on controller design and grid strength.\cite{10497578}
 
 In weak-grid conditions, interactions between converter control loops and network impedance may lead to poorly damped oscillations or even instability \cite{en14144290}. These phenomena span a wide frequency range and are particularly relevant in systems with high penetration of grid-forming and grid-following converters.
 
-Fast converter-driven interactions often require electromagnetic transient (EMT) modelling for accurate representation, as they involve dynamics that are not captured by RMS models. However, EMT simulations require small time steps and are computationally intensive.
+Fast converter-driven interactions often require electromagnetic transient (EMT) modelling for accurate representation, as they involve dynamics that are not captured by RMS models. However, EMT simulations require small time steps and are computationally intensive.\cite{en14144290}
 
 Overall, the increasing share of IBRs requires modelling approaches capable of capturing both system-level dynamics and converter-driven interactions. While EMT simulations provide detailed insights into fast dynamics, their computational cost limits their application to smaller systems. Therefore, efficient RMS-based approaches, complemented by EMT validation, are essential for analysing the impact of GFM control parameters under varying grid strength conditions.
 
@@ -161,11 +161,11 @@ Figure~\ref{fig:Frequency range of coverage EMT and PDT studies} summarises the 
 
 \section{Frequency and Voltage Stability Indicators}
 
-Power system stability analysis requires quantitative indicators to evaluate the system response to disturbances and its ability to return to an acceptable operating point. In converter-dominated systems, reduced inertia and faster dynamics increase the importance of such indicators for assessing control strategies and grid strength.
+Power system stability analysis requires quantitative indicators to evaluate the system response to disturbances and its ability to return to an acceptable operating point. In converter-dominated systems, reduced inertia and faster dynamics increase the importance of such indicators for assessing control strategies and grid strength.\cite{anderson2003}
 
 \subsection{Frequency Stability Indicators}
 
-Frequency stability refers to the ability of the system to maintain nominal frequency following disturbances such as generation outages or load changes. In traditional systems, inertia limits the initial frequency deviation, while primary control determines the steady-state behaviour \cite{kundur1994}. In systems with high shares of inverter-based resources, reduced inertia makes frequency indicators particularly critical.
+Frequency stability refers to the ability of the system to maintain nominal frequency following disturbances such as generation outages or load changes. In traditional systems, inertia limits the initial frequency deviation, while primary control determines the steady-state behaviour \cite{kundur1994}. In systems with high shares of inverter-based resources, reduced inertia makes frequency indicators particularly critical.\cite{entsoe2016_freq}
 
 \subsubsection{Theoretical Background}
 
@@ -210,7 +210,7 @@ Following primary control, the system settles at a new equilibrium frequency:
 
 This indicator reflects the adequacy of primary frequency control reserves.
 
-Overall, RoCoF and nadir are the primary indicators used in this work to assess frequency stability under different control strategies and grid strength conditions.
+Overall, RoCoF and nadir are the primary indicators used in this work to assess frequency stability under different control strategies and grid strength conditions.\cite{IRENA2022_GridCodes}
 
 The frequency response stages defined by ENTSO-E can be observed in the figure \ref{fig:Frequency response stages ENTSOE}
 \begin{figure}[htpb]
@@ -222,12 +222,12 @@ The frequency response stages defined by ENTSO-E can be observed in the figure \
 
 \subsection{Voltage Stability Indicators}
 
-Voltage stability refers to the ability of the system to maintain acceptable voltages under normal conditions and after disturbances. It is primarily determined by the balance of reactive power and network strength \cite{kundur1994}.
+Voltage stability refers to the ability of the system to maintain acceptable voltages under normal conditions and after disturbances. It is primarily determined by the balance of reactive power and network strength \cite{kundur1994,rfg2016}.
 
 The fundamental mechanisms of voltage stability can be illustrated using the classical $P$--$V$ and $Q$--$V$ characteristics curves seen in Fig \ref{fig:PV QV Curves}, which describe the relationship between power transfer, reactive power, and voltage. 
 The P--V curve represents the variation of bus voltage as a function of increasing active power transfer. As loading increases, the voltage decreases until a maximum transferable power (nose point) is reached, beyond which no stable operating point exists, indicating voltage collapse. 
 
-The Q--V curve describes the relationship between reactive power injection and bus voltage. It provides insight into the reactive power required to maintain voltage levels, where the minimum point of the curve defines the reactive power stability limit. Insufficient reactive power support leads to an inability to sustain voltage, resulting in instability.
+The Q--V curve describes the relationship between reactive power injection and bus voltage. It provides insight into the reactive power required to maintain voltage levels, where the minimum point of the curve defines the reactive power stability limit. Insufficient reactive power support leads to an inability to sustain voltage, resulting in instability.\cite{8750828}
 
 \begin{figure}[htbp!]
 \centering
@@ -273,7 +273,7 @@ The damping ratio characterises how fast post-disturbance oscillations decay:
 \zeta = \frac{\delta}{\sqrt{4\pi^2 + \delta^2}}.
 \end{equation}
 
-This indicator is used to assess the effect of control parameters on oscillatory behaviour in weak grids.
+This indicator is used to assess the effect of control parameters on oscillatory behaviour in weak grids. \cite{Akram2020HESS}
 
 
 
@@ -281,14 +281,14 @@ This indicator is used to assess the effect of control parameters on oscillatory
 \section{Grid Strength and Short-Circuit Ratio}
 
 
-Grid strength is a fundamental concept in power system stability analysis and describes the ability of a network to maintain acceptable voltage and frequency conditions under disturbances. According to IEEE, grid strength can be quantified using the short-circuit power or the short-circuit ratio (SCR), defined as the ratio between the short-circuit power at the point of interconnection and the rated power of the connected inverter-based resource \cite{ieee2800}:
+Grid strength is a fundamental concept in power system stability analysis and describes the ability of a network to maintain acceptable voltage and frequency conditions under disturbances. According to IEEE, grid strength can be quantified using the short-circuit power or the short-circuit ratio (SCR), defined as the ratio between the short-circuit power at the point of interconnection and the rated power of the connected inverter-based resource \cite{ieee2800,ieee1547}:
 \begin{equation}
     SCR = \frac{S_{SC}}{P_{\mathrm{rated}}}.
 \end{equation}
 
 CIGRÉ refines this concept by classifying grids as strong ($SCR > 10$), weak ($SCR < 5$), and very weak ($SCR < 3$), and introduces the effective SCR (ESCR) to account for reactive compensation devices \cite{cigreTB871}. Classical references such as Kundur and Anderson \& Fouad do not define SCR explicitly for converters, but they provide the theoretical basis for electrical stiffness, voltage sensitivity, and short-circuit strength as key determinants of system stability \cite{kundur1994,anderson2003}.
 
-System operators increasingly use SCR as a practical stability metric. AEMO considers $SCR < 3$ critical for grid-following inverters, ERCOT specifies minimum ESCR levels for HVDC and wind integration, and ENTSO-E associates low SCR conditions with an increased risk of oscillations, FRT failures, PLL instability, and poor voltage regulation \cite{aemo2018,ercotHVDC,entsoe2016}. In converter-dominated systems, SCR is therefore particularly relevant, since weak grids amplify the sensitivity of dynamic behaviour to control parameters such as virtual inertia, damping, and droop gains, directly influencing the performance of grid-forming inverters in both RMS and EMT simulations.
+System operators increasingly use SCR as a practical stability metric. AEMO considers $SCR < 3$ critical for grid-following inverters, ERCOT specifies minimum ESCR levels for HVDC and wind integration, and ENTSO-E associates low SCR conditions with an increased risk of oscillations, FRT failures, PLL instability, and poor voltage regulation \cite{aemo2018,ercotHVDC,entsoe2016,EirGrid2025_GridCode}. In converter-dominated systems, SCR is therefore particularly relevant, since weak grids amplify the sensitivity of dynamic behaviour to control parameters such as virtual inertia, damping, and droop gains, directly influencing the performance of grid-forming inverters in both RMS and EMT simulations. \cite{VDEFNN2019_TechnicalConnection,AEMO2020_FOS,NERC2019_PRCPF}
 
 The main quantities used to characterise grid strength are:
 \begin{equation}
